@@ -2,11 +2,11 @@
   <form action="">
     <select
       class="lode-header__search-select"
-      v-model="searchForm.category"
+      v-model="searchCategory"
       name="category"
     >
       <option
-        v-for="category in categories"
+        v-for="category in CATEGORIES"
         :value="category.value"
         :key="category.value"
       >{{category.name}}</option>
@@ -14,7 +14,7 @@
     </select>
     <lode-input
       class="input--header-search"
-      v-model="searchForm.text"
+      v-model="modelValue"
       placeholder="Поиск"
     />
     <lode-button
@@ -25,38 +25,35 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "LodeHeaderSearch",
   data() {
-    return {
-      searchForm: {
-        category: "all",
-        text: "",
+    return {};
+  },
+  computed: {
+    ...mapGetters(["SEARCH_FORM", "CATEGORIES"]),
+    // ! Two-way Computed Property (modelValue, searchCategory)
+    // ! to be able to use v-model with Vuex data
+    modelValue: {
+      get() {
+        return this.SEARCH_FORM.text;
       },
-      categories: [
-        {
-          name: "Все категории",
-          value: "all",
-        },
-        {
-          name: "Галогенные",
-          value: "halogen",
-        },
-        {
-          name: "Ксеноновые",
-          value: "xenon",
-        },
-        {
-          name: "Светодиодные",
-          value: "led",
-        },
-        {
-          name: "Накал",
-          value: "incandescent",
-        },
-      ],
-      selected: "Все категории",
-    };
+      set(value) {
+        this.CHANGE_SEARCH_TEXT(value);
+      },
+    },
+    searchCategory: {
+      get() {
+        return this.SEARCH_FORM.category;
+      },
+      set(value) {
+        this.CHANGE_SEARCH_CATEGORY(value);
+      },
+    },
+  },
+  methods: {
+    ...mapActions(["CHANGE_SEARCH_CATEGORY", "CHANGE_SEARCH_TEXT"]),
   },
 };
 </script>
