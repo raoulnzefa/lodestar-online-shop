@@ -1,0 +1,29 @@
+/* Colors */
+$white: #fff;
+
+$grey: rgb(197, 197, 197);
+$grey-shadow: rgb($grey, 0.3);
+
+$accent: rgb(185, 8, 185);
+$accent-light: lighten($accent, 10%);
+$accent-shadow: rgba($accent, 0.3);
+
+$secondary: #1b1927;
+
+$purple: #80217f;
+$blue: #292268;
+$p-b-mix: #512272;
+
+$black: rgb(15, 15, 15);
+$black-light: #333;
+$black-shadow: rgb($black, 0.3);
+
+// series colors
+$series-gold: rgb(228, 199, 38);
+
+/* breakpoints */
+$full-size: 1200px;
+
+/* Font-family */
+$main-font: "Roboto", sans-serif;
+$sec-font: "Montserrat", sans-serif;

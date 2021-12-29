@@ -1,0 +1,125 @@
+{
+  "products": [
+    {
+      "image": "https://via.placeholder.com/200x225",
+      "name": "Маяк - H1 Active Gold +60%",
+      "price": 100,
+      "category": "Галоленные лампы",
+      "series": "Active",
+      "subseries": "Gold +60%",
+      "article": "72120AG+60",
+      "available": true,
+      "quantity": 1
+    },
+    {
+      "image": "https://via.placeholder.com/200x225",
+      "name": "Маяк - H3 Active Gold +60%",
+      "price": 150,
+      "category": "Галоленные лампы",
+      "series": "Active",
+      "subseries": "Gold +60%",
+      "article": "72320AG+60",
+      "available": true,
+      "quantity": 1
+    },
+    {
+      "image": "https://via.placeholder.com/200x225",
+      "name": "Маяк - H4 Active Gold +60%",
+      "price": 125,
+      "category": "Галоленные лампы",
+      "series": "Active",
+      "subseries": "Gold +60%",
+      "article": "72420AG+60",
+      "available": true,
+      "quantity": 1
+    },
+    {
+      "image": "https://via.placeholder.com/200x225",
+      "name": "Маяк - H7 Active Gold +60%",
+      "price": 200,
+      "category": "Галоленные лампы",
+      "series": "Active",
+      "subseries": "Gold +60%",
+      "article": "72720AG+60",
+      "available": true,
+      "quantity": 1
+    },
+    {
+      "image": "https://via.placeholder.com/200x225",
+      "name": "Маяк - H4 Super White +30%",
+      "price": 100,
+      "category": "Галоленные лампы",
+      "series": "Active",
+      "subseries": "Super White +30%",
+      "article": "72420ASW+30",
+      "available": true,
+      "quantity": 1
+    },
+    {
+      "image": "https://via.placeholder.com/200x225",
+      "name": "Маяк - H4 White Vision +150%",
+      "price": 125,
+      "category": "Галоленные лампы",
+      "series": "Ultra",
+      "subseries": "White Vision +150%",
+      "article": "82420WV+150",
+      "available": true,
+      "quantity": 1
+    },
+    {
+      "image": "https://via.placeholder.com/200x225",
+      "name": "Маяк - P21W",
+      "price": 25,
+      "category": "Лампы накаливания",
+      "series": "",
+      "subseries": "",
+      "article": "61217",
+      "available": true,
+      "quantity": 1
+    },
+    {
+      "image": "https://via.placeholder.com/200x225",
+      "name": "Маяк - P21W",
+      "price": 30,
+      "category": "Лампы накаливания",
+      "series": "Ultra",
+      "subseries": "",
+      "article": "81217",
+      "available": true,
+      "quantity": 1
+    },
+    {
+      "image": "https://via.placeholder.com/200x225",
+      "name": "Маяк - D3S",
+      "price": 55,
+      "category": "Ксеноновые лампы",
+      "series": "",
+      "subseries": "",
+      "article": "59335S",
+      "available": true,
+      "quantity": 1
+    },
+    {
+      "image": "https://via.placeholder.com/200x225",
+      "name": "Маяк - D1R",
+      "price": 55,
+      "category": "Ксеноновые лампы",
+      "series": "",
+      "subseries": "",
+      "article": "59235R",
+      "available": true,
+      "quantity": 1
+    },
+    {
+      "image": "https://via.placeholder.com/200x225",
+      "name": "Маяк - T8",
+      "price": 120,
+      "category": "Светоизлучающие диоды",
+      "series": "Ultra B",
+      "subseries": "",
+      "article": "12-30T8/B-11",
+      "available": true,
+      "quantity": 1
+    }
+  ]
+}
