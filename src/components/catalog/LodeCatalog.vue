@@ -1,7 +1,8 @@
 <template>
   <div class="lode-catalog">
+    <h1 v-if="LOADING">Идет загрузка...</h1>
     <lode-catalog-item
-      v-for="product in PRODUCTS"
+      v-for="product in filteredProducts"
       :key="product.article"
       :product="product"
       @addToCart="addToCart"
@@ -16,27 +17,22 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   name: "lode-catalog",
   components: { LodeCatalogItem },
-  data() {
-    return {};
+  computed: {
+    ...mapGetters(["PRODUCTS", "LOADING", "SEARCH_FORM", "FILTERED_PRODUCTS"]),
+    filteredProducts() {
+      return this.FILTERED_PRODUCTS.length
+        ? this.FILTERED_PRODUCTS
+        : this.PRODUCTS;
+    },
   },
   methods: {
-    ...mapActions(["GET_PRODUCTS_FROM_API", "ADD_TO_CART"]),
-
+    ...mapActions(["GET_PRODUCTS_FROM_API", "ADD_TO_CART", "FILTER_PRODUCTS"]),
     addToCart(product) {
       this.ADD_TO_CART(product);
     },
   },
   mounted() {
-    this.GET_PRODUCTS_FROM_API().then((response) => {
-      if (response.data) {
-        console.log("Products has been loaded");
-      } else {
-        console.log("Some problem with getting products");
-      }
-    });
-  },
-  computed: {
-    ...mapGetters(["PRODUCTS"]),
+    this.GET_PRODUCTS_FROM_API();
   },
 };
 </script>

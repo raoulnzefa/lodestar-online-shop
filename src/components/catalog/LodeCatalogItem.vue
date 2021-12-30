@@ -1,5 +1,5 @@
 <template>
-  <div class="lode-catalog-item">
+  <div v-if="!LOADING" class="lode-catalog-item">
     <div class="lode-catalog-item__flags">
       <div
         v-if="product.series"
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex';
 export default {
   data() {
     return {};
@@ -51,6 +52,9 @@ export default {
     addToCart(product) {
       this.$emit("addToCart", this.product);
     },
+  },
+  computed: {
+    ...mapGetters(['LOADING'])
   },
   mounted() {
     // this.product.quantity = 1;

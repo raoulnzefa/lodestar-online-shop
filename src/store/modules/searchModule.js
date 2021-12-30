@@ -1,32 +1,32 @@
 export const searchModule = {
   state: () => ({
     searchForm: {
-      category: "all",
+      category: "Все категории",
       text: "",
     },
     categories: [
       {
         name: "Все категории",
-        value: "all",
+        value: "Все категории",
       },
       {
         name: "Галогенные",
-        value: "halogen",
+        value: "Галогенные лампы",
       },
       {
         name: "Ксеноновые",
-        value: "xenon",
+        value: "Ксеноновые лампы",
       },
       {
         name: "Светодиодные",
-        value: "led",
+        value: "Светоизлучающие диоды",
       },
       {
         name: "Накал",
-        value: "incandescent",
+        value: "Лампы накаливания",
       },
     ],
-    // selected: "Все категории",
+    selected: "Все категории",
   }),
   getters: {
     SEARCH_FORM(state) {
@@ -34,6 +34,9 @@ export const searchModule = {
     },
     CATEGORIES(state) {
       return state.categories;
+    },
+    SELECTED(state) {
+      return state.selected;
     }
   },
   mutations: {

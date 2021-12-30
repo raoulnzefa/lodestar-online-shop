@@ -18,7 +18,8 @@
       placeholder="Поиск"
     />
     <lode-button
-      @click.prevent=""
+      @click="FILTER_PRODUCTS"
+      type="button"
       class="btn--search"
     >Поиск</lode-button>
   </form>
@@ -33,8 +34,8 @@ export default {
   },
   computed: {
     ...mapGetters(["SEARCH_FORM", "CATEGORIES"]),
-    // ! Two-way Computed Property (modelValue, searchCategory)
-    // ! to be able to use v-model with Vuex data
+    // Two-way Computed Property (modelValue, searchCategory)
+    // to be able to use v-model with Vuex data
     modelValue: {
       get() {
         return this.SEARCH_FORM.text;
@@ -53,7 +54,12 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["CHANGE_SEARCH_CATEGORY", "CHANGE_SEARCH_TEXT"]),
+    ...mapActions([
+      "CHANGE_SEARCH_CATEGORY",
+      "CHANGE_SEARCH_TEXT",
+      "SET_FILTERED_PRODUCTS",
+      "FILTER_PRODUCTS",
+    ]),
   },
 };
 </script>

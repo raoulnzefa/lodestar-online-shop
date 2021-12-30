@@ -3,6 +3,7 @@ import axios from 'axios';
 export const productsModule = {
   state: () => ({
     products: [],
+    filteredProducts: [],
     isProductsLoading: false,
   }),
   getters: {
@@ -11,6 +12,9 @@ export const productsModule = {
     },
     LOADING(state) {
       return state.isProductsLoading;
+    },
+    FILTERED_PRODUCTS(state) {
+      return state.filteredProducts;
     }
   },
   actions: {
@@ -21,13 +25,29 @@ export const productsModule = {
           method: "GET"
         });
         commit('SET_PRODUCTS', response.data);
-        return products;
+        return this.products;
       } catch (err) {
         console.log(err)
         return err
       } finally {
         commit('SET_LOADING', false);
       }
+    },
+    SET_FILTERED_PRODUCTS({ commit }, products) {
+      commit('SET_FILTERED_PRODUCTS', products)
+    },
+    FILTER_PRODUCTS({ commit, state, rootState }) {
+      let result = [];
+
+      [...state.products].map((product) => {
+        if (rootState.search.searchForm.category == "Все категории") {
+          result = [...state.products]
+        } else if (product.category == rootState.search.searchForm.category) {
+          result.push(product);
+        }
+      });
+
+      commit('SET_FILTERED_PRODUCTS', result);
     }
   },
   mutations: {
@@ -36,6 +56,10 @@ export const productsModule = {
     },
     SET_LOADING: (state, bool) => {
       state.isProductsLoading = bool;
+    },
+    SET_FILTERED_PRODUCTS: (state, products) => {
+      state.filteredProducts = products;
     }
-  }
+  },
+
 }
