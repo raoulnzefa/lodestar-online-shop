@@ -15,14 +15,16 @@
         <p class="lode-cart__names-delete"></p>
       </div>
       <ul class="lode-cart__list">
-        <lode-cart-item
-          v-for="(item, index) in CART"
-          :key="item.article"
-          :cart_item="item"
-          @deleteFromCart="deleteFromCart(index)"
-          @decrementItem="decrementItem(index)"
-          @incrementItem="incrementItem(index)"
-        />
+        <transition-group name="cart-list">
+          <lode-cart-item
+            v-for="(item, index) in CART"
+            :key="item.article"
+            :cart_item="item"
+            @deleteFromCart="deleteFromCart(index)"
+            @decrementItem="decrementItem(index)"
+            @incrementItem="incrementItem(index)"
+          />
+        </transition-group>
       </ul>
       <div
         v-if="CART.length"
@@ -179,6 +181,23 @@ export default {
     &-delete {
       width: 5%;
     }
+  }
+}
+
+.cart-list {
+  &-enter-active,
+  &-leave-active {
+    transition: all 0.4s ease;
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: translateX(-20rem);
+  }
+
+  &-move {
+    transition: transform 0.4s ease;
   }
 }
 </style>

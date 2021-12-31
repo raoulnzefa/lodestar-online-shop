@@ -1,12 +1,14 @@
 <template>
   <div class="lode-catalog">
     <h1 v-if="LOADING">Идет загрузка...</h1>
-    <lode-catalog-item
-      v-for="product in filteredProducts"
-      :key="product.article"
-      :product="product"
-      @addToCart="addToCart"
-    />
+    <transition-group name="catalog-list">
+      <lode-catalog-item
+        v-for="product in filteredProducts"
+        :key="product.article"
+        :product="product"
+        @addToCart="addToCart"
+      />
+    </transition-group>
   </div>
 </template>
 
@@ -45,5 +47,22 @@ export default {
   margin: 0 auto 3rem auto;
 
   max-width: $full-size;
+}
+
+.catalog-list {
+  &-enter-active,
+  &-leave-active {
+    transition: all 0.5s ease;
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: scale(0.1);
+  }
+
+  &-move {
+    transition: transform 0.5s ease;
+  }
 }
 </style>
