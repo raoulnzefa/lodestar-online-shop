@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-show="!LOADING"
-    class="lode-catalog-item"
-  >
+  <div class="lode-catalog-item">
     <div class="lode-catalog-item__flags">
       <div
         v-if="product.series"
