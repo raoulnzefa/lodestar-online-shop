@@ -14,8 +14,9 @@
     </select>
     <lode-input
       class="input--header-search"
-      v-model="modelValue"
-      placeholder="Поиск"
+      v-model="searchText"
+      placeholder="Поиск по названию"
+      @keydown.enter.prevent="FILTER_PRODUCTS"
     />
     <lode-button
       @click="FILTER_PRODUCTS"
@@ -34,9 +35,9 @@ export default {
   },
   computed: {
     ...mapGetters(["SEARCH_FORM", "CATEGORIES"]),
-    // Two-way Computed Property (modelValue, searchCategory)
+    // Two-way Computed Property (searchText, searchCategory)
     // to be able to use v-model with Vuex data
-    modelValue: {
+    searchText: {
       get() {
         return this.SEARCH_FORM.text;
       },

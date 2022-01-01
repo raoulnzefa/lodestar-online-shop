@@ -1,6 +1,13 @@
 <template>
   <div class="lode-catalog">
-    <h1 v-if="LOADING">Идет загрузка...</h1>
+    <h1
+      class="lode-catalog__loading"
+      v-if="LOADING"
+    >Идет загрузка...</h1>
+    <h1
+      class="lode-catalog__found"
+      v-if="!IS_FOUND"
+    >Товар не найден</h1>
     <transition-group name="catalog-list">
       <lode-catalog-item
         v-for="product in filteredProducts"
@@ -20,15 +27,23 @@ export default {
   name: "lode-catalog",
   components: { LodeCatalogItem },
   computed: {
-    ...mapGetters(["PRODUCTS", "LOADING", "SEARCH_FORM", "FILTERED_PRODUCTS"]),
+    ...mapGetters([
+      "PRODUCTS",
+      "LOADING",
+      "SEARCH_FORM",
+      "FILTERED_PRODUCTS",
+      "IS_FOUND",
+    ]),
     filteredProducts() {
-      return this.FILTERED_PRODUCTS.length
-        ? this.FILTERED_PRODUCTS
-        : this.PRODUCTS;
+      if (this.FILTERED_PRODUCTS.length) {
+        return this.FILTERED_PRODUCTS;
+      } else {
+        return this.IS_FOUND ? this.PRODUCTS : this.FILTERED_PRODUCTS;
+      }
     },
   },
   methods: {
-    ...mapActions(["GET_PRODUCTS_FROM_API", "ADD_TO_CART", "FILTER_PRODUCTS"]),
+    ...mapActions(["GET_PRODUCTS_FROM_API", "ADD_TO_CART"]),
     addToCart(product) {
       this.ADD_TO_CART(product);
     },
@@ -47,6 +62,17 @@ export default {
   margin: 0 auto 3rem auto;
 
   max-width: $full-size;
+
+  &__loading,
+  &__found {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 1.5rem;
+
+    font-size: 1.8rem;
+    font-weight: 500;
+  }
 }
 
 .catalog-list {

@@ -5,6 +5,7 @@ export const productsModule = {
     products: [],
     filteredProducts: [],
     isProductsLoading: false,
+    isProductsFound: true,
   }),
   getters: {
     PRODUCTS(state) {
@@ -15,6 +16,9 @@ export const productsModule = {
     },
     FILTERED_PRODUCTS(state) {
       return state.filteredProducts;
+    },
+    IS_FOUND(state) {
+      return state.isProductsFound;
     }
   },
   actions: {
@@ -47,7 +51,14 @@ export const productsModule = {
         }
       });
 
-      commit('SET_FILTERED_PRODUCTS', result);
+      let filteredResult = result
+        .filter(item => item.name.toLowerCase()
+          .includes(rootState.search.searchForm.text
+            .toLowerCase()));
+
+      commit('SET_FILTERED_PRODUCTS', filteredResult);
+
+      filteredResult.length ? commit("SET_FOUND", true) : commit("SET_FOUND", false);
     }
   },
   mutations: {
@@ -59,6 +70,9 @@ export const productsModule = {
     },
     SET_FILTERED_PRODUCTS: (state, products) => {
       state.filteredProducts = products;
+    },
+    SET_FOUND: (state, bool) => {
+      state.isProductsFound = bool;
     }
   },
 
