@@ -17,10 +17,14 @@
     <img
       :src="product.image"
       alt="item image"
+      @click="$router.push(`/catalog/${product.article}`)"
       class="lode-catalog-item__image"
     >
     <h3 class="lode-catalog-item__category">{{product.category}}</h3>
-    <h1 class="lode-catalog-item__name">{{product.name}}</h1>
+    <h1
+      @click="$router.push(`/catalog/${product.article}`)"
+      class="lode-catalog-item__name"
+    >{{product.name}}</h1>
     <h2 class="lode-catalog-item__price">Цена: {{product.price}} грн</h2>
     <div class="lode-catalog-item__add-to-cart">
       <lode-button
@@ -122,6 +126,8 @@ export default {
     margin: 0 auto 1rem auto;
     height: 22.5rem;
     width: 20rem;
+
+    cursor: pointer;
   }
 
   &__category {
@@ -137,6 +143,12 @@ export default {
     font-size: 1.6rem;
     font-weight: 700;
     color: $black;
+
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   &__price {

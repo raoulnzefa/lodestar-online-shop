@@ -48,7 +48,7 @@ export default {
   /* Header-Cart Item's buttons */
   &--view-cart,
   &--make-deal {
-    width: 100%;
+    width: 50%;
     margin: 0;
     border: none;
     line-height: 1.5rem;
@@ -106,6 +106,22 @@ export default {
 
     &:hover {
       background-color: $accent-light;
+    }
+  }
+
+  /* Product buttons */
+  &--product-add-to-cart,
+  &--product-buy {
+    text-align: center;
+    width: 50%;
+    background-color: $accent;
+    border: 1px solid $accent;
+    color: $white;
+
+    &:hover {
+      background-color: $white;
+      color: $black;
+      border-color: $black;
     }
   }
 }

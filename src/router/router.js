@@ -2,6 +2,7 @@ import Router, { createRouter, createWebHistory } from 'vue-router';
 import Main from '@/pages/Main';
 import Catalog from '@/pages/Catalog';
 import Cart from '@/pages/Cart';
+import ProductPage from '@/pages/ProductPage';
 
 const routes = [
   {
@@ -13,6 +14,12 @@ const routes = [
     path: '/catalog',
     component: Catalog,
     name: "catalog",
+    props: true
+  },
+  {
+    path: '/catalog/:article',
+    component: ProductPage,
+    name: "product-page",
     props: true
   },
   {

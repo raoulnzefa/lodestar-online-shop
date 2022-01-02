@@ -1,9 +1,19 @@
 <template>
   <slot></slot>
   <li class="lode-header__cart-item">
-    <p class="lode-header__cart-item-name">{{shorterName(cart_item.name)}}</p>
-    <p class="lode-header__cart-item-price">{{cart_item.price}} грн</p>
-    <p class="lode-header__cart-item-quantity">{{cart_item.quantity}} шт.</p>
+    <img
+      class="lode-header__cart-item-image"
+      :src="cart_item.image"
+      alt=""
+    >
+    <div class="lode-header__cart-item-info">
+      <p
+        @click="$router.push(`/catalog/${cart_item.article}`)"
+        class="lode-header__cart-item-name"
+      >{{shorterName(cart_item.name)}}</p>
+      <p class="lode-header__cart-item-price">{{cart_item.price}} грн</p>
+      <p class="lode-header__cart-item-quantity">{{cart_item.quantity}} шт.</p>
+    </div>
     <button
       class="lode-header__cart-item-btn"
       @click="deleteFromCart"
@@ -30,7 +40,7 @@ export default {
       this.$emit("deleteFromCart");
     },
     shorterName(name) {
-      return `${name.substring(0, 21)}...`;
+      return name.length > 21 ? `${name.substring(0, 21)}...` : name;
     },
   },
   emits: ["deleteFromCart"],
@@ -43,23 +53,53 @@ export default {
   justify-content: center;
   align-items: center;
   flex-wrap: nowrap;
-  padding: 0.5rem 0.5rem;
+  padding: 0.5rem 1rem;
 
-  height: 4rem;
-  border-bottom: 1px solid $secondary;
-
+  height: auto;
+  border-bottom: 1px solid $grey;
   color: $black;
 
+  transition: box-shadow 0.1s ease;
+
+  &:hover {
+    box-shadow: 0 0 5px $black-shadow;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &-image {
+    margin-right: 2rem;
+    width: 20%;
+  }
+
+  &-info {
+    display: flex;
+    flex-wrap: wrap;
+    width: 80%;
+  }
+
   &-name {
-    width: 50%;
+    width: 100%;
+    text-transform: uppercase;
+    font-size: 1.4rem;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   &-price {
-    width: 20%;
+    font-weight: 500;
+    width: 40%;
   }
 
   &-quantity {
-    width: 20%;
+    width: 40%;
   }
 
   &-button {
