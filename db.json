@@ -2,100 +2,370 @@
   "products": [
     {
       "image": "https://via.placeholder.com/200x225",
+      "imageLarge": "https://via.placeholder.com/1000x1000",
       "name": "Маяк - H4 Active Gold +60%",
       "price": 125,
+      "brand": "Маяк",
       "category": "Галогенные лампы",
       "series": "Active",
       "subseries": "Gold +60%",
       "article": "72420AG+60",
+      "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit temporibus, expedita doloribus voluptates perferendis nam sequi provident earum consectetur recusandae.",
+      "specifications": [
+        {
+          "name": "power",
+          "value": 1,
+          "id": 1
+        },
+        {
+          "name": "strangth",
+          "value": 120,
+          "id": 2
+        },
+        {
+          "name": "workHour",
+          "value": 1,
+          "id": 3
+        },
+        {
+          "name": "base",
+          "value": 1,
+          "id": 4
+        },
+        {
+          "name": "color",
+          "value": 1,
+          "id": 5
+        }
+      ],
       "available": true,
       "quantity": 1
     },
     {
       "image": "https://via.placeholder.com/200x225",
+      "imageLarge": "https://via.placeholder.com/1000x1000",
       "name": "Маяк - H7 Active Gold +60%",
       "price": 200,
+      "brand": "Маяк",
       "category": "Галогенные лампы",
       "series": "Active",
       "subseries": "Gold +60%",
       "article": "72720AG+60",
+      "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit temporibus, expedita doloribus voluptates perferendis nam sequi provident earum consectetur recusandae.",
+      "specifications": [
+        {
+          "name": "power",
+          "value": 1,
+          "id": 1
+        },
+        {
+          "name": "strangth",
+          "value": 120,
+          "id": 2
+        },
+        {
+          "name": "workHour",
+          "value": 1,
+          "id": 3
+        },
+        {
+          "name": "base",
+          "value": 1,
+          "id": 4
+        },
+        {
+          "name": "color",
+          "value": 1,
+          "id": 5
+        }
+      ],
       "available": true,
       "quantity": 1
     },
     {
       "image": "https://via.placeholder.com/200x225",
+      "imageLarge": "https://via.placeholder.com/1000x1000",
       "name": "Маяк - H4 Super White +30%",
       "price": 100,
+      "brand": "Маяк",
       "category": "Галогенные лампы",
       "series": "Active",
       "subseries": "Super White +30%",
       "article": "72420ASW+30",
+      "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit temporibus, expedita doloribus voluptates perferendis nam sequi provident earum consectetur recusandae.",
+      "specifications": [
+        {
+          "name": "power",
+          "value": 1,
+          "id": 1
+        },
+        {
+          "name": "strangth",
+          "value": 120,
+          "id": 2
+        },
+        {
+          "name": "workHour",
+          "value": 1,
+          "id": 3
+        },
+        {
+          "name": "base",
+          "value": 1,
+          "id": 4
+        },
+        {
+          "name": "color",
+          "value": 1,
+          "id": 5
+        }
+      ],
       "available": true,
       "quantity": 1
     },
     {
       "image": "https://via.placeholder.com/200x225",
+      "imageLarge": "https://via.placeholder.com/1000x1000",
       "name": "Маяк - H4 White Vision +150%",
       "price": 125,
+      "brand": "Маяк",
       "category": "Галогенные лампы",
       "series": "Ultra",
       "subseries": "White Vision +150%",
       "article": "82420WV+150",
+      "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit temporibus, expedita doloribus voluptates perferendis nam sequi provident earum consectetur recusandae.",
+      "specifications": [
+        {
+          "name": "power",
+          "value": 1,
+          "id": 1
+        },
+        {
+          "name": "strangth",
+          "value": 120,
+          "id": 2
+        },
+        {
+          "name": "workHour",
+          "value": 1,
+          "id": 3
+        },
+        {
+          "name": "base",
+          "value": 1,
+          "id": 4
+        },
+        {
+          "name": "color",
+          "value": 1,
+          "id": 5
+        }
+      ],
       "available": true,
       "quantity": 1
     },
     {
       "image": "https://via.placeholder.com/200x225",
+      "imageLarge": "https://via.placeholder.com/1000x1000",
       "name": "Маяк - P21W",
       "price": 25,
+      "brand": "Маяк",
       "category": "Лампы накаливания",
       "series": "",
       "subseries": "",
       "article": "61217",
+      "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit temporibus, expedita doloribus voluptates perferendis nam sequi provident earum consectetur recusandae.",
+      "specifications": [
+        {
+          "name": "power",
+          "value": 1,
+          "id": 1
+        },
+        {
+          "name": "strangth",
+          "value": 120,
+          "id": 2
+        },
+        {
+          "name": "workHour",
+          "value": 1,
+          "id": 3
+        },
+        {
+          "name": "base",
+          "value": 1,
+          "id": 4
+        },
+        {
+          "name": "color",
+          "value": 1,
+          "id": 5
+        }
+      ],
       "available": true,
       "quantity": 1
     },
     {
       "image": "https://via.placeholder.com/200x225",
+      "imageLarge": "https://via.placeholder.com/1000x1000",
       "name": "Маяк - P21W",
       "price": 30,
+      "brand": "Маяк",
       "category": "Лампы накаливания",
       "series": "Ultra",
       "subseries": "",
       "article": "81217",
+      "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit temporibus, expedita doloribus voluptates perferendis nam sequi provident earum consectetur recusandae.",
+      "specifications": [
+        {
+          "name": "power",
+          "value": 1,
+          "id": 1
+        },
+        {
+          "name": "strangth",
+          "value": 120,
+          "id": 2
+        },
+        {
+          "name": "workHour",
+          "value": 1,
+          "id": 3
+        },
+        {
+          "name": "base",
+          "value": 1,
+          "id": 4
+        },
+        {
+          "name": "color",
+          "value": 1,
+          "id": 5
+        }
+      ],
       "available": true,
       "quantity": 1
     },
     {
       "image": "https://via.placeholder.com/200x225",
+      "imageLarge": "https://via.placeholder.com/1000x1000",
       "name": "Маяк - D3S",
       "price": 55,
+      "brand": "Маяк",
       "category": "Ксеноновые лампы",
       "series": "",
       "subseries": "",
       "article": "59335S",
+      "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit temporibus, expedita doloribus voluptates perferendis nam sequi provident earum consectetur recusandae.",
+      "specifications": [
+        {
+          "name": "power",
+          "value": 1,
+          "id": 1
+        },
+        {
+          "name": "strangth",
+          "value": 120,
+          "id": 2
+        },
+        {
+          "name": "workHour",
+          "value": 1,
+          "id": 3
+        },
+        {
+          "name": "base",
+          "value": 1,
+          "id": 4
+        },
+        {
+          "name": "color",
+          "value": 1,
+          "id": 5
+        }
+      ],
       "available": true,
       "quantity": 1
     },
     {
       "image": "https://via.placeholder.com/200x225",
+      "imageLarge": "https://via.placeholder.com/1000x1000",
       "name": "Маяк - D1R",
       "price": 55,
+      "brand": "Маяк",
       "category": "Ксеноновые лампы",
       "series": "",
       "subseries": "",
       "article": "59235R",
+      "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit temporibus, expedita doloribus voluptates perferendis nam sequi provident earum consectetur recusandae.",
+      "specifications": [
+        {
+          "name": "power",
+          "value": 1,
+          "id": 1
+        },
+        {
+          "name": "strangth",
+          "value": 120,
+          "id": 2
+        },
+        {
+          "name": "workHour",
+          "value": 1,
+          "id": 3
+        },
+        {
+          "name": "base",
+          "value": 1,
+          "id": 4
+        },
+        {
+          "name": "color",
+          "value": 1,
+          "id": 5
+        }
+      ],
       "available": true,
       "quantity": 1
     },
     {
       "image": "https://via.placeholder.com/200x225",
+      "imageLarge": "https://via.placeholder.com/1000x1000",
       "name": "Маяк - T8",
       "price": 120,
+      "brand": "Маяк",
       "category": "Светоизлучающие диоды",
       "series": "Ultra B",
       "subseries": "",
       "article": "12-30T8/B-11",
+      "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit temporibus, expedita doloribus voluptates perferendis nam sequi provident earum consectetur recusandae.",
+      "specifications": [
+        {
+          "name": "power",
+          "value": 1,
+          "id": 1
+        },
+        {
+          "name": "strangth",
+          "value": 120,
+          "id": 2
+        },
+        {
+          "name": "workHour",
+          "value": 1,
+          "id": 3
+        },
+        {
+          "name": "base",
+          "value": 1,
+          "id": 4
+        },
+        {
+          "name": "color",
+          "value": 1,
+          "id": 5
+        }
+      ],
       "available": true,
       "quantity": 1
     }
