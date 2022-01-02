@@ -1,7 +1,5 @@
 <template>
-  <div class="main-wrapper">
-    <lode-header />
-  </div>
+  <lode-header />
 </template>
 
 <script>

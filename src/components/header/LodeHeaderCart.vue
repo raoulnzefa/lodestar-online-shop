@@ -14,17 +14,20 @@
         <p>{{CART.length ? CART.length : ''}}</p>
       </div>
     </transition>
-    <ul
-      class="lode-header__cart-list"
-      :class="{show: showCartList}"
+    <div
+      v-show="showCartList"
+      class="lode-header__cart-modal"
     >
-      {{!CART.length ? "В корзине пусто" : ""}}
-      <lode-header-cart-item
-        v-for="(item, index) in CART"
-        :key="item.article"
-        :cart_item="item"
-        @deleteFromCart="deleteFromCart(index)"
-      />
+      <ul class="lode-header__cart-list">
+        {{!CART.length ? "В корзине пусто" : ""}}
+        <lode-header-cart-item
+          v-for="(item, index) in CART"
+          :key="item.article"
+          :cart_item="item"
+          @deleteFromCart="deleteFromCart(index)"
+        />
+      </ul>
+
       <div class="lode-header__cart-info">
         <p
           v-if="CART.length"
@@ -39,21 +42,22 @@
           Итого: {{cartTotalCost}} грн.
         </p>
         <div class="lode-header__cart-info-btns">
-          <keep-alive>
-            <router-link :to="{name: 'cart'}">
-              <lode-button class="btn--view-cart">
-                В корзину
-              </lode-button>
-            </router-link>
-          </keep-alive>
-          <router-link :to="{name: 'cart'}">
-            <lode-button class="btn--make-deal">
-              Перейти к заказу
-            </lode-button>
-          </router-link>
+          <lode-button
+            @click="$router.push('/cart')"
+            class="btn--view-cart"
+          >
+            В корзину
+          </lode-button>
+          <lode-button
+            @click="$router.push('/')"
+            class="btn--make-deal"
+          >
+            Перейти к заказу
+          </lode-button>
         </div>
       </div>
-    </ul>
+    </div>
+
   </div>
 </template>
 
@@ -66,7 +70,6 @@ export default {
   components: {
     LodeHeaderCartItem,
   },
-  props: {},
   data() {
     return {
       showCartList: false,
@@ -140,33 +143,44 @@ export default {
     }
   }
 
-  &-list {
-    display: none;
+  &-modal {
+    display: block;
     position: absolute;
     top: 7.8rem;
-    right: 0;
+    right: -1rem;
     z-index: 20;
     padding-top: 0.5rem;
 
     cursor: default;
-    color: $black;
-
-    max-height: 30rem;
-    min-height: 3rem;
-    width: 35rem;
+    width: 30rem;
     height: auto;
 
     box-shadow: 0px 3px 5px $black-shadow;
-    background-color: $grey;
+  }
+
+  &-list {
+    padding-top: 0.5rem;
+    max-height: 25rem;
+    min-height: 3rem;
+    overflow: hidden;
+
+    color: $black;
+    overflow: auto;
+
+    background-color: $white;
   }
 
   &-info {
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
-    margin-top: 0.5rem;
+
+    border-top: 1px solid $grey;
+    background-color: $white;
+    color: $black;
 
     &-quantity {
+      padding-top: 0.5rem;
       font-weight: 300;
       font-style: italic;
     }
@@ -178,10 +192,6 @@ export default {
 
     &-btns {
       display: flex;
-
-      a {
-        width: 50%;
-      }
     }
   }
 }

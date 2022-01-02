@@ -26,10 +26,12 @@ export default {
   display: flex;
   justify-content: flex-start;
   padding: 1rem 3rem;
+  margin-bottom: 3rem;
 
   background-color: $white;
   border-top: 3px solid $accent;
   border-bottom: 1px solid $grey;
+  box-shadow: 0px 3px 5px $grey-shadow;
 
   .container {
     width: 100%;

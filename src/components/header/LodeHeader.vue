@@ -3,12 +3,11 @@
     <div class="container">
       <div class="lode-header__inner">
         <div class="lode-header__logo-wrepper">
-          <router-link :to="{name: 'main'}">
-            <img
-              :src="require('../../assets/Lodestar Logo.jpg')"
-              class="lode-header__logo"
-            >
-          </router-link>
+          <img
+            :src="require('../../assets/Lodestar Logo.jpg')"
+            class="lode-header__logo"
+            @click="$router.push('/')"
+          >
         </div>
         <lode-header-search class="lode-header__search"></lode-header-search>
         <div class="lode-header__wishlist">Wishlist</div>
@@ -49,16 +48,13 @@ export default {
   }
 
   &__logo {
-    width: 100%;
+    width: 80%;
+    cursor: pointer;
 
     &-wrepper {
       display: flex;
       justify-content: flex-start;
       width: 25%;
-
-      a {
-        width: 80%;
-      }
     }
   }
 

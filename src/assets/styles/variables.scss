@@ -2,6 +2,7 @@
 $white: #fff;
 
 $grey: rgb(197, 197, 197);
+$grey-light: lighten($grey, 10%);
 $grey-shadow: rgb($grey, 0.3);
 
 $accent: rgb(185, 8, 185);
