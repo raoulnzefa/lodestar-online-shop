@@ -5,7 +5,10 @@
       :src="cart_item.image"
       alt=""
     >
-    <h1 class="lode-cart__item-name">{{cart_item.name}}</h1>
+    <h1
+      @click="$router.push(`/catalog/${cart_item.article}`)"
+      class="lode-cart__item-name"
+    >{{cart_item.name}}</h1>
     <p class="lode-cart__item-article">{{cart_item.article}}</p>
     <p class="lode-cart__item-quantity">
       <span @click="incrementItem">+</span>
@@ -74,10 +77,16 @@ export default {
   }
 
   &-name {
+    width: 40%;
+
     font-weight: 500;
     font-size: 1.8rem;
 
-    width: 40%;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   &-article {

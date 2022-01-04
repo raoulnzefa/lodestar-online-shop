@@ -3,9 +3,22 @@
     <div class="container">
       <div class="lode-header-navigation__inner">
         <div class="lode-header-navigation__item">
-          <router-link :to="{name: 'catalog'}">
-            <p class="lode-header-navigation__link">Catalog</p>
-          </router-link>
+          <p
+            @click="$router.push('/')"
+            class="lode-header-navigation__link"
+          >Главная</p>
+        </div>
+        <div class="lode-header-navigation__item">
+          <p
+            @click="$router.push('/catalog')"
+            class="lode-header-navigation__link"
+          >Каталог</p>
+        </div>
+        <div class="lode-header-navigation__item">
+          <p
+            @click="$router.push('/')"
+            class="lode-header-navigation__link"
+          >Категории</p>
         </div>
       </div>
     </div>
@@ -25,11 +38,11 @@ export default {
 .lode-header-navigation {
   display: flex;
   justify-content: flex-start;
-  padding: 1rem 3rem;
+  padding: 1.5rem 3rem;
   margin-bottom: 3rem;
 
   background-color: $white;
-  border-top: 3px solid $accent;
+  border-top: 4px solid $accent;
   border-bottom: 1px solid $grey;
   box-shadow: 0px 3px 5px $grey-shadow;
 
@@ -49,12 +62,36 @@ export default {
   }
 
   &__link {
+    position: relative;
+    z-index: 1;
+
     text-decoration: none;
     color: $black;
     font-weight: 500;
 
+    transition: color 0.1s linear;
+    cursor: pointer;
+
     &:hover {
       color: $accent;
+
+      &::after {
+        width: 100%;
+      }
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      z-index: 2;
+
+      width: 0;
+      height: 2px;
+      background-color: $accent;
+
+      transition: width 0.2s ease-in-out;
     }
   }
 }
