@@ -42,22 +42,31 @@ export const productsModule = {
     },
     FILTER_PRODUCTS({ commit, state, rootState }) {
       let result = [];
+      const search = rootState.search.searchForm;
 
       [...state.products].map((product) => {
         if (rootState.search.searchForm.category == "Все категории") {
           result = [...state.products]
-        } else if (product.category == rootState.search.searchForm.category) {
+        } else if (product.category == search.category) {
           result.push(product);
         }
       });
 
+      /* filter products by name */
       let filteredResult = result
         .filter(item => item.name.toLowerCase()
-          .includes(rootState.search.searchForm.text
+          .includes(search.text
             .toLowerCase()));
 
-      commit('SET_FILTERED_PRODUCTS', filteredResult);
+      /* Filter products by article */
+      if (!filteredResult.length) {
+        filteredResult = result.
+          filter(item => item.article.toLowerCase()
+            .includes(search.text
+              .toLowerCase()))
+      }
 
+      commit('SET_FILTERED_PRODUCTS', filteredResult);
       filteredResult.length ? commit("SET_FOUND", true) : commit("SET_FOUND", false);
     }
   },
