@@ -1,7 +1,9 @@
 <template>
   <div class="lode-catalog-item">
+    <p class="lode-catalog-item__article">Артикул: {{product.article}}</p>
     <div class="lode-catalog-item__flags">
       <div
+        @click="addTagAndFilterProducts(product.series)"
         v-if="product.series"
         class="lode-catalog-item__series"
       >{{product.series}}</div>
@@ -10,6 +12,7 @@
         class="lode-catalog-item__series  lode-catalog-item__series--nothing"
       >1</div>
       <div
+        @click="addTagAndFilterProducts(product.subseries)"
         class="lode-catalog-item__series lode-catalog-item__series--subseries"
         v-if="product.subseries"
       >{{product.subseries}}</div>
@@ -20,12 +23,15 @@
       @click="$router.push(`/catalog/${product.article}`)"
       class="lode-catalog-item__image"
     >
-    <h3 class="lode-catalog-item__category">{{product.category}}</h3>
+    <h3
+      @click="$router.push(`${getCategoryPath}`)"
+      class="lode-catalog-item__category"
+    >{{product.category}}</h3>
     <h1
       @click="$router.push(`/catalog/${product.article}`)"
       class="lode-catalog-item__name"
     >{{product.name}}</h1>
-    <h2 class="lode-catalog-item__price">Цена: {{product.price}} грн</h2>
+    <h2 class="lode-catalog-item__price">Цена: {{fixedPrice}} грн</h2>
     <div class="lode-catalog-item__add-to-cart">
       <lode-button
         class="btn--add-to-cart"
@@ -38,7 +44,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {};
@@ -53,15 +59,28 @@ export default {
     },
   },
   methods: {
-    addToCart(product) {
+    addToCart() {
       this.$emit("addToCart", this.product);
+    },
+    ...mapActions(["ADD_TAG", "FILTER_PRODUCTS"]),
+    addTagAndFilterProducts(tag) {
+      this.ADD_TAG(tag);
+      this.FILTER_PRODUCTS();
     },
   },
   computed: {
-    ...mapGetters(["LOADING"]),
-  },
-  mounted() {
-    // this.product.quantity = 1;
+    ...mapGetters(["LOADING", "CATEGORIES", "TAGS"]),
+    getCategoryPath() {
+      for (let category of this.CATEGORIES) {
+        if (
+          this.product.category.toLowerCase() === category.value.toLowerCase()
+        )
+          return category.path;
+      }
+    },
+    fixedPrice() {
+      return this.product.price?.toFixed(2).split(".").join(",");
+    },
   },
 };
 </script>
@@ -76,6 +95,7 @@ export default {
 
   width: 22.5rem;
   max-width: 22.5rem;
+  max-height: 42.1rem;
 
   border: 1px solid $grey;
   background-color: $white;
@@ -97,6 +117,18 @@ export default {
     }
   }
 
+  &__article {
+    position: absolute;
+    top: 0.3rem;
+    right: 0.3rem;
+    z-index: 0;
+
+    font-size: 1rem;
+    font-weight: 300;
+    text-transform: uppercase;
+    color: $grey;
+  }
+
   &__flags {
     display: flex;
     justify-content: center;
@@ -110,6 +142,7 @@ export default {
 
     font-weight: 700;
     color: $black-light;
+    cursor: pointer;
 
     border: 2px solid $grey;
 
@@ -135,6 +168,11 @@ export default {
     text-transform: uppercase;
     font-size: 1.2rem;
     color: #8d99ae;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   &__name {
@@ -155,6 +193,7 @@ export default {
     position: absolute;
     bottom: 1rem;
     left: 50%;
+    width: 90%;
 
     color: $accent;
     font-size: 1.6rem;
@@ -169,7 +208,7 @@ export default {
     bottom: 0;
     left: -1px;
     z-index: 1;
-    width: 101%;
+    width: calc(100% + 2px);
     opacity: 0;
 
     border-bottom: 1px solid $accent-light;

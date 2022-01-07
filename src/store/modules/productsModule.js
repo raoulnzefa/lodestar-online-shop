@@ -60,10 +60,37 @@ export const productsModule = {
 
       /* Filter products by article */
       if (!filteredResult.length) {
-        filteredResult = result.
-          filter(item => item.article.toLowerCase()
+        filteredResult = result
+          .filter(item => item.article.toLowerCase()
             .includes(search.text
               .toLowerCase()))
+      }
+
+      /* Filter products by tags */
+      const tags = rootState.search.tags;
+      if (tags.length) {
+        filteredResult = [];
+
+        // find all suitable products by tag
+        result.map(product => {
+          for (let tag of tags) {
+            if (product.series === tag.name || product.subseries === tag.name) {
+              if (!filteredResult.includes(product)) filteredResult.push(product)
+            }
+          }
+        })
+
+        // find products that has to be deleted
+        for (let tag of tags) {
+          for (let i = 0; i < filteredResult.length; i++) {
+            if (filteredResult[i].series !== tag.name && filteredResult[i].subseries !== tag.name) {
+              filteredResult[i].delete = true
+            }
+          }
+        }
+
+        // delete products
+        filteredResult = filteredResult.filter(product => !product.delete)
       }
 
       commit('SET_FILTERED_PRODUCTS', filteredResult);

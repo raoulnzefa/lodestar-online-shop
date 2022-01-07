@@ -45,7 +45,25 @@ export default {
     }
   }
 
-  /* Header-Cart Item's buttons */
+  &--delete-tag {
+    margin: 0 0 0 0.5rem;
+    padding: 0.3rem;
+    align-self: center;
+
+    letter-spacing: 0;
+    line-height: 0.6;
+    font-weight: 400;
+    border-radius: 50%;
+    border-color: $accent;
+    color: $accent;
+
+    &:hover {
+      background-color: $accent;
+      color: $white;
+    }
+  }
+
+  /* Header-Cart buttons */
   &--view-cart,
   &--make-deal {
     width: 50%;
