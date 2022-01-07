@@ -45,7 +45,7 @@ export const productsModule = {
       const search = rootState.search.searchForm;
 
       [...state.products].map((product) => {
-        if (rootState.search.searchForm.category == "Все категории") {
+        if (search.category == "Все категории") {
           result = [...state.products]
         } else if (product.category == search.category) {
           result.push(product);
@@ -83,7 +83,7 @@ export const productsModule = {
         // find products that has to be deleted
         for (let tag of tags) {
           for (let i = 0; i < filteredResult.length; i++) {
-            if (filteredResult[i].series !== tag.name && filteredResult[i].subseries !== tag.name) {
+            if (filteredResult[i].series.toLowerCase() !== tag.name.toLowerCase() && filteredResult[i].subseries.toLowerCase() !== tag.name.toLowerCase()) {
               filteredResult[i].delete = true
             }
           }
