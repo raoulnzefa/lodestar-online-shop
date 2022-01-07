@@ -71,7 +71,7 @@ export default {
     article: {
       type: String,
       default() {
-        return "";
+        return "Все категории";
       },
       require: true,
     },
