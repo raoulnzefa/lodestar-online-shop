@@ -7,8 +7,8 @@
       <div
         v-for="(tag, index) in TAGS"
         :key="tag.id"
-        @mouseenter="SHOW_TAG_DELETE_BUTTON(index)"
-        @mouseleave="HIDE_TAG_DELETE_BUTTON(index)"
+        @mouseenter="SHOW_TAG_DELETE_BUTTON({index, bool: true})"
+        @mouseleave="SHOW_TAG_DELETE_BUTTON({index, bool: false})"
         class="lode-catalog__tags-item"
       >
         <p class="lode-catalog__tags-name">{{tag.name}}</p>
@@ -39,7 +39,6 @@ export default {
     ...mapActions([
       "FILTER_PRODUCTS",
       "SHOW_TAG_DELETE_BUTTON",
-      "HIDE_TAG_DELETE_BUTTON",
       "REMOVE_TAG",
       "REMOVE_ALL_TAGS",
     ]),
