@@ -11,7 +11,7 @@
         @click="$router.push(`/catalog/${cart_item.article}`)"
         class="lode-header__cart-item-name"
       >{{shorterName(cart_item.name)}}</p>
-      <p class="lode-header__cart-item-price">{{cart_item.price}} грн</p>
+      <p class="lode-header__cart-item-price">{{fixedPrice}} грн</p>
       <p class="lode-header__cart-item-quantity">{{cart_item.quantity}} шт.</p>
     </div>
     <button
@@ -41,6 +41,11 @@ export default {
     },
     shorterName(name) {
       return name.length > 21 ? `${name.substring(0, 21)}...` : name;
+    },
+  },
+  computed: {
+    fixedPrice() {
+      return this.cart_item.price.toFixed(2).split(".").join(",");
     },
   },
   emits: ["deleteFromCart"],

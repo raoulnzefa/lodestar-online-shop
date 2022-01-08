@@ -84,7 +84,11 @@ export default {
         for (let item of this.CART) {
           result.push(item.quantity * item.price);
         }
-        return result.reduce((acc, curr) => (acc += curr));
+        return result
+          .reduce((acc, curr) => (acc += curr))
+          .toFixed(2)
+          .split(".")
+          .join(",");
       }
 
       return 0;

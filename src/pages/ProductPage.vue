@@ -17,7 +17,7 @@
         <h1 class="lode-product__name">{{thisProduct.name}}</h1>
         <h2 class="lode-product__price">
           <span class="lode-product__label">Цена:</span>
-          {{thisProduct.price}} грн
+          {{fixedPrice}} грн
         </h2>
         <div class="lode-product__available">
           <span class="lode-product__label">Есть в наличии:</span>
@@ -93,6 +93,9 @@ export default {
       } else {
         return {};
       }
+    },
+    fixedPrice() {
+      return this.thisProduct.price?.toFixed(2).split(".").join(",");
     },
   },
   methods: {

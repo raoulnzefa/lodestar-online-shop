@@ -15,7 +15,7 @@
       {{cart_item.quantity}}
       <span @click="decrementItem">-</span>
     </p>
-    <p class="lode-cart__item-price">{{cart_item.price}}</p>
+    <p class="lode-cart__item-price">{{fixedPrice}}</p>
     <lode-button
       @click="deleteFromCart"
       class="btn--delete-from-cart"
@@ -46,6 +46,11 @@ export default {
     },
     incrementItem() {
       this.$emit("incrementItem");
+    },
+  },
+  computed: {
+    fixedPrice() {
+      return this.cart_item.price.toFixed(2).split(".").join(",");
     },
   },
   emits: ["deleteFromCart", "incrementItem", "decrementItem"],
