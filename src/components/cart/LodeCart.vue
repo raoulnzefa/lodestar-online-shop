@@ -18,11 +18,11 @@
         <transition-group name="cart-list">
           <lode-cart-item
             v-for="(item, index) in CART"
-            :key="item.article"
-            :cart_item="item"
-            @deleteFromCart="deleteFromCart(index)"
-            @decrementItem="decrementItem(index)"
-            @incrementItem="incrementItem(index)"
+            :key="item.product.article"
+            :cartItem="item.product"
+            :quantity="item.quantity"
+            :cartId="CART_ID"
+            :itemIndex="index"
           />
         </transition-group>
       </ul>
@@ -34,7 +34,7 @@
           <router-link :to="{name: 'catalog'}">
             <lode-button>Продолжить покупки</lode-button>
           </router-link>
-          <lode-button>Оформить заказ</lode-button>
+          <lode-button @click="openOrderModal()">Оформить заказ</lode-button>
         </div>
         <div class="lode-cart__resume-total">
           <p class="lode-cart__resume-total-title">Общее количество товаров:</p>
@@ -49,31 +49,24 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { fixPrice } from "@/helpers/price";
 import LodeCartItem from "@/components/cart/LodeCartItem";
+
 export default {
   name: "LodeCart",
   components: {
     LodeCartItem,
   },
-  props: {},
-  data() {
-    return {};
-  },
   computed: {
-    ...mapGetters(["CART"]),
+    ...mapGetters(["CART", "USER", "IS_USER_AUTH", "CART_ID"]),
     cartTotalCost() {
       let result = [];
 
       if (this.CART.length) {
         for (let item of this.CART) {
-          result.push(item.quantity * item.price);
+          result.push(item.quantity * item.product.price);
         }
-
-        return result
-          .reduce((acc, curr) => (acc += curr))
-          .toFixed(2)
-          .split(".")
-          .join(",");
+        return fixPrice(result.reduce((acc, curr) => acc + curr));
       }
 
       return 0;
@@ -86,25 +79,33 @@ export default {
           result.push(item.quantity);
         }
 
-        return result.reduce((acc, curr) => (acc += curr));
+        return result.reduce((acc, curr) => acc + curr);
       }
       return 0;
     },
+    stateIsUserAuth() {
+      return this.IS_USER_AUTH;
+    },
+    localStorageCart() {
+      return JSON.parse(localStorage.getItem("cart"));
+    },
   },
   methods: {
-    ...mapActions([
-      "DELETE_FROM_CART",
-      "INCREMENT_CART_ITEM",
-      "DECREMENT_CART_ITEM",
-    ]),
-    deleteFromCart(index) {
-      this.DELETE_FROM_CART(index);
+    ...mapActions(["SET_CART", "GET_CART_FROM_API"]),
+    openOrderModal() {
+      this.$emit("openModal");
     },
-    incrementItem(index) {
-      this.INCREMENT_CART_ITEM(index);
+  },
+  watch: {
+    stateIsUserAuth() {
+      if (this.IS_USER_AUTH) {
+        this.GET_CART_FROM_API(this.USER.cart);
+      }
     },
-    decrementItem(index) {
-      this.DECREMENT_CART_ITEM(index);
+  },
+  emits: {
+    openModal: {
+      type: null,
     },
   },
 };

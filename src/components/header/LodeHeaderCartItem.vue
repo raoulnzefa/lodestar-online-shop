@@ -3,52 +3,92 @@
   <li class="lode-header__cart-item">
     <img
       class="lode-header__cart-item-image"
-      :src="cart_item.image"
+      :src="cartItemImage"
       alt=""
     >
     <div class="lode-header__cart-item-info">
       <p
-        @click="$router.push(`/catalog/${cart_item.article}`)"
+        @click="$router.push(`/catalog/${cartItem.article}`)"
         class="lode-header__cart-item-name"
-      >{{shorterName(cart_item.name)}}</p>
+      >{{shorterName(cartItem.name)}}</p>
       <p class="lode-header__cart-item-price">{{fixedPrice}} грн</p>
-      <p class="lode-header__cart-item-quantity">{{cart_item.quantity}} шт.</p>
+      <p class="lode-header__cart-item-quantity">{{quantity}} шт.</p>
     </div>
     <button
       class="lode-header__cart-item-btn"
-      @click="deleteFromCart"
+      @click="deleteFromCart()"
     >X</button>
   </li>
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
+import { substringProductName } from "@/helpers/name";
+import { fixPrice } from "@/helpers/price";
+
 export default {
   name: "LodeHeaderCartItem",
   props: {
-    cart_item: {
+    cartItem: {
       type: Object,
       default() {
         return {};
       },
+      require: true,
     },
-  },
-  data() {
-    return {};
-  },
-  methods: {
-    deleteFromCart() {
-      this.$emit("deleteFromCart");
+    cartId: {
+      type: String,
+      default: "",
     },
-    shorterName(name) {
-      return name.length > 21 ? `${name.substring(0, 21)}...` : name;
+    quantity: {
+      type: Number,
+      default: 1,
+      require: true,
+    },
+    itemIndex: {
+      type: Number,
+      default: 0,
     },
   },
   computed: {
+    ...mapGetters(["IS_USER_AUTH"]),
     fixedPrice() {
-      return this.cart_item.price.toFixed(2).split(".").join(",");
+      return fixPrice(this.cartItem?.price);
+    },
+    cartItemImage() {
+      return this.cartItem?.image?.includes("http")
+        ? this.cartItem.image
+        : require(`../../${this.cartItem.image}`);
+    },
+    localStorageCart() {
+      return JSON.parse(localStorage.getItem("cart"));
     },
   },
-  emits: ["deleteFromCart"],
+  methods: {
+    ...mapActions(["DELETE_FROM_CART", "SET_CART"]),
+    shorterName(name) {
+      return substringProductName(name);
+    },
+    deleteItemFromLocalStorageCart() {
+      let newCart = [...this.localStorageCart];
+      newCart.splice(this.itemIndex, 1);
+
+      localStorage.setItem("cart", JSON.stringify(newCart));
+
+      return newCart;
+    },
+    deleteFromCart() {
+      if (this.IS_USER_AUTH) {
+        return this.DELETE_FROM_CART({
+          cartId: this.cartId,
+          productId: this.cartItem._id,
+        });
+      } else {
+        const newCart = this.deleteItemFromLocalStorageCart();
+        this.SET_CART(newCart);
+      }
+    },
+  },
 };
 </script>
 
@@ -100,11 +140,11 @@ export default {
 
   &-price {
     font-weight: 500;
-    width: 40%;
+    width: 50%;
   }
 
   &-quantity {
-    width: 40%;
+    width: 50%;
   }
 
   &-button {

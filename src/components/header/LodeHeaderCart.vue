@@ -3,18 +3,21 @@
     <img
       :src="require('../../assets/shopping-cart.png')"
       alt=""
+      :class="{'lode-header__cart-image--animated': cartAnimation}"
       class="lode-header__cart-image"
-      @click.self="showCartList = !showCartList"
+      @click.self.stop="toggleShowCartList()"
     >
     <transition name="fade">
       <div
         v-show="CART.length"
         class="lode-header__cart-quantity"
+        :class="{'lode-header__cart-quantity--animated': cartAnimation}"
       >
         <p>{{CART.length ? CART.length : ''}}</p>
       </div>
     </transition>
     <div
+      @click.stop=""
       v-show="showCartList"
       class="lode-header__cart-modal"
     >
@@ -22,9 +25,11 @@
         {{!CART.length ? "В корзине пусто" : ""}}
         <lode-header-cart-item
           v-for="(item, index) in CART"
-          :key="item.article"
-          :cart_item="item"
-          @deleteFromCart="deleteFromCart(index)"
+          :key="item.product._id"
+          :cartItem="item.product"
+          :quantity="item.quantity"
+          :cartId="CART_ID"
+          :itemIndex="index"
         />
       </ul>
 
@@ -43,7 +48,7 @@
         </p>
         <div class="lode-header__cart-info-btns">
           <lode-button
-            @click="$router.push('/cart')"
+            @click="toCart"
             class="btn--view-cart"
           >
             В корзину
@@ -64,6 +69,7 @@
 <script>
 import LodeHeaderCartItem from "@/components/header/LodeHeaderCartItem";
 import { mapGetters, mapActions } from "vuex";
+import { fixPrice } from "@/helpers/price";
 
 export default {
   name: "LodeHeaderCart",
@@ -72,23 +78,20 @@ export default {
   },
   data() {
     return {
+      cartAnimation: false,
       showCartList: false,
     };
   },
   computed: {
-    ...mapGetters(["CART"]),
+    ...mapGetters(["CART", "CART_ID", "IS_USER_AUTH", "USER"]),
     cartTotalCost() {
       let result = [];
 
       if (this.CART.length) {
         for (let item of this.CART) {
-          result.push(item.quantity * item.price);
+          result.push(item.quantity * item.product.price);
         }
-        return result
-          .reduce((acc, curr) => (acc += curr))
-          .toFixed(2)
-          .split(".")
-          .join(",");
+        return fixPrice(result.reduce((acc, curr) => (acc += curr)));
       }
 
       return 0;
@@ -105,11 +108,40 @@ export default {
 
       return 0;
     },
+    cartLength() {
+      return this.CART.length;
+    },
+    stateIsUserAuth() {
+      return this.IS_USER_AUTH;
+    },
   },
   methods: {
-    ...mapActions(["DELETE_FROM_CART"]),
-    deleteFromCart(index) {
-      this.DELETE_FROM_CART(index);
+    ...mapActions(["GET_CART_FROM_API", "GET_WISHLIST_FROM_API"]),
+    toggleShowCartList() {
+      document
+        .querySelector("body")
+        .addEventListener("click", () => (this.showCartList = false), {
+          once: true,
+        });
+      this.showCartList = !this.showCartList;
+    },
+    toCart() {
+      this.toggleShowCartList();
+      this.$router.push("/cart");
+    },
+  },
+  watch: {
+    cartLength() {
+      this.cartAnimation = true;
+      setTimeout(() => {
+        this.cartAnimation = false;
+      }, 200);
+    },
+    stateIsUserAuth() {
+      if (this.IS_USER_AUTH) {
+        this.GET_CART_FROM_API(this.USER.cart);
+        this.GET_WISHLIST_FROM_API(this.USER.wishlist);
+      }
     },
   },
 };
@@ -126,6 +158,16 @@ export default {
   &-image {
     width: 3.2rem;
     cursor: pointer;
+
+    transition: transform 0.1s linear;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    &--animated {
+      transform: scale(1.05);
+    }
   }
 
   &-quantity {
@@ -139,6 +181,12 @@ export default {
 
     background-color: $white;
     border-radius: 50%;
+
+    transition: transform 0.1s linear;
+
+    &--animated {
+      transform: scale(1.5);
+    }
 
     p {
       font-size: 1.2rem;
@@ -159,7 +207,7 @@ export default {
     width: 30rem;
     height: auto;
 
-    box-shadow: 0px 3px 5px $black-shadow;
+    box-shadow: $modal-shadow;
   }
 
   &-list {

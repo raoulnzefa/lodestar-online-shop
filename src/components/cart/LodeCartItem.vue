@@ -1,59 +1,123 @@
 <template>
   <li class="lode-cart__item">
-    <img
-      class="lode-cart__item-image"
-      :src="cart_item.image"
-      alt=""
-    >
+    <div class="lode-cart__item-picture">
+      <img
+        class="lode-cart__item-image"
+        :src="cartItemImage"
+        alt=""
+      >
+    </div>
     <h1
-      @click="$router.push(`/catalog/${cart_item.article}`)"
+      @click="$router.push(`/catalog/${cartItem.article}`)"
       class="lode-cart__item-name"
-    >{{cart_item.name}}</h1>
-    <p class="lode-cart__item-article">{{cart_item.article}}</p>
+    >{{cartItem.name}}</h1>
+    <p class="lode-cart__item-article">{{cartItem.article}}</p>
     <p class="lode-cart__item-quantity">
-      <span @click="incrementItem">+</span>
-      {{cart_item.quantity}}
-      <span @click="decrementItem">-</span>
+      <span @click="incrementCartItem()">+</span>
+      {{quantity}}
+      <span @click="decrementCartItem()">-</span>
     </p>
     <p class="lode-cart__item-price">{{fixedPrice}}</p>
     <lode-button
-      @click="deleteFromCart"
-      class="btn--delete-from-cart"
+      @click="deleteFromCart()"
+      class="btn--delete-from-cart btn--hover-lighten"
     >Х</lode-button>
   </li>
 </template>
 
 <script>
+import { mapActions, mapGetters, mapMutations } from "vuex";
+import { fixPrice } from "@/helpers/price";
+
 export default {
   name: "LodeCartItem",
-  data() {
-    return {};
-  },
   props: {
-    cart_item: {
+    cartItem: {
       type: Object,
       default() {
         return {};
       },
+      require: true,
     },
-  },
-  methods: {
-    deleteFromCart() {
-      this.$emit("deleteFromCart");
+    cartId: {
+      type: String,
+      default: "",
     },
-    decrementItem() {
-      this.$emit("decrementItem");
+    quantity: {
+      type: Number,
+      default: 1,
+      require: true,
     },
-    incrementItem() {
-      this.$emit("incrementItem");
+    itemIndex: {
+      type: Number,
+      default: 0,
     },
   },
   computed: {
+    ...mapGetters(["IS_USER_AUTH", "CART"]),
     fixedPrice() {
-      return this.cart_item.price.toFixed(2).split(".").join(",");
+      return fixPrice(this.cartItem.price);
+    },
+    cartItemImage() {
+      return this.cartItem.image.includes("http")
+        ? this.cartItem.image
+        : require(`../../${this.cartItem.image}`);
+    },
+    localStorageCart() {
+      return JSON.parse(localStorage.getItem("cart"));
     },
   },
-  emits: ["deleteFromCart", "incrementItem", "decrementItem"],
+  methods: {
+    ...mapActions([
+      "DELETE_FROM_CART",
+      "INCREMENT_CART_ITEM",
+      "DECREMENT_CART_ITEM",
+      "SET_CART",
+    ]),
+    ...mapMutations(["INCREMENT_LOCAL_CART_ITEM", "DECREMENT_LOCAL_CART_ITEM"]),
+    incrementCartItem() {
+      if (this.IS_USER_AUTH) {
+        this.INCREMENT_CART_ITEM({
+          cartId: this.cartId,
+          productId: this.cartItem._id,
+        });
+      } else {
+        this.INCREMENT_LOCAL_CART_ITEM(this.itemIndex);
+        localStorage.setItem("cart", JSON.stringify(this.CART));
+      }
+    },
+    decrementCartItem() {
+      if (this.IS_USER_AUTH) {
+        this.DECREMENT_CART_ITEM({
+          cartId: this.cartId,
+          productId: this.cartItem._id,
+          quantity: this.quantity,
+        });
+      } else {
+        this.DECREMENT_LOCAL_CART_ITEM(this.itemIndex);
+        localStorage.setItem("cart", JSON.stringify(this.CART));
+      }
+    },
+    deleteItemFromLocalStorageCart() {
+      let newCart = [...this.localStorageCart];
+      newCart.splice(this.itemIndex, 1);
+
+      localStorage.setItem("cart", JSON.stringify(newCart));
+
+      return newCart;
+    },
+    deleteFromCart() {
+      if (this.IS_USER_AUTH) {
+        return this.DELETE_FROM_CART({
+          cartId: this.cartId,
+          productId: this.cartItem._id,
+        });
+      } else {
+        const newCart = this.deleteItemFromLocalStorageCart();
+        this.SET_CART(newCart);
+      }
+    },
+  },
 };
 </script>
 
@@ -75,10 +139,14 @@ export default {
     box-shadow: 0px 0px 10px $grey-shadow;
   }
 
-  &-image {
-    height: 100px;
-    width: 100px;
+  &-picture {
     max-width: 20%;
+    min-width: 100px;
+  }
+
+  &-image {
+    max-height: 100px;
+    max-width: 100px;
   }
 
   &-name {
