@@ -1,86 +1,54 @@
+import { getCategories } from "@/services/categories.service";
+import { getProductsBySearch } from "@/services/products.service";
+
 export const searchModule = {
   state: () => ({
     searchForm: {
       category: "Все категории",
       text: "",
     },
-    categories: [
-      {
-        name: "Все категории",
-        value: "Все категории",
-        path: '/catalog'
-      },
-      {
-        name: "Галогенные",
-        value: "Галогенные лампы",
-        path: '/catalog/halogen'
-      },
-      {
-        name: "Ксеноновые",
-        value: "Ксеноновые лампы",
-        path: '/catalog/xenon'
-      },
-      {
-        name: "Светодиодные",
-        value: "Светоизлучающие диоды",
-        path: '/catalog/led'
-      },
-      {
-        name: "Накал",
-        value: "Лампы накаливания",
-        path: '/catalog/incandescent'
-      },
-    ],
+    categories: [],
     selected: "Все категории",
     isProductsFound: true,
-    tags: [],
+    wasSearched: false
   }),
   getters: {
-    SEARCH_FORM(state) {
-      return state.searchForm;
-    },
-    CATEGORIES(state) {
-      return state.categories;
-    },
-    SELECTED(state) {
-      return state.selected;
-    },
-    TAGS(state) {
-      return state.tags
-    },
-    IS_FOUND(state) {
-      return state.isProductsFound;
-    }
+    // Search getters
+    SEARCH_FORM: (state) => state.searchForm,
+    CATEGORIES: (state) => state.categories,
+    SELECTED: (state) => state.selected,
+    IS_FOUND: (state) => state.isProductsFound,
+    WAS_SEARCHED: (state) => state.wasSearched,
   },
   mutations: {
-    SET_SEARCH_CATEGORY(state, category) {
-      state.searchForm.category = category;
-    },
-    SET_SEARCH_TEXT(state, text) {
-      state.searchForm.text = text;
-    },
-    SET_CATEGORIES(state, categoryObj) {
-      state.categories.push(categoryObj);
-    },
-    SET_TAGS(state, tag) {
-      state.tags.push({ name: tag, id: Date.now(), showDeleteButton: false });
-    },
-    DEL_TAG(state, index) {
-      state.tags.splice(index, 1);
-    },
-    DEL_ALL_TAGS(state) {
-      state.tags.splice(0, state.tags.length);
-    },
-    SET_SHOW_TAG_DELETE_BUTTON(state, { index, bool }) {
-      state.tags[index].showDeleteButton = bool
-    },
-    SET_FOUND: (state, bool) => {
-      state.isProductsFound = bool;
-    }
+    // Search
+    SET_SEARCH_CATEGORY: (state, category) => state.searchForm.category = category,
+    SET_SEARCH_TEXT: (state, text) => state.searchForm.text = text,
+    SET_CATEGORIES: (state, categories) => state.categories = categories,
+    SET_FOUND: (state, bool) => state.isProductsFound = bool,
+    SET_SEARCHED: (state, bool) => state.wasSearched = bool,
   },
   actions: {
-    ADD_CATEROGY({ commit }, categoryObj) {
-      commit('SET_CATEGORIES', categoryObj);
+    // Change state props
+    async GET_CATEGORIES_FROM_API({ commit }) {
+      try {
+        let categories = await getCategories();
+        categories = categories.sort((a, b) => {
+          if (a.name.toLowerCase() > b.name.toLowerCase()) {
+            return 1
+          } else if (a.name.toLowerCase() < b.name.toLowerCase()) {
+            return -1
+          } else {
+            return 0
+          }
+        });
+
+        commit('SET_CATEGORIES', categories);
+        return this.categories;
+      } catch (err) {
+        console.log(err);
+        return err
+      }
     },
     CHANGE_SEARCH_CATEGORY({ commit }, category) {
       commit('SET_SEARCH_CATEGORY', category);
@@ -88,90 +56,33 @@ export const searchModule = {
     CHANGE_SEARCH_TEXT({ commit }, text) {
       commit('SET_SEARCH_TEXT', text);
     },
-    ADD_TAG({ commit, state }, tag) {
-      if (state.tags.length) {
-        let exists = state.tags.find(item => item.name === tag);
-        if (exists) {
-          console.log('Tag already exists');
-          return
+    SET_SEARCHED({ commit }, bool) {
+      commit("SET_SEARCHED", bool);
+    },
+    CHANGE_FOUND({ commit }, bool) {
+      commit("SET_FOUND", bool);
+    },
+
+    // Search
+    async SEARCH_PRODUCTS({ commit }, { categoryQuery, textQuery }) {
+      try {
+        commit("SET_SEARCHED", true);
+        let products = [];
+
+        if (categoryQuery === "61ef07be51a966f430d29f13") {
+          products = await getProductsBySearch(textQuery);
         } else {
-          commit("SET_TAGS", tag);
+          products = await getProductsBySearch(textQuery, categoryQuery);
         }
-      } else {
-        commit("SET_TAGS", tag);
-      }
+
+        Array.isArray(products) ?
+          commit("SET_SEARCHED_PRODUCTS", products, { root: true }) :
+          commit("SET_SEARCHED_PRODUCTS", [], { root: true })
+
+        products.length > 0 ? commit("SET_FOUND", true) : commit("SET_FOUND", false)
+      } catch (err) {
+        console.log(err);
+      };
     },
-    REMOVE_TAG({ commit }, index) {
-      commit('DEL_TAG', index);
-    },
-    REMOVE_ALL_TAGS({ commit }) {
-      commit("DEL_ALL_TAGS");
-    },
-    SHOW_TAG_DELETE_BUTTON({ commit, state }, { index, bool }) {
-      if (state.tags[index]) commit('SET_SHOW_TAG_DELETE_BUTTON', { index, bool });
-    },
-    FILTER_PRODUCTS({ commit, state, rootState }) {
-      let result = [];
-      const products = rootState.products.products;
-
-      [...products].map((product) => {
-        if (state.searchForm.category == "Все категории") {
-          result = [...products]
-        } else if (product.category == state.searchForm.category) {
-          result.push(product);
-        }
-      });
-
-      /* filter products by name */
-      let filteredResult = result
-        .filter(item => item.name.toLowerCase()
-          .includes(state.searchForm.text
-            .toLowerCase()));
-
-      /* Filter products by article */
-      let filterArticle = result
-        .filter(item => item.article.toLowerCase()
-          .includes(state.searchForm.text
-            .toLowerCase()));
-      filterArticle.forEach(product => {
-        if (!filteredResult.includes(product)) {
-          filteredResult.push(product)
-        }
-      })
-
-
-      /* Filter products by tags */ // ! Can be written with faster algorithm
-      const tags = state.tags;
-      if (tags.length) {
-        filteredResult = [];
-
-        // find all suitable products by tag
-        for (let tag of tags) {
-          result.map(product => {
-            if (product.series === tag.name || product.subseries === tag.name) {
-              if (!filteredResult.includes(product)) {
-                product.delete = false;
-                filteredResult.push(product)
-              }
-            }
-          })
-        }
-
-        // find products that has to be deleted
-        for (let tag of tags) {
-          for (let i = 0; i < filteredResult.length; i++) {
-            if (filteredResult[i].series.toLowerCase() !== tag.name.toLowerCase() && filteredResult[i].subseries.toLowerCase() !== tag.name.toLowerCase()) {
-              filteredResult[i].delete = true
-            }
-          }
-        }
-
-        // delete products
-        filteredResult = filteredResult.filter(product => !product.delete)
-      }
-
-      commit('SET_FILTERED_PRODUCTS', filteredResult, { root: true });
-      filteredResult.length ? commit("SET_FOUND", true) : commit("SET_FOUND", false);
-    }
   }
 }

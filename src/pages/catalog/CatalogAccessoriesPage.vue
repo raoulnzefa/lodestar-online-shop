@@ -7,7 +7,7 @@ import LodeCatalog from "@/components/catalog/LodeCatalog";
 export default {
   data() {
     return {
-      selectedCategory: "61ef07be51a966f430d29f17",
+      selectedCategory: "61f9a9a091387408bc2f3779",
     };
   },
   components: {

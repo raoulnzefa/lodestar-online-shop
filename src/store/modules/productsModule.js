@@ -1,53 +1,128 @@
-import axios from 'axios';
+import { getProducts, getProductsByCategory, getFilteredProducts } from "@/services/products.service";
+import { fixProductArticle } from "@/helpers/article";
+
 
 export const productsModule = {
   state: () => ({
     products: [],
     isProductsLoading: false,
+    sidebarLoading: false,
+    searchedProducts: [],
     filteredProducts: [],
+    prefilteredProducts: [],
+    sliderProducts: [],
   }),
   getters: {
-    PRODUCTS(state) {
-      return state.products;
-    },
-    LOADING(state) {
-      return state.isProductsLoading;
-    },
-    FILTERED_PRODUCTS(state) {
-      return state.filteredProducts;
-    },
-
+    PRODUCTS: (state) => state.products,
+    LOADING: (state) => state.isProductsLoading,
+    SEARCHED_PRODUCTS: (state) => state.searchedProducts,
+    FILTERED_PRODUCTS: (state) => state.filteredProducts,
+    PREFILTERED_PRODUCTS: (state) => state.prefilteredProducts,
+    SLIDER_PRODUCTS: (state) => state.sliderProducts,
+    SIDEBAR_LODADING: (state) => state.sidebarLoading,
   },
   mutations: {
-    SET_PRODUCTS: (state, products) => {
-      state.products = products;
-    },
-    SET_LOADING: (state, bool) => {
-      state.isProductsLoading = bool;
-    },
-    SET_FILTERED_PRODUCTS: (state, products) => {
-      state.filteredProducts = products;
-    },
+    SET_PRODUCTS: (state, products) => state.products = products,
+    SET_LOADING: (state, bool) => state.isProductsLoading = bool,
+    SET_SIDEBAR_LOADING: (state, bool) => state.sidebarLoading = bool,
+    SET_SEARCHED_PRODUCTS: (state, products) => state.searchedProducts = products,
+    SET_FILTERED_PRODUCTS: (state, products) => state.filteredProducts = products,
+    SET_PREFILTERED_PRODUCTS: (state, products) => state.prefilteredProducts = products,
+    SET_SLIDER_PRODUCTS: (state, products) => state.sliderProducts = products,
   },
   actions: {
-    async GET_PRODUCTS_FROM_API({ commit }) {
-      try {
-        commit('SET_LOADING', true);
-        const response = await axios('http://localhost:3000/products', {
-          method: "GET"
-        });
-        response.data.forEach(product => product.article = product.article.split("/").join('_')); // replace "/" with "_" for routing
-        commit('SET_PRODUCTS', response.data);
-        return this.products;
-      } catch (err) {
-        console.log(err)
-        return err
-      } finally {
-        commit('SET_LOADING', false);
-      }
+    SET_SEARCHED_PRODUCTS({ commit }, products) {
+      commit('SET_SEARCHED_PRODUCTS', products);
     },
     SET_FILTERED_PRODUCTS({ commit }, products) {
       commit('SET_FILTERED_PRODUCTS', products)
     },
+    SET_PREFILTERED_PRODUCTS({ commit }, products) {
+      commit('SET_PREFILTERED_PRODUCTS', products)
+    },
+    SET_SLIDER_PRODUCTS({ commit }, products) {
+      commit("SET_SLIDER_PRODUCTS", products);
+    },
+    // API requests actions
+    async GET_PRODUCTS_FROM_API({ commit }, categoryId = '') {
+      try {
+        commit('SET_LOADING', true);
+        let products;
+
+        if (categoryId.length) {
+          products = await getProductsByCategory(categoryId)
+        } else {
+          products = await getProducts();
+        }
+
+        products.forEach(product => product.article = fixProductArticle(product.article))
+        commit('SET_PRODUCTS', products);
+        return this.products;
+      } catch (err) {
+        console.log(err)
+      } finally {
+        commit('SET_LOADING', false);
+      }
+    },
+    async GET_SLIDER_PRODUCTS_FROM_API({ commit }, categoryId = '') {
+      try {
+        commit('SET_LOADING', true);
+        let products;
+
+        if (categoryId.length) {
+          products = await getProductsByCategory(categoryId)
+        } else {
+          products = await getProducts();
+        }
+
+        products.forEach(product => product.article = fixProductArticle(product.article))
+        commit('SET_SLIDER_PRODUCTS', products);
+        return this.products;
+      } catch (err) {
+        console.log(err)
+      } finally {
+        commit('SET_LOADING', false);
+      }
+    },
+    async GET_FILTERED_PRODUCTS_FROM_API({ commit }, filter) {
+      try {
+        commit('SET_LOADING', true);
+
+        if (!filter.length) {
+          commit("SET_FILTERED_PRODUCTS", []);
+          commit('SET_LOADING', false);
+          return;
+        }
+
+        const products = await getFilteredProducts(filter);
+
+        products.forEach(product => product.article = fixProductArticle(product.article))
+        commit("SET_FILTERED_PRODUCTS", products);
+        commit('SET_LOADING', false);
+      } catch (err) {
+        console.log(err);
+        commit('SET_LOADING', false);
+      }
+    },
+    async GET_PREFILTERED_PRODUCTS_FROM_API({ commit }, filter) {
+      try {
+        commit('SET_SIDEBAR_LOADING', true);
+
+        if (!filter.length) {
+          commit("SET_PREFILTERED_PRODUCTS", []);
+          commit('SET_SIDEBAR_LOADING', false);
+          return;
+        }
+
+        const products = await getFilteredProducts(filter);
+
+        products.forEach(product => product.article = fixProductArticle(product.article))
+        commit("SET_PREFILTERED_PRODUCTS", products);
+        commit('SET_SIDEBAR_LOADING', false);
+      } catch (err) {
+        console.log(err);
+        commit('SET_SIDEBAR_LOADING', false);
+      }
+    }
   },
 }

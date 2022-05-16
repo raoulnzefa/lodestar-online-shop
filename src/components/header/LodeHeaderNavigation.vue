@@ -1,35 +1,57 @@
 <template>
-  <div class="lode-header-navigation">
+  <nav class="lode-header-navigation">
     <div class="container">
       <div class="lode-header-navigation__inner">
         <div class="lode-header-navigation__item">
-          <p
-            @click="$router.push('/')"
+          <router-link
+            :to="'/'"
             class="lode-header-navigation__link"
-          >Главная</p>
+            :class="{'lode-header-navigation__link--active': checkActive('/')}"
+          >Главная</router-link>
         </div>
         <div class="lode-header-navigation__item">
-          <p
-            @click="$router.push('/catalog')"
+          <router-link
+            :to="'/catalog'"
             class="lode-header-navigation__link"
-          >Каталог</p>
+            :class="{'lode-header-navigation__link--active': checkActive('/catalog')}"
+          >Все товары</router-link>
         </div>
-        <div class="lode-header-navigation__item">
-          <p
-            @click="$router.push('/')"
+        <div
+          v-for="category in categories"
+          :key="category._id"
+          class="lode-header-navigation__item"
+        >
+          <router-link
+            :to="{path: category.path}"
             class="lode-header-navigation__link"
-          >Категории</p>
+            :class="{'lode-header-navigation__link--active': checkActive(category.path)}"
+          >{{category.value}}</router-link>
         </div>
       </div>
     </div>
-  </div>
+  </nav>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "LodeHeaderNavigation",
   data() {
     return {};
+  },
+  computed: {
+    ...mapGetters(["CATEGORIES"]),
+    categories() {
+      return this.CATEGORIES.filter(
+        (category) => category.value !== "Все категории"
+      );
+    },
+  },
+  methods: {
+    checkActive(path) {
+      const route = this.$route.path;
+      return route === path ? true : false;
+    },
   },
 };
 </script>
@@ -72,8 +94,10 @@ export default {
     transition: color 0.1s linear;
     cursor: pointer;
 
-    &:hover {
+    &:hover,
+    &:focus {
       color: $accent;
+      outline: none;
 
       &::after {
         width: 100%;
@@ -92,6 +116,12 @@ export default {
       background-color: $accent;
 
       transition: width 0.2s ease-in-out;
+    }
+
+    &--active {
+      &::after {
+        width: 100%;
+      }
     }
   }
 }

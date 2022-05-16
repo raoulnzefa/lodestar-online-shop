@@ -8,7 +8,7 @@
       <option
         v-for="category in CATEGORIES"
         :value="category.value"
-        :key="category.value"
+        :key="category._id"
       >{{category.name}}</option>
 
     </select>
@@ -16,10 +16,10 @@
       class="input--header-search"
       v-model="searchText"
       placeholder="Поиск по названию"
-      @keydown.enter.prevent="FILTER_PRODUCTS"
+      @keydown.enter.prevent="searchProducts"
     />
     <lode-button
-      @click="FILTER_PRODUCTS"
+      @click="searchProducts"
       type="button"
       class="btn--search"
     >Поиск</lode-button>
@@ -28,11 +28,9 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import { updateSearchPath } from "@/helpers/router";
 export default {
   name: "LodeHeaderSearch",
-  data() {
-    return {};
-  },
   computed: {
     ...mapGetters(["SEARCH_FORM", "CATEGORIES"]),
     // Two-way Computed Property (searchText, searchCategory)
@@ -53,14 +51,49 @@ export default {
         this.CHANGE_SEARCH_CATEGORY(value);
       },
     },
+    selectedCategoryId() {
+      return this.CATEGORIES.find(
+        (category) => category.value === this.SEARCH_FORM.category
+      )._id;
+    },
+    searchQuery() {
+      return this.$route.query;
+    },
   },
   methods: {
     ...mapActions([
       "CHANGE_SEARCH_CATEGORY",
       "CHANGE_SEARCH_TEXT",
       "SET_FILTERED_PRODUCTS",
-      "FILTER_PRODUCTS",
+      "SEARCH_PRODUCTS",
+      "GET_CATEGORIES_FROM_API",
+      "CHANGE_CATEGORIES_LOADED",
     ]),
+    searchProducts() {
+      this.SEARCH_PRODUCTS({
+        categoryQuery: this.selectedCategoryId,
+        textQuery: this.searchText,
+      });
+      updateSearchPath(this);
+    },
+    updateCategories() {
+      this.GET_CATEGORIES_FROM_API().then((response) => {
+        this.CHANGE_CATEGORIES_LOADED(true);
+      });
+    },
+    setSearchQueryFromURL() {
+      if (this.$route.query.text) {
+        let searchedCategory = this.CATEGORIES.find(
+          (category) => category._id === this.$route.query.category
+        );
+        this.searchCategory = searchedCategory.value;
+        this.searchText = this.searchQuery.text;
+      }
+    },
+  },
+  mounted() {
+    this.setSearchQueryFromURL();
+    this.updateCategories();
   },
 };
 </script>

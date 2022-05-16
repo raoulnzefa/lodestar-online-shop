@@ -1,4 +1,5 @@
 <template>
+  <lode-upper-header />
   <header class="lode-header">
     <div class="container">
       <div class="lode-header__inner">
@@ -10,7 +11,16 @@
           >
         </div>
         <lode-header-search class="lode-header__search"></lode-header-search>
-        <div class="lode-header__wishlist">Wishlist</div>
+        <div class="lode-header__wishlist">
+          <router-link :to="'/wishlist'">
+            <img
+              :src="HeartWhiteSvgSrc"
+              alt=""
+              class="lode-header__wishlist-image"
+            >
+          </router-link>
+
+        </div>
         <lode-header-cart />
       </div>
     </div>
@@ -22,6 +32,8 @@
 import LodeHeaderCart from "@/components/header/LodeHeaderCart";
 import LodeHeaderNavigation from "@/components/header/LodeHeaderNavigation";
 import LodeHeaderSearch from "@/components/header/LodeHeaderSearch";
+import LodeUpperHeader from "@/components/header/LodeUpperHeader";
+import { HeartWhiteSvgSrc } from "@/assets/icons";
 
 export default {
   name: "LodeHeader",
@@ -29,6 +41,12 @@ export default {
     LodeHeaderCart,
     LodeHeaderNavigation,
     LodeHeaderSearch,
+    LodeUpperHeader,
+  },
+  data() {
+    return {
+      HeartWhiteSvgSrc,
+    };
   },
 };
 </script>
@@ -68,6 +86,17 @@ export default {
     justify-content: flex-end;
     width: 12.5%;
     padding: 1.5rem 0;
+
+    &-image {
+      max-width: 3.5rem;
+      cursor: pointer;
+
+      transition: transform 0.1s linear;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
   }
 }
 </style>

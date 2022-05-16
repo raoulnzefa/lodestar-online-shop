@@ -3,7 +3,6 @@
     <p class="lode-catalog-item__article">Артикул: {{product.article}}</p>
     <div class="lode-catalog-item__flags">
       <div
-        @click="addTagAndFilterProducts(product.series)"
         v-if="product.series"
         class="lode-catalog-item__series"
       >{{product.series}}</div>
@@ -12,74 +11,214 @@
         class="lode-catalog-item__series  lode-catalog-item__series--nothing"
       >1</div>
       <div
-        @click="addTagAndFilterProducts(product.subseries)"
         class="lode-catalog-item__series lode-catalog-item__series--subseries"
         v-if="product.subseries"
       >{{product.subseries}}</div>
     </div>
-    <img
-      :src="product.image"
-      alt="item image"
-      @click="$router.push(`/catalog/${product.article}`)"
-      class="lode-catalog-item__image"
-    >
+    <div class="lode-catalog-item__preview">
+      <router-link :to="`/catalog/${product.article}`">
+        <img
+          :src="productImage"
+          alt="item image"
+          class="lode-catalog-item__image"
+        >
+      </router-link>
+    </div>
     <h3
       @click="$router.push(`${getCategoryPath}`)"
       class="lode-catalog-item__category"
-    >{{product.category}}</h3>
+    >{{getProductCategory}}</h3>
     <h1
       @click="$router.push(`/catalog/${product.article}`)"
       class="lode-catalog-item__name"
     >{{product.name}}</h1>
     <h2 class="lode-catalog-item__price">Цена: {{fixedPrice}} грн</h2>
-    <div class="lode-catalog-item__add-to-cart">
+
+    <div class="lode-catalog-item__buttons">
       <lode-button
-        class="btn--add-to-cart"
-        @click="addToCart"
+        class="lode-catalog-item__cart-button"
+        @click="addItemToCart()"
       >
         В корзину
       </lode-button>
+
+      <lode-button
+        :class="{'lode-catalog-item__wishlist-button--add-item': isWishlistToggled}"
+        class="lode-catalog-item__wishlist-button"
+      >
+        <img
+          :src="isInWishlistSVG"
+          alt=""
+          @mouseover="isHoverButton = true"
+          @mouseout="isHoverButton = false"
+          @click="toggleProductInWishlist()"
+          class="lode-catalog-item__favourite-img"
+        >
+      </lode-button>
     </div>
+
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import { fixPrice } from "@/helpers/price";
+import { HeartFillSvgSrc, HeartSvgSrc } from "@/assets/icons";
+
 export default {
-  data() {
-    return {};
-  },
   props: {
     product: {
       type: Object,
       default() {
         return {};
       },
-      require: true,
+      required: true,
     },
   },
-  methods: {
-    addToCart() {
-      this.$emit("addToCart", this.product);
-    },
-    ...mapActions(["ADD_TAG", "FILTER_PRODUCTS"]),
-    addTagAndFilterProducts(tag) {
-      this.ADD_TAG(tag);
-      this.FILTER_PRODUCTS();
-    },
+  data() {
+    return {
+      isHoverButton: false,
+      isWishlistToggled: false,
+
+      // SVG
+      HeartFillSvgSrc,
+      HeartSvgSrc,
+    };
   },
   computed: {
-    ...mapGetters(["LOADING", "CATEGORIES", "TAGS"]),
+    ...mapGetters([
+      "USER",
+      "LOADING",
+      "CATEGORIES",
+      "CATEGORIES",
+      "CART_ID",
+      "IS_USER_AUTH",
+      "WISHLIST",
+    ]),
     getCategoryPath() {
       for (let category of this.CATEGORIES) {
-        if (
-          this.product.category.toLowerCase() === category.value.toLowerCase()
-        )
-          return category.path;
+        if (this.product.category === category._id) return category.path;
       }
     },
     fixedPrice() {
-      return this.product.price?.toFixed(2).split(".").join(",");
+      return fixPrice(this.product.price);
+    },
+    getProductCategory() {
+      let category = this.CATEGORIES.find((category) => {
+        return this.product.category === category._id;
+      });
+      return category ? category.value : null;
+    },
+    productImage() {
+      return this.product.image.includes("http")
+        ? this.product.image
+        : require(`../../${this.product.image}`);
+    },
+    isInWishlist() {
+      return this.WISHLIST.find((product) => product._id === this.product._id);
+    },
+    isInWishlistSVG() {
+      return this.WISHLIST.find((product) => product._id === this.product._id)
+        ? this.HeartFillSvgSrc
+        : this.HeartSvgSrc;
+    },
+  },
+  methods: {
+    ...mapActions([
+      "ADD_TAG",
+      "ADD_TO_CART",
+      "SET_CART",
+      "ADD_ITEM_TO_WISHLIST",
+      "REMOVE_ITEM_FROM_WISHLIST",
+      "SET_WISHLIST",
+    ]),
+    addTagAndFilterProducts(tag) {
+      this.ADD_TAG(tag);
+    },
+    addItemToCart() {
+      if (this.IS_USER_AUTH) {
+        this.ADD_TO_CART({ cartId: this.CART_ID, productId: this.product._id });
+      } else {
+        const newCart = this.addThisItemToLocalStorageCart();
+        this.SET_CART(newCart);
+      }
+    },
+    addThisItemToLocalStorageCart() {
+      let cart = JSON.parse(localStorage.getItem("cart"));
+      let newCart = [...cart];
+      if (newCart.length) {
+        let isProductExsist = false;
+
+        newCart.map((item) => {
+          if (item.id === this.product._id) {
+            isProductExsist = true;
+            item.quantity += 1;
+          }
+        });
+
+        if (!isProductExsist) {
+          let newProduct = {
+            quantity: 1,
+            product: this.product,
+            id: this.product._id,
+          };
+          newCart.push(newProduct);
+        }
+      } else {
+        let newProduct = {
+          quantity: 1,
+          product: this.product,
+          id: this.product._id,
+        };
+        newCart.push(newProduct);
+      }
+
+      localStorage.setItem("cart", JSON.stringify(newCart));
+      return newCart;
+    },
+    toggleProductInLocalStorageWishlist(item) {
+      const wishlist = JSON.parse(localStorage.getItem("wishlist"));
+      const alreadyExists = wishlist.find(
+        (product) => product._id === item._id
+      );
+      let newWishlist = [];
+
+      if (alreadyExists) {
+        newWishlist = wishlist.filter((product) => product._id !== item._id);
+      } else {
+        newWishlist.push(...wishlist, item);
+      }
+
+      localStorage.setItem("wishlist", JSON.stringify(newWishlist));
+      return newWishlist;
+    },
+    async toggleProductInWishlist() {
+      this.isWishlistToggled = true;
+
+      if (this.IS_USER_AUTH) {
+        if (this.isInWishlist) {
+          await this.REMOVE_ITEM_FROM_WISHLIST({
+            listId: this.USER.wishlist,
+            itemId: this.product._id,
+          });
+        } else {
+          await this.ADD_ITEM_TO_WISHLIST({
+            listId: this.USER.wishlist,
+            itemId: this.product._id,
+          });
+        }
+
+        this.isWishlistToggled = false;
+      } else {
+        const newWishlist = this.toggleProductInLocalStorageWishlist(
+          this.product
+        );
+        this.SET_WISHLIST(newWishlist);
+
+        setTimeout(() => {
+          this.isWishlistToggled = false;
+        }, 200);
+      }
     },
   },
 };
@@ -107,12 +246,12 @@ export default {
     border: 1px solid $accent-light;
     box-shadow: 0 3px 10px $accent-shadow;
 
-    .lode-catalog-item__add-to-cart {
-      transform: translateY(100%);
+    .lode-catalog-item__buttons {
+      transform: translateY(95%);
       opacity: 1;
     }
 
-    .btn--add-to-cart {
+    &__cart-button {
       opacity: 1;
     }
   }
@@ -155,12 +294,26 @@ export default {
     }
   }
 
-  &__image {
-    margin: 0 auto 1rem auto;
+  &__preview {
     height: 22.5rem;
     width: 20rem;
+    overflow: hidden;
+
+    &:hover {
+      .lode-catalog-item__image {
+        transform: scale(1.18);
+      }
+    }
+  }
+
+  &__image {
+    margin: 0 auto 1rem auto;
+    max-height: 22.5rem;
+    max-width: 20rem;
 
     cursor: pointer;
+
+    transition: transform 0.5s ease;
   }
 
   &__category {
@@ -202,12 +355,14 @@ export default {
     transform: translateX(-50%);
   }
 
-  &__add-to-cart {
+  &__buttons {
+    display: flex;
+    justify-content: space-evenly;
     padding-bottom: 1rem;
     position: absolute;
     bottom: 0;
     left: -1px;
-    z-index: 1;
+    z-index: 10;
     width: calc(100% + 2px);
     opacity: 0;
 
@@ -218,6 +373,54 @@ export default {
     box-shadow: 0 5px 10px -4px $accent-shadow;
 
     transition: transform 0.2s linear, opacity 0.1s linear;
+  }
+
+  &__cart-button {
+    background-color: $accent;
+    border-radius: 1.6em;
+    border: 2px solid $accent;
+    margin: 0;
+    padding: 0.4em 1.2em;
+
+    color: #fff;
+
+    text-transform: uppercase;
+
+    &:hover {
+      background-color: #fff;
+      border: 2px solid $accent;
+      color: $accent;
+    }
+  }
+
+  &__wishlist-button {
+    border-radius: 50%;
+    padding: 0.7rem;
+    border: none;
+    margin: 0;
+
+    &--add-item {
+      background-color: $accent-shadow;
+      box-shadow: 0 0 10px $accent-shadow;
+      transform: scale(1.1);
+    }
+  }
+
+  &__favourite-img {
+    max-width: 3rem;
+    cursor: pointer;
+
+    transition: transform 0.1s linear;
+
+    &:hover {
+      transform: scale(1.08);
+    }
+  }
+}
+
+.carousel__slide {
+  .lode-catalog-item {
+    height: 100%;
   }
 }
 </style>

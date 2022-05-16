@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  name: "LodeInput",
+  name: "lode-input",
   props: {
     modelValue: {
       type: String,
@@ -35,8 +35,23 @@ export default {
   background-color: $white;
   width: 100%;
 
+  &--default {
+    height: auto;
+    min-height: 2.5rem;
+    border: 1px solid $grey;
+  }
+
   &--header-search {
     width: calc(100% - 26rem);
+  }
+
+  &--login {
+    height: auto;
+    border: 1px solid $grey;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+
+    line-height: 1;
   }
 }
 </style>

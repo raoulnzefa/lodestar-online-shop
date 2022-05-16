@@ -9,8 +9,11 @@
   "dependencies": {
     "axios": "^0.24.0",
     "core-js": "^3.6.5",
+    "express": "^4.17.2",
+    "mongoose": "^6.1.7",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
+    "vue3-carousel": "^0.1.36",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {

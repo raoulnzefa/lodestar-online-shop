@@ -28,23 +28,29 @@ export default {
   transition: border 0.2s linear, color 0.2s linear,
     background-color 0.2s linear, transform 0.2s linear, opacity 0.2s linear;
 
-  /* Catalog buttons */
-  &--add-to-cart {
-    background-color: $accent;
-    border-radius: 1.6em;
-    border: 2px solid $accent;
-
-    color: #fff;
-
-    text-transform: uppercase;
-
+  /* Hover */
+  &--hover-lighten {
     &:hover {
-      background-color: #fff;
-      border: 2px solid $accent;
-      color: $accent;
+      background-color: $accent-light;
+      color: $white;
+      border-color: $accent-light;
     }
   }
 
+  &--hover-darker {
+    &:hover {
+      background-color: $grey-light;
+    }
+  }
+
+  /* Background color */
+  &--accent-color {
+    background-color: $accent;
+    border: $white;
+    color: $white;
+  }
+
+  /* Tags-buttons */
   &--delete-tag {
     margin: 0 0 0 0.5rem;
     padding: 0.3rem;
@@ -100,13 +106,7 @@ export default {
     padding: 0;
     background-color: $accent;
     color: $white;
-    border: 1px solid $black-light;
-
-    &:hover {
-      background-color: $white;
-      color: $black;
-      border: 1px solid $black;
-    }
+    border: 1px solid $accent;
   }
 
   /* Search button */
@@ -141,6 +141,26 @@ export default {
       color: $black;
       border-color: $black;
     }
+  }
+
+  /* Upper Heder buttons */
+  &--upper-header {
+    width: 100%;
+    padding: 0.4em 1em;
+    margin: 0 0 1rem 0;
+
+    font-size: 1.3rem;
+    background-color: $accent;
+    color: $white;
+  }
+
+  /* Registration page buttons */
+  &--registration {
+    margin: 0;
+    font-size: 1.4rem;
+    background-color: $accent;
+    border-color: $white;
+    color: $white;
   }
 }
 </style>

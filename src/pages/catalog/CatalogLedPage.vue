@@ -1,27 +1,17 @@
 <template>
-  <lode-header />
-  <lode-catalog :selectedCategory="selectedCategory" />
+  <lode-catalog :category="selectedCategory" />
 </template>
 
 <script>
-import LodeHeader from "@/components/header/LodeHeader";
 import LodeCatalog from "@/components/catalog/LodeCatalog";
-import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      selectedCategory: "Светоизлучающие диоды",
+      selectedCategory: "61ef07be51a966f430d29f16",
     };
   },
   components: {
-    LodeHeader,
     LodeCatalog,
-  },
-  methods: {
-    ...mapActions(["CHANGE_SEARCH_CATEGORY"]),
-  },
-  mounted() {
-    this.CHANGE_SEARCH_CATEGORY(this.selectedCategory);
   },
 };
 </script>

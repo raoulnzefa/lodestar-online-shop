@@ -1,0 +1,64 @@
+<template>
+  <div class="lode-cards">
+    <div
+      v-if="categoriesCards"
+      class="lode-cards__categories"
+    >
+      <lode-cards-categories-item
+        v-for="object in categories"
+        :key="object._id"
+        :itemsObject="object"
+      />
+    </div>
+    <div
+      v-if="seriesCards"
+      class="lode-cards__series"
+    />
+  </div>
+</template>
+
+<script>
+import { mapGetters } from "vuex";
+import LodeCardsCategoriesItem from "@/components/cards/LodeCardsCategoriesItem";
+
+export default {
+  components: {
+    LodeCardsCategoriesItem,
+  },
+  props: {
+    categoriesCards: {
+      type: Boolean,
+      default: false,
+    },
+    seriesCards: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  computed: {
+    ...mapGetters(["CATEGORIES", "ARE_CATEGORIES_LOADED"]),
+    categories() {
+      if (this.categoriesCards) {
+        if (this.ARE_CATEGORIES_LOADED) {
+          return [...this.CATEGORIES]
+            .filter((category) => category._id !== "61ef07be51a966f430d29f13")
+            .reverse();
+        }
+      }
+    },
+  },
+};
+</script>
+
+<style lang="scss">
+.lode-cards {
+  margin: 0 -1.5rem;
+
+  &__categories {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+}
+</style>

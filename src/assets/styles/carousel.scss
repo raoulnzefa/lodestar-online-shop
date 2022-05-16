@@ -1,0 +1,31 @@
+.carousel {
+  width: 100%;
+
+  // Arrows
+  &__prev,
+  &__next {
+    background-color: $accent;
+    transition: box-shadow 0.2s linear;
+
+    &:hover {
+      box-shadow: 0 0 10px 2px $accent-shadow;
+    }
+
+    &--in-active {
+      background-color: $accent-shadow;
+
+      &:hover {
+        box-shadow: none;
+      }
+    }
+  }
+
+  // Pagination
+  &__pagination-button {
+    background-color: $accent-shadow;
+
+    &--active {
+      background-color: $accent;
+    }
+  }
+}
