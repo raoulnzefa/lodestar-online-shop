@@ -28,7 +28,7 @@ export default {
   transition: border 0.2s linear, color 0.2s linear,
     background-color 0.2s linear, transform 0.2s linear, opacity 0.2s linear;
 
-  /* Hover */
+  /* === Hover === */
   &--hover-lighten {
     &:hover {
       background-color: $accent-light;
@@ -43,33 +43,15 @@ export default {
     }
   }
 
-  /* Background color */
+  /* === Background color === */
   &--accent-color {
     background-color: $accent;
     border: $white;
     color: $white;
   }
 
-  /* Tags-buttons */
-  &--delete-tag {
-    margin: 0 0 0 0.5rem;
-    padding: 0.3rem;
-    align-self: center;
-
-    letter-spacing: 0;
-    line-height: 0.6;
-    font-weight: 400;
-    border-radius: 50%;
-    border-color: $accent;
-    color: $accent;
-
-    &:hover {
-      background-color: $accent;
-      color: $white;
-    }
-  }
-
-  /* Header-Cart buttons */
+  /* === Header buttons === */
+  // Header-Cart
   &--view-cart,
   &--make-deal {
     width: 50%;
@@ -99,17 +81,7 @@ export default {
     }
   }
 
-  /* Cart Item's buttons */
-  &--delete-from-cart {
-    width: 5%;
-    margin: 0;
-    padding: 0;
-    background-color: $accent;
-    color: $white;
-    border: 1px solid $accent;
-  }
-
-  /* Search button */
+  // Header Search
   &--search {
     margin: 0;
     height: 4rem;
@@ -127,23 +99,7 @@ export default {
     }
   }
 
-  /* Product buttons */
-  &--product-add-to-cart,
-  &--product-buy {
-    text-align: center;
-    width: 50%;
-    background-color: $accent;
-    border: 1px solid $accent;
-    color: $white;
-
-    &:hover {
-      background-color: $white;
-      color: $black;
-      border-color: $black;
-    }
-  }
-
-  /* Upper Heder buttons */
+  // UpperHeader
   &--upper-header {
     width: 100%;
     padding: 0.4em 1em;
@@ -151,15 +107,6 @@ export default {
 
     font-size: 1.3rem;
     background-color: $accent;
-    color: $white;
-  }
-
-  /* Registration page buttons */
-  &--registration {
-    margin: 0;
-    font-size: 1.4rem;
-    background-color: $accent;
-    border-color: $white;
     color: $white;
   }
 }

@@ -20,7 +20,7 @@
     <p class="lode-cart__item-price">{{fixedPrice}}</p>
     <lode-button
       @click="deleteFromCart()"
-      class="btn--delete-from-cart btn--hover-lighten"
+      class="lode-cart__item-button btn--hover-lighten"
     >Х</lode-button>
   </li>
 </template>
@@ -192,6 +192,15 @@ export default {
 
   &-price {
     width: 10%;
+  }
+
+  &-button {
+    width: 5%;
+    margin: 0;
+    padding: 0;
+    background-color: $accent;
+    color: $white;
+    border: 1px solid $accent;
   }
 }
 </style>

@@ -28,7 +28,7 @@
 
         <lode-button
           @click="checkedRegistration"
-          class="btn--registration  btn--hover-lighten"
+          class="lode-registration__button btn--registration  btn--hover-lighten"
         >Зарегестрироваться</lode-button>
       </div>
       <div class="lode-registration__advantages">
@@ -163,6 +163,14 @@ export default {
       border-color: $accent;
       box-shadow: 0 0 10px $accent-shadow;
     }
+  }
+
+  &__button {
+    margin: 0;
+    font-size: 1.4rem;
+    background-color: $accent;
+    border-color: $white;
+    color: $white;
   }
 }
 </style>

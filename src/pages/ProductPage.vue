@@ -66,11 +66,11 @@
           <div class="lode-product__navigation-quantity"></div> -->
           <lode-button
             @click="buyProduct()"
-            class="btn--product-buy"
+            class="lode-product__button"
           >Купить</lode-button>
           <lode-button
             @click="addToCart()"
-            class="btn--product-add-to-cart"
+            class="lode-product__button"
           >Добавить в корзину</lode-button>
         </div>
       </div>
@@ -295,6 +295,20 @@ export default {
       font-weight: 700;
       text-align: start;
       text-transform: uppercase;
+    }
+  }
+
+  &__button {
+    text-align: center;
+    width: 50%;
+    background-color: $accent;
+    border: 1px solid $accent;
+    color: $white;
+
+    &:hover {
+      background-color: $white;
+      color: $black;
+      border-color: $black;
     }
   }
 

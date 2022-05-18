@@ -38,7 +38,7 @@
           v-if="CART.length"
           class="lode-header__cart-info-quantity"
         >
-          {{cartTotalQuantity}} item(s) selected
+          Количество товаров в корзине: {{cartTotalQuantity}}
         </p>
         <p
           v-if="CART.length"
