@@ -13,19 +13,19 @@
         />
         <h1
           class="lode-catalog__loading"
-          v-if="LOADING"
+          v-if="IS_PRODUCTS_LOADING"
         >Идет загрузка...</h1>
         <h1
           class="lode-catalog__found"
           v-if="!IS_FOUND"
         >Товар не найден</h1>
         <div
-          v-show="!LOADING && IS_FOUND"
+          v-show="!IS_PRODUCTS_LOADING && IS_FOUND"
           class="lode-catalog__list"
         >
           <transition-group name="catalog-list">
             <lode-catalog-item
-              v-show="!LOADING && IS_FOUND"
+              v-show="!IS_PRODUCTS_LOADING && IS_FOUND"
               v-for="product in pagedProducts"
               :key="product._id"
               :product="product"
@@ -82,7 +82,7 @@ export default {
   computed: {
     ...mapGetters([
       "PRODUCTS",
-      "LOADING",
+      "IS_PRODUCTS_LOADING",
       "SEARCHED_PRODUCTS",
       "FILTERED_PRODUCTS",
       "PREFILTERED_PRODUCTS",
@@ -90,19 +90,21 @@ export default {
       "WAS_SEARCHED",
     ]),
     searchedAndFilteredProducts() {
-      if (!this.FILTERED_PRODUCTS.length) {
-        if (this.SEARCHED_PRODUCTS.length || this.WAS_SEARCHED === true) {
-          return this.SEARCHED_PRODUCTS;
-        } else {
-          return this.IS_FOUND ? this.PRODUCTS : this.SEARCHED_PRODUCTS;
-        }
-      } else {
+      if (this.FILTERED_PRODUCTS.length) {
         return this.FILTERED_PRODUCTS;
       }
+
+      if (this.SEARCHED_PRODUCTS.length || this.WAS_SEARCHED === true) {
+        return this.SEARCHED_PRODUCTS;
+      }
+
+      return this.IS_FOUND ? this.PRODUCTS : this.SEARCHED_PRODUCTS;
+    },
+    productsQuantity() {
+      return this.searchedAndFilteredProducts.length;
     },
     pages() {
-      const productsQuantity = this.searchedAndFilteredProducts.length;
-      return Math.ceil(productsQuantity / this.maxProductsOnPage) || 1;
+      return Math.ceil(this.productsQuantity / this.maxProductsOnPage) || 1;
     },
     currentPage() {
       return this.$route.query.page ? +this.$route.query.page : 1;
@@ -119,30 +121,25 @@ export default {
   methods: {
     ...mapActions(["GET_PRODUCTS_FROM_API", "SET_FILTERED_PRODUCTS"]),
     async getCategoryProducts() {
-      const CATEGORY_ALL = "61ef07be51a966f430d29f13";
-
-      if (this.category.length) {
-        if (this.category === CATEGORY_ALL) {
-          await this.GET_PRODUCTS_FROM_API();
-        } else {
-          await this.GET_PRODUCTS_FROM_API(this.category);
-        }
-
-        this.createSidebarFilters = true;
+      if (!this.category.length) {
+        return;
       }
+
+      if (this.category === process.env.VUE_APP_CATEGORY_ALL_ID) {
+        await this.GET_PRODUCTS_FROM_API();
+      } else {
+        await this.GET_PRODUCTS_FROM_API(this.category);
+      }
+
+      this.createSidebarFilters = true;
     },
     acceptPrefilteredProducts() {
       this.SET_FILTERED_PRODUCTS(this.PREFILTERED_PRODUCTS);
-      // this.createSidebarFilters = true;
     },
   },
 
   mounted() {
-    if (
-      this.FILTERED_PRODUCTS.length !== this.FILTERED_PRODUCTS.length ||
-      !this.PRODUCTS.length ||
-      !this.FILTERED_PRODUCTS.length
-    ) {
+    if (!this.PRODUCTS.length || !this.FILTERED_PRODUCTS.length) {
       this.getCategoryProducts();
     }
   },

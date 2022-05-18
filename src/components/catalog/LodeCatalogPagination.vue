@@ -36,11 +36,6 @@ export default {
       required: true,
     },
   },
-  // computed: {
-  //   paginationItems() {
-
-  //   }
-  // },
   methods: {
     changePage(pageNumber) {
       const path = this.$route.path;

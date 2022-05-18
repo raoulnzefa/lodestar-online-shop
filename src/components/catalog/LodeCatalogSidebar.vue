@@ -39,7 +39,7 @@
               :filterObject="filter"
               :value="String(variant)"
               :checkArray="stateTags"
-              v-model:tag="tag"
+              v-model:tag="lastActiveTag"
             >{{`${variant} ${filter.sign}`}}</lode-checkbox>
           </li>
         </ul>
@@ -69,7 +69,7 @@ export default {
   data() {
     return {
       selectedFilters: [],
-      tag: {},
+      lastActiveTag: {},
       prerenderedSidebarFilters: [],
       areSidebarFiltersLoading: false,
     };
@@ -142,7 +142,6 @@ export default {
         Object.entries(this.TAGS_QUERY)
           .map((item) => item.join("="))
           .join("&");
-      console.log(filter);
       await this.GET_PREFILTERED_PRODUCTS_FROM_API(filter);
     },
     prerenderSidebarFilters(newProductsArray = []) {
@@ -150,48 +149,63 @@ export default {
       let result = [];
 
       newProductsArray.forEach((product) => {
-        if (product.specifications.length) {
-          product.specifications.map((spec) => {
-            let specObjId = spec.specObj._id;
-
-            if (!set.has(specObjId)) {
-              set.add(specObjId);
-              spec.specObj.variants = [];
-              result.push(spec.specObj);
-            }
-
-            result.map((item) => {
-              if (item._id === specObjId) {
-                if (!set.has(`${specObjId}${spec.specValue}`)) {
-                  set.add(`${specObjId}${spec.specValue}`);
-                  item.variants.push(spec.specValue);
-                }
-              }
-            });
-          });
+        if (!product.specifications.length) {
+          return;
         }
+
+        product.specifications.map((spec) => {
+          let specObjId = spec.specObj._id;
+
+          if (!set.has(specObjId)) {
+            set.add(specObjId);
+            spec.specObj.variants = [];
+            result.push(spec.specObj);
+          }
+
+          result.map((item) => {
+            if (
+              item._id === specObjId &&
+              !set.has(`${specObjId}${spec.specValue}`)
+            ) {
+              set.add(`${specObjId}${spec.specValue}`);
+              item.variants.push(spec.specValue);
+            }
+          });
+        });
       });
 
-      return (this.prerenderedSidebarFilters = result);
+      this.prerenderedSidebarFilters = result;
+    },
+    updateSidebar() {
+      this.areSidebarFiltersLoading = true;
+      this.getPrefilteredProducts()
+        .then((response) => {
+          this.prerenderSidebarFilters(this.PREFILTERED_PRODUCTS);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          this.areSidebarFiltersLoading = false;
+        });
     },
     checkFilterAccess(filter, value) {
       let result = true;
 
-      if (this.TAGS.length) {
-        this.prerenderedSidebarFilters.forEach((preFilter) => {
-          if (this.TAGS[0].name === filter.name) {
-            return (result = false);
-          }
-          if (preFilter._id === filter._id) {
-            if (preFilter.variants.includes(value)) {
-              return (result = false);
-            }
-          }
-        });
-        return result;
-      } else {
+      if (!this.TAGS.length) {
         return false;
       }
+
+      this.prerenderedSidebarFilters.forEach((preFilter) => {
+        if (
+          this.TAGS[0].name === filter.name ||
+          (preFilter._id === filter._id && preFilter.variants.includes(value))
+        ) {
+          return (result = false);
+        }
+      });
+
+      return result;
     },
     updateFilterSpecs() {
       this.areSidebarFiltersLoading = true;
@@ -200,7 +214,8 @@ export default {
     },
   },
   watch: {
-    tag(newValue) {
+    // Watching data
+    lastActiveTag(newValue) {
       const { name: tagName, value: tagValue } = newValue;
       const isTagExists = this.checkTagExists(newValue);
 
@@ -211,52 +226,43 @@ export default {
       }
     },
     stateTags: {
-      handler(newValue, oldValue) {
+      handler(newValue) {
         const stateTags = newValue;
         const queryObj = this.getQueryObject(stateTags);
 
         if (!stateTags.length) {
-          // this.$router.push("/catalog");
           this.SET_TAGS_QUERY({});
           this.SET_PREFILTERED_PRODUCTS([]);
           return;
         }
-        this.SET_TAGS_QUERY(queryObj);
 
-        this.areSidebarFiltersLoading = true;
-        this.getPrefilteredProducts()
-          .then((response) => {
-            this.prerenderSidebarFilters(this.PREFILTERED_PRODUCTS);
-            this.areSidebarFiltersLoading = false;
-          })
-          .catch((err) => {
-            console.log(err);
-            this.areSidebarFiltersLoading = false;
-          });
+        this.SET_TAGS_QUERY(queryObj);
+        this.updateSidebar();
       },
       deep: true,
     },
+
+    // Watching computed
     searchedProducts() {
       this.updateFilterSpecs();
     },
     wasSearched(newValue) {
-      if (newValue) this.selectedFilters = [];
+      return newValue ? (this.selectedFilters = []) : null;
     },
 
     // Watching props
     createSidebarFilters(newValue) {
-      if (newValue === true) {
-        console.log("createSidebarFilters");
+      if (newValue) {
         this.updateFilterSpecs();
       }
     },
     updateSidebarFilters(newValue) {
-      if (newValue === true) {
+      if (newValue) {
         this.updateFilterSpecs();
       }
     },
     clearFilters(newValue) {
-      if (newValue === true) {
+      if (newValue) {
         this.SET_FILTERED_PRODUCTS([]);
       }
     },

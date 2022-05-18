@@ -25,9 +25,9 @@
       </router-link>
     </div>
     <h3
-      @click="$router.push(`${getCategoryPath}`)"
+      @click="$router.push(`${categoryPath}`)"
       class="lode-catalog-item__category"
-    >{{getProductCategory}}</h3>
+    >{{productCategory}}</h3>
     <h1
       @click="$router.push(`/catalog/${product.article}`)"
       class="lode-catalog-item__name"
@@ -47,7 +47,7 @@
         class="lode-catalog-item__wishlist-button"
       >
         <img
-          :src="isInWishlistSVG"
+          :src="wishlistSVG"
           alt=""
           @mouseover="isHoverButton = true"
           @mouseout="isHoverButton = false"
@@ -88,14 +88,12 @@ export default {
   computed: {
     ...mapGetters([
       "USER",
-      "LOADING",
-      "CATEGORIES",
       "CATEGORIES",
       "CART_ID",
       "IS_USER_AUTH",
       "WISHLIST",
     ]),
-    getCategoryPath() {
+    categoryPath() {
       for (let category of this.CATEGORIES) {
         if (this.product.category === category._id) return category.path;
       }
@@ -103,7 +101,7 @@ export default {
     fixedPrice() {
       return fixPrice(this.product.price);
     },
-    getProductCategory() {
+    productCategory() {
       let category = this.CATEGORIES.find((category) => {
         return this.product.category === category._id;
       });
@@ -114,10 +112,10 @@ export default {
         ? this.product.image
         : require(`../../${this.product.image}`);
     },
-    isInWishlist() {
+    isProductInWishlist() {
       return this.WISHLIST.find((product) => product._id === this.product._id);
     },
-    isInWishlistSVG() {
+    wishlistSVG() {
       return this.WISHLIST.find((product) => product._id === this.product._id)
         ? this.HeartFillSvgSrc
         : this.HeartSvgSrc;
@@ -143,10 +141,22 @@ export default {
         this.SET_CART(newCart);
       }
     },
+    setCartToLocalStorage(cart) {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    },
     addThisItemToLocalStorageCart() {
-      let cart = JSON.parse(localStorage.getItem("cart"));
+      const cart = JSON.parse(localStorage.getItem("cart"));
+      const newProduct = {
+        quantity: 1,
+        product: this.product,
+        id: this.product._id,
+      };
+
       let newCart = [...cart];
-      if (newCart.length) {
+
+      if (!newCart.length) {
+        newCart.push(newProduct);
+      } else {
         let isProductExsist = false;
 
         newCart.map((item) => {
@@ -157,23 +167,11 @@ export default {
         });
 
         if (!isProductExsist) {
-          let newProduct = {
-            quantity: 1,
-            product: this.product,
-            id: this.product._id,
-          };
           newCart.push(newProduct);
         }
-      } else {
-        let newProduct = {
-          quantity: 1,
-          product: this.product,
-          id: this.product._id,
-        };
-        newCart.push(newProduct);
       }
 
-      localStorage.setItem("cart", JSON.stringify(newCart));
+      this.setCartToLocalStorage(newCart);
       return newCart;
     },
     toggleProductInLocalStorageWishlist(item) {
@@ -195,21 +193,7 @@ export default {
     async toggleProductInWishlist() {
       this.isWishlistToggled = true;
 
-      if (this.IS_USER_AUTH) {
-        if (this.isInWishlist) {
-          await this.REMOVE_ITEM_FROM_WISHLIST({
-            listId: this.USER.wishlist,
-            itemId: this.product._id,
-          });
-        } else {
-          await this.ADD_ITEM_TO_WISHLIST({
-            listId: this.USER.wishlist,
-            itemId: this.product._id,
-          });
-        }
-
-        this.isWishlistToggled = false;
-      } else {
+      if (!this.IS_USER_AUTH) {
         const newWishlist = this.toggleProductInLocalStorageWishlist(
           this.product
         );
@@ -218,7 +202,23 @@ export default {
         setTimeout(() => {
           this.isWishlistToggled = false;
         }, 200);
+
+        return;
       }
+
+      if (this.isProductInWishlist) {
+        await this.REMOVE_ITEM_FROM_WISHLIST({
+          listId: this.USER.wishlist,
+          itemId: this.product._id,
+        });
+      } else {
+        await this.ADD_ITEM_TO_WISHLIST({
+          listId: this.USER.wishlist,
+          itemId: this.product._id,
+        });
+      }
+
+      this.isWishlistToggled = false;
     },
   },
 };

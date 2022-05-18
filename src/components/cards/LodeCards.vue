@@ -41,7 +41,9 @@ export default {
       if (this.categoriesCards) {
         if (this.ARE_CATEGORIES_LOADED) {
           return [...this.CATEGORIES]
-            .filter((category) => category._id !== "61ef07be51a966f430d29f13")
+            .filter(
+              (category) => category._id !== process.env.VUE_APP_CATEGORY_ALL_ID
+            )
             .reverse();
         }
       }

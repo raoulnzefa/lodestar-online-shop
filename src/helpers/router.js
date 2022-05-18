@@ -1,5 +1,5 @@
-export const updateFilterPath = (context, filterQuery) => {
-  context.$router.push({
+export const updateFilterPath = (router, filterQuery) => {
+  router.push({
     path: "/catalog/filter",
     query: filterQuery
   });

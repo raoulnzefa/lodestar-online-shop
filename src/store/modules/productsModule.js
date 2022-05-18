@@ -14,7 +14,7 @@ export const productsModule = {
   }),
   getters: {
     PRODUCTS: (state) => state.products,
-    LOADING: (state) => state.isProductsLoading,
+    IS_PRODUCTS_LOADING: (state) => state.isProductsLoading,
     SEARCHED_PRODUCTS: (state) => state.searchedProducts,
     FILTERED_PRODUCTS: (state) => state.filteredProducts,
     PREFILTERED_PRODUCTS: (state) => state.prefilteredProducts,
@@ -23,7 +23,7 @@ export const productsModule = {
   },
   mutations: {
     SET_PRODUCTS: (state, products) => state.products = products,
-    SET_LOADING: (state, bool) => state.isProductsLoading = bool,
+    SET_PRODUCTS_LOADING: (state, bool) => state.isProductsLoading = bool,
     SET_SIDEBAR_LOADING: (state, bool) => state.sidebarLoading = bool,
     SET_SEARCHED_PRODUCTS: (state, products) => state.searchedProducts = products,
     SET_FILTERED_PRODUCTS: (state, products) => state.filteredProducts = products,
@@ -46,7 +46,7 @@ export const productsModule = {
     // API requests actions
     async GET_PRODUCTS_FROM_API({ commit }, categoryId = '') {
       try {
-        commit('SET_LOADING', true);
+        commit('SET_PRODUCTS_LOADING', true);
         let products;
 
         if (categoryId.length) {
@@ -61,12 +61,12 @@ export const productsModule = {
       } catch (err) {
         console.log(err)
       } finally {
-        commit('SET_LOADING', false);
+        commit('SET_PRODUCTS_LOADING', false);
       }
     },
     async GET_SLIDER_PRODUCTS_FROM_API({ commit }, categoryId = '') {
       try {
-        commit('SET_LOADING', true);
+        commit('SET_PRODUCTS_LOADING', true);
         let products;
 
         if (categoryId.length) {
@@ -81,12 +81,12 @@ export const productsModule = {
       } catch (err) {
         console.log(err)
       } finally {
-        commit('SET_LOADING', false);
+        commit('SET_PRODUCTS_LOADING', false);
       }
     },
     async GET_FILTERED_PRODUCTS_FROM_API({ commit }, filter) {
       try {
-        commit('SET_LOADING', true);
+        commit('SET_PRODUCTS_LOADING', true);
 
         if (!filter.length) {
           commit("SET_FILTERED_PRODUCTS", []);
@@ -98,10 +98,10 @@ export const productsModule = {
 
         products.forEach(product => product.article = fixProductArticle(product.article))
         commit("SET_FILTERED_PRODUCTS", products);
-        commit('SET_LOADING', false);
+        commit('SET_PRODUCTS_LOADING', false);
       } catch (err) {
         console.log(err);
-        commit('SET_LOADING', false);
+        commit('SET_PRODUCTS_LOADING', false);
       }
     },
     async GET_PREFILTERED_PRODUCTS_FROM_API({ commit }, filter) {

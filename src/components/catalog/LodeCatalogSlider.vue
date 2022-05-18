@@ -2,7 +2,7 @@
   <div class="lode-catalog__slider">
     <h1
       class="lode-catalog__slider-loading"
-      v-if="LOADING"
+      v-if="IS_PRODUCT_LOADING"
     >Товары грузятся...</h1>
     <Carousel
       v-else
@@ -60,7 +60,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["LOADING"]),
+    ...mapGetters(["IS_PRODUCT_LOADING"]),
   },
 };
 </script>

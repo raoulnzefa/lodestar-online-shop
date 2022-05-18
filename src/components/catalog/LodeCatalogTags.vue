@@ -72,7 +72,7 @@ export default {
       if (!this.TAGS.length) this.showResultButton = false;
     },
     acceptFilters() {
-      updateFilterPath(this, this.TAGS_QUERY);
+      updateFilterPath(this.$router, this.TAGS_QUERY);
       this.showResultButton = false;
 
       if (!this.TAGS.length) {

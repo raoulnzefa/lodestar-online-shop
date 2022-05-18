@@ -33,9 +33,10 @@ export default {
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       let filterString = getQueryStringWithinRouterHook(to);
+      console.log(filterString);
 
-      if (filterString.includes("&")) {
-        filterString = filterString.split("&")[0];
+      if (filterString.includes("&page")) {
+        filterString = filterString.split("&page")[0];
       }
 
       if (from.path !== "/catalog") {
