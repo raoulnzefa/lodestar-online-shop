@@ -177,9 +177,6 @@ export default {
         return this.PASSWORD_INPUT;
       },
     },
-    localStorageCart() {
-      return JSON.parse(localStorage.getItem("cart"));
-    },
   },
   methods: {
     ...mapActions([
@@ -203,9 +200,7 @@ export default {
     },
     logoutAndUpdateCart() {
       this.LOGOUT();
-      if (localStorage.cart.length) {
-        this.SET_CART(this.localStorageCart);
-      }
+      this.SET_CART(JSON.parse(localStorage.getItem("cart")));
     },
   },
 };

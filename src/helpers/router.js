@@ -5,13 +5,10 @@ export const updateFilterPath = (router, filterQuery) => {
   });
 }
 
-export const updateSearchPath = (context) => {
-  context.$router.push({
+export const updateSearchPath = (router, query) => {
+  router.push({
     path: `/search`,
-    query: {
-      category: context.selectedCategoryId,
-      text: context.searchText,
-    },
+    query,
   });
 }
 

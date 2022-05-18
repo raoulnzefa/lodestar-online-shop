@@ -85,28 +85,19 @@ export default {
   computed: {
     ...mapGetters(["CART", "CART_ID", "IS_USER_AUTH", "USER"]),
     cartTotalCost() {
-      let result = [];
-
-      if (this.CART.length) {
-        for (let item of this.CART) {
-          result.push(item.quantity * item.product.price);
-        }
-        return fixPrice(result.reduce((acc, curr) => (acc += curr)));
-      }
-
-      return 0;
+      return !this.CART.length
+        ? 0
+        : fixPrice(
+            this.CART.reduce(
+              (acc, item) => acc + item.quantity * item.product.price,
+              0
+            )
+          );
     },
     cartTotalQuantity() {
-      let result = [];
-
-      if (this.CART.length) {
-        for (let item of this.CART) {
-          result.push(item.quantity);
-        }
-        return result.reduce((acc, curr) => (acc += curr));
-      }
-
-      return 0;
+      return !this.CART.length
+        ? 0
+        : this.CART.reduce((acc, item) => acc + item.quantity, 0);
     },
     cartLength() {
       return this.CART.length;
@@ -123,6 +114,7 @@ export default {
         .addEventListener("click", () => (this.showCartList = false), {
           once: true,
         });
+
       this.showCartList = !this.showCartList;
     },
     toCart() {

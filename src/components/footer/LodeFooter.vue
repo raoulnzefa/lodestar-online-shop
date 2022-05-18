@@ -132,8 +132,6 @@ export default {
       );
     },
   },
-
-  // $secondary-light: lighten($secondary, 5%);
 };
 </script>
 

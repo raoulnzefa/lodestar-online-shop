@@ -59,6 +59,12 @@ export default {
     searchQuery() {
       return this.$route.query;
     },
+    routeQuery() {
+      return {
+        category: this.selectedCategoryId,
+        text: this.searchText,
+      };
+    },
   },
   methods: {
     ...mapActions([
@@ -74,7 +80,7 @@ export default {
         categoryQuery: this.selectedCategoryId,
         textQuery: this.searchText,
       });
-      updateSearchPath(this);
+      updateSearchPath(this.$router, this.routeQuery);
     },
     updateCategories() {
       this.GET_CATEGORIES_FROM_API().then((response) => {

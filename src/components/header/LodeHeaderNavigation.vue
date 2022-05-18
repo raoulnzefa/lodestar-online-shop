@@ -49,8 +49,7 @@ export default {
   },
   methods: {
     checkActive(path) {
-      const route = this.$route.path;
-      return route === path ? true : false;
+      return this.$route.path === path ? true : false;
     },
   },
 };
