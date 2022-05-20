@@ -82,6 +82,17 @@ export const userFeaturesModule = {
         return false
       }
     },
+    async CREATE_GUEST_ORDER({ commit }, { products, orderData, userData }) {
+      try {
+        const GUEST_USER_ID = process.env.VUE_APP_GUEST_USER_ID;
+        await UserFeaturesService.createOrder(GUEST_USER_ID, products, orderData, userData);
+
+        return true
+      } catch (err) {
+        console.log(err);
+        return false
+      }
+    },
 
   }
 }

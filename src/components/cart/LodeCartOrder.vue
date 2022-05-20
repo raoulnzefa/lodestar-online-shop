@@ -118,7 +118,12 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["CREATE_ORDER", "DELETE_ALL_FROM_CART"]),
+    ...mapActions([
+      "CREATE_ORDER",
+      "DELETE_ALL_FROM_CART",
+      "SET_CART",
+      "CREATE_GUEST_ORDER",
+    ]),
     completeContactsInfo(user) {
       for (let name in this.contactsInfo) {
         this.contactsInfo[name] = user[name];
@@ -139,6 +144,10 @@ export default {
         itemsQuantity: this.cartQuantityItems,
       };
     },
+    deleteAllFromLocalStorageCart() {
+      localStorage.setItem("cart", JSON.stringify([]));
+      this.SET_CART([]);
+    },
     async submitOrder(userId, products, orderData, userData) {
       if (this.IS_USER_AUTH) {
         const created = await this.CREATE_ORDER({
@@ -149,6 +158,14 @@ export default {
         });
 
         return created ? this.DELETE_ALL_FROM_CART(this.USER.cart) : null;
+      } else {
+        const created = await this.CREATE_GUEST_ORDER({
+          products,
+          orderData,
+          userData,
+        });
+
+        return created ? this.deleteAllFromLocalStorageCart() : null;
       }
     },
   },
