@@ -6,7 +6,7 @@
       </h1>
 
       <router-link :to="{path: '/registration'}">
-        <lode-button class="btn--registration  btn--hover-lighten">
+        <lode-button class="btn--accent-color  btn--hover-lighten">
           Зарегистрируйтесь!
         </lode-button>
       </router-link>

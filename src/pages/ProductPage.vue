@@ -62,8 +62,6 @@
           </ul>
         </div>
         <div class="lode-product__navigation">
-          <!-- <div class="lode-product__navigation-package"></div>
-          <div class="lode-product__navigation-quantity"></div> -->
           <lode-button
             @click="buyProduct()"
             class="lode-product__button"
