@@ -9,6 +9,7 @@
   "dependencies": {
     "axios": "^0.24.0",
     "core-js": "^3.6.5",
+    "dotenv": "^16.0.1",
     "express": "^4.17.2",
     "mongoose": "^6.1.7",
     "vue": "^3.0.0",
