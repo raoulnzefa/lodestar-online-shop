@@ -1,5 +1,5 @@
-import { getProduct } from "@/services/products.service";
-import { getImage } from "@/services/images.service";
+import ProductService from "@/services/products.service";
+import ImageService from "@/services/images.service";
 
 export const productModule = {
   state: () => ({
@@ -28,7 +28,7 @@ export const productModule = {
       try {
         commit("SET_PRODUCT_LOADING", true);
 
-        const product = await getProduct(article);
+        const product = await ProductService.getProduct(article);
         commit("SET_PRODUCT", product);
       } catch (err) {
         console.log(err);
@@ -42,7 +42,7 @@ export const productModule = {
       let images = [];
 
       for (let id of imagesId) {
-        let image = await getImage(id);
+        let image = await ImageService.getImage(id);
         images.push(image);
       }
 

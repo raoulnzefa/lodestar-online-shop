@@ -1,4 +1,4 @@
-import { getProducts, getProductsByCategory, getFilteredProducts } from "@/services/products.service";
+import ProductService from "@/services/products.service";
 import { fixProductArticle } from "@/helpers/article";
 
 
@@ -50,9 +50,9 @@ export const productsModule = {
         let products;
 
         if (categoryId.length) {
-          products = await getProductsByCategory(categoryId)
+          products = await ProductService.getProductsByCategory(categoryId)
         } else {
-          products = await getProducts();
+          products = await ProductService.getProducts();
         }
 
         products.forEach(product => product.article = fixProductArticle(product.article))
@@ -70,9 +70,9 @@ export const productsModule = {
         let products;
 
         if (categoryId.length) {
-          products = await getProductsByCategory(categoryId)
+          products = await ProductService.getProductsByCategory(categoryId)
         } else {
-          products = await getProducts();
+          products = await ProductService.getProducts();
         }
 
         products.forEach(product => product.article = fixProductArticle(product.article))
@@ -94,7 +94,7 @@ export const productsModule = {
           return;
         }
 
-        const products = await getFilteredProducts(filter);
+        const products = await ProductService.getFilteredProducts(filter);
 
         products.forEach(product => product.article = fixProductArticle(product.article))
         commit("SET_FILTERED_PRODUCTS", products);
@@ -114,7 +114,7 @@ export const productsModule = {
           return;
         }
 
-        const products = await getFilteredProducts(filter);
+        const products = await ProductService.getFilteredProducts(filter);
 
         products.forEach(product => product.article = fixProductArticle(product.article))
         commit("SET_PREFILTERED_PRODUCTS", products);

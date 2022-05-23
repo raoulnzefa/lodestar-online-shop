@@ -1,5 +1,5 @@
-import { getCategories } from "@/services/categories.service";
-import { getProductsBySearch } from "@/services/products.service";
+import CategoryService from "@/services/categories.service";
+import ProductService from "@/services/products.service";
 
 export const searchModule = {
   state: () => ({
@@ -32,7 +32,7 @@ export const searchModule = {
     // Change state props
     async GET_CATEGORIES_FROM_API({ commit }) {
       try {
-        let categories = await getCategories();
+        let categories = await CategoryService.getCategories();
         categories = categories.sort((a, b) => {
           if (a.name.toLowerCase() > b.name.toLowerCase()) {
             return 1
@@ -70,9 +70,9 @@ export const searchModule = {
         let products = [];
 
         if (categoryQuery === "61ef07be51a966f430d29f13") {
-          products = await getProductsBySearch(textQuery);
+          products = await ProductService.getProductsBySearch(textQuery);
         } else {
-          products = await getProductsBySearch(textQuery, categoryQuery);
+          products = await ProductService.getProductsBySearch(textQuery, categoryQuery);
         }
 
         Array.isArray(products) ?

@@ -1,7 +1,11 @@
 import { request } from "./generic.service";
 
-const getCategory = (id) => request({ url: `categories/${id}`, method: "get" });
+export default class CategoryService {
+  static async getCategory(id) {
+    return request({ url: `categories/${id}`, method: "get" });
+  }
 
-const getCategories = () => request({ url: 'categories', method: 'get' });
-
-export { getCategory, getCategories };
+  static async getCategories() {
+    return request({ url: 'categories', method: 'get' });
+  }
+}
