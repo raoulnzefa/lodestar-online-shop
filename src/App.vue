@@ -85,25 +85,4 @@ export default {
   margin: 0 auto;
   min-height: 70vh;
 }
-
-// Animation for pages (not necessary for now)
-// .pages {
-//   &-enter-active {
-//     transition: all 0.6s ease-in-out;
-//   }
-
-//   &-leave-active {
-//     transition: all 0.3s ease-in-out;
-//   }
-
-//   &-enter-from {
-//     opacity: 0;
-//     transform: translateX(-100vw);
-//   }
-
-//   &-leave-to {
-//     opacity: 0;
-//     transform: translateX(100vw);
-//   }
-// }
 </style>
