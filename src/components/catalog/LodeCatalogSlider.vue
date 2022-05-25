@@ -51,8 +51,8 @@ export default {
       phoneWidth: 768,
       smallPhoneWidth: 576,
       carouselSettings: {
-        itemsToShow: 2,
-        itemsToScroll: 2,
+        itemsToShow: 4,
+        itemsToScroll: 4,
         mouseDrag: false,
         snapAlign: "start",
         transition: 500,
@@ -63,17 +63,6 @@ export default {
   },
   computed: {
     ...mapGetters(["IS_PRODUCTS_LOADING"]),
-  },
-  methods: {
-    itemsToShowQuantity() {
-      if (window.innerWidth > this.smallPhoneWidth) {
-        return 3;
-      } else if (window.innerWidth > this.phoneWidth) {
-        return 4;
-      } else {
-        return 2;
-      }
-    },
   },
 };
 </script>
