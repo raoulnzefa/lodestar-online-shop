@@ -5,30 +5,38 @@
 
         <!-- Header Left -->
         <div class="lode-upper-header__left">
-          <img
-            :src="PhoneSvgSrc"
-            class="lode-upper-header__image"
-          >
-          <a
-            href=""
-            class="lode-upper-header__link"
-          >096-000-00-00</a>
-          <img
-            :src="MailSvgSrc"
-            class="lode-upper-header__image"
-          >
-          <a
-            href=""
-            class="lode-upper-header__link"
-          >mail@gmail.com</a>
-          <img
-            :src="MapSvgSrc"
-            class="lode-upper-header__image"
-          >
-          <a
-            href=""
-            class="lode-upper-header__link"
-          >г.Киев, Харковское Шоссе, 201/203</a>
+
+          <div class="lode-upper-header__left-item">
+            <img
+              :src="PhoneSvgSrc"
+              class="lode-upper-header__image"
+            >
+            <a
+              href=""
+              class="lode-upper-header__link"
+            >096-000-00-00</a>
+          </div>
+          <div class="lode-upper-header__left-item">
+            <img
+              :src="MailSvgSrc"
+              class="lode-upper-header__image"
+            >
+            <a
+              href=""
+              class="lode-upper-header__link"
+            >mail@gmail.com</a>
+          </div>
+          <div class="lode-upper-header__left-item">
+            <img
+              :src="MapSvgSrc"
+              class="lode-upper-header__image"
+            >
+            <a
+              href=""
+              class="lode-upper-header__link"
+            >г.Киев, Харковское Шоссе, 201/203</a>
+          </div>
+
         </div>
         <!-- /Header Left -->
 
@@ -218,6 +226,16 @@ export default {
   }
 
   &__left {
+    display: flex;
+    width: 80%;
+
+    &-item {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      text-align: left;
+    }
+
     .lode-upper-header__link {
       margin-right: 1rem;
     }
@@ -225,6 +243,8 @@ export default {
 
   &__right {
     position: relative;
+    width: 20%;
+    text-align: right;
   }
 
   &__link {
@@ -282,6 +302,36 @@ export default {
     font-size: 1.4rem;
     font-weight: 500;
     color: $error;
+  }
+
+  @include for-phone-down {
+    &__left {
+      display: flex;
+      justify-content: center;
+      align-items: baseline;
+      width: auto;
+    }
+
+    &__right {
+      width: 50%;
+    }
+
+    &__inner {
+      height: 42px;
+    }
+  }
+
+  @include for-small-phone-down {
+    &__left {
+      display: flex;
+      justify-content: flex-start;
+      align-items: baseline;
+      flex-wrap: wrap;
+    }
+
+    &__inner {
+      height: 42px;
+    }
   }
 }
 </style>

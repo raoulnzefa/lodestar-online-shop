@@ -97,6 +97,25 @@ export default {
     &:hover {
       background-color: $accent-light;
     }
+
+    @include for-tablet-portrait-down {
+      & {
+        width: 8rem;
+      }
+    }
+
+    @include for-phone-down {
+      & {
+        width: 10rem;
+      }
+    }
+
+    @include for-small-phone-down {
+      & {
+        width: 8rem;
+        padding: 0.6em 1em;
+      }
+    }
   }
 
   // UpperHeader

@@ -77,5 +77,24 @@ export default {
       font-size: 1.4rem;
     }
   }
+
+  @include for-phone-down {
+    &__advantages {
+      max-width: 80%;
+    }
+  }
+
+  @include for-small-phone-down {
+    &__title {
+      font-size: 1.8rem;
+    }
+
+    &__advantages {
+      max-width: 100%;
+      &-title {
+        font-size: 1.6rem;
+      }
+    }
+  }
 }
 </style>

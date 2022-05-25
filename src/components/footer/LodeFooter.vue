@@ -188,5 +188,25 @@ export default {
       }
     }
   }
+
+  @include for-small-phone-down {
+    & {
+      padding: 3rem 0;
+    }
+
+    &__upper {
+      flex-wrap: wrap;
+
+      &-column {
+        text-align: center;
+        width: 50%;
+        margin-bottom: 3rem;
+
+        &:first-child {
+          width: 50%;
+        }
+      }
+    }
+  }
 }
 </style>

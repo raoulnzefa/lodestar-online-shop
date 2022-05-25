@@ -108,5 +108,41 @@ export default {
     height: 37rem;
     width: 37rem;
   }
+
+  @include for-phone-down {
+    & {
+      width: 50%;
+    }
+  }
+
+  @include for-small-phone-down {
+    & {
+      width: 50%;
+      padding: 1rem;
+    }
+
+    &-title {
+      font-size: 1.8rem;
+      left: 3rem;
+    }
+
+    &-link {
+      font-size: 1.5rem;
+      left: 3rem;
+      max-width: 10rem;
+      text-align: left;
+    }
+
+    &-inner {
+      max-height: 20rem;
+
+      &::after {
+        top: -13rem;
+        left: -7rem;
+        width: 22rem;
+        height: 33rem;
+      }
+    }
+  }
 }
 </style>

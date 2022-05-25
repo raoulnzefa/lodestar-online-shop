@@ -1,20 +1,23 @@
 <template>
   <div class="lode-cards">
-    <div
-      v-if="categoriesCards"
-      class="lode-cards__categories"
-    >
-      <lode-cards-categories-item
-        v-for="object in categories"
-        :key="object._id"
-        :itemsObject="object"
+    <div class="container">
+      <div
+        v-if="categoriesCards"
+        class="lode-cards__categories"
+      >
+        <lode-cards-categories-item
+          v-for="object in categories"
+          :key="object._id"
+          :itemsObject="object"
+        />
+      </div>
+      <div
+        v-if="seriesCards"
+        class="lode-cards__series"
       />
     </div>
-    <div
-      v-if="seriesCards"
-      class="lode-cards__series"
-    />
   </div>
+
 </template>
 
 <script>

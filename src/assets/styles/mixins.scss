@@ -1,15 +1,12 @@
-@mixin for-desktop-up {
-  @media (min-width: $full-size) {@content;}
+@mixin for-tablet-landscape-down {
+  @media (max-width: $full-size) {@content;}
 }
-@mixin for-tablet-landscape-up {
-  @media (min-width: 992px) {@content;}
-}
-@mixin for-tablet-portrait-up {
-  @media (min-width: 768px) {@content;}
-}
-@mixin for-phone-up {
-  @media (min-width: 576px) {@content;}
+@mixin for-tablet-portrait-down {
+  @media (max-width: 992px) {@content;}
 }
 @mixin for-phone-down {
-  @media (min-width: 375px) {@content;}
+  @media (max-width: 768px) {@content;}
+}
+@mixin for-small-phone-down {
+  @media (max-width: 576px) {@content;}
 }

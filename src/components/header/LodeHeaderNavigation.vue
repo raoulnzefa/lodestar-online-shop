@@ -1,9 +1,13 @@
 <template>
-  <nav class="lode-header-navigation">
+  <nav
+    class="lode-header-navigation"
+    :class="{'lode-header-navigation--active': showNavBar}"
+  >
     <div class="container">
       <div class="lode-header-navigation__inner">
         <div class="lode-header-navigation__item">
           <router-link
+            @click="closeNavBar()"
             :to="'/'"
             class="lode-header-navigation__link"
             :class="{'lode-header-navigation__link--active': checkActive('/')}"
@@ -11,6 +15,7 @@
         </div>
         <div class="lode-header-navigation__item">
           <router-link
+            @click="closeNavBar()"
             :to="'/catalog'"
             class="lode-header-navigation__link"
             :class="{'lode-header-navigation__link--active': checkActive('/catalog')}"
@@ -22,6 +27,7 @@
           class="lode-header-navigation__item"
         >
           <router-link
+            @click="closeNavBar()"
             :to="{path: category.path}"
             class="lode-header-navigation__link"
             :class="{'lode-header-navigation__link--active': checkActive(category.path)}"
@@ -39,6 +45,12 @@ export default {
   data() {
     return {};
   },
+  props: {
+    showNavBar: {
+      type: Boolean,
+      default: false,
+    },
+  },
   computed: {
     ...mapGetters(["CATEGORIES"]),
     categories() {
@@ -46,10 +58,23 @@ export default {
         (category) => category.value !== "Все категории"
       );
     },
+    windowWidth() {
+      return window.innerWidth;
+    },
   },
   methods: {
     checkActive(path) {
       return this.$route.path === path ? true : false;
+    },
+    closeNavBar() {
+      if (this.showNavBar) {
+        this.$emit("closeNavBar");
+      }
+    },
+  },
+  emits: {
+    closeNavBar: {
+      type: null,
     },
   },
 };
@@ -63,7 +88,6 @@ export default {
   margin-bottom: 3rem;
 
   background-color: $white;
-  border-top: 4px solid $accent;
   border-bottom: 1px solid $grey;
   box-shadow: 0px 3px 5px $grey-shadow;
 
@@ -121,6 +145,58 @@ export default {
       &::after {
         width: 100%;
       }
+    }
+  }
+
+  @include for-tablet-landscape-down {
+    & {
+      margin-bottom: 1.5rem;
+      padding: 1.5rem;
+    }
+  }
+
+  @include for-tablet-portrait-down {
+    & {
+      position: absolute;
+      left: -30%;
+      top: calc(104px + 41px);
+      z-index: 10;
+
+      box-shadow: $modal-shadow;
+      width: 30%;
+      height: 100%;
+
+      transition: left 0.2s linear;
+
+      &--active {
+        left: 0;
+      }
+
+      &__inner {
+        display: block;
+      }
+
+      &__item {
+        text-align: left;
+        padding: 1rem 0;
+      }
+    }
+  }
+
+  @include for-phone-down {
+    & {
+      width: 40%;
+      top: calc(227px + 62px);
+      left: -40%;
+      padding: 1.5rem 0;
+
+      &--active {
+        left: 0;
+      }
+    }
+
+    &__item {
+      margin-left: 0;
     }
   }
 }

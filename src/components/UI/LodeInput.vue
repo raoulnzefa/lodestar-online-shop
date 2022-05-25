@@ -43,6 +43,24 @@ export default {
 
   &--header-search {
     width: calc(100% - 26rem);
+
+    @include for-tablet-portrait-down {
+      & {
+        width: calc(100% - 22rem);
+      }
+    }
+
+    @include for-phone-down {
+      & {
+        width: calc(100% - 26rem);
+      }
+    }
+
+    @include for-small-phone-down {
+      & {
+        width: calc(100% - 22rem);
+      }
+    }
   }
 
   &--login {

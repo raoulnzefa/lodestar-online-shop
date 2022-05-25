@@ -144,8 +144,8 @@ export default {
   display: flex;
   justify-content: flex-end;
   position: relative;
-  width: 12.5%;
   padding: 1.5rem 0;
+  width: 50%;
 
   &-image {
     width: 3.2rem;
@@ -236,6 +236,34 @@ export default {
 
     &-btns {
       display: flex;
+    }
+  }
+
+  /* Breackpoints */
+  @include for-tablet-portrait-down {
+    & {
+      width: calc(100% / 3);
+    }
+  }
+
+  @include for-phone-down {
+    & {
+      justify-content: center;
+    }
+
+    &-quantity {
+      right: 50%;
+      transform: translateX(50%);
+    }
+
+    &-modal {
+      right: auto;
+    }
+  }
+
+  @include for-small-phone-down {
+    & {
+      width: 6.5rem;
     }
   }
 }
