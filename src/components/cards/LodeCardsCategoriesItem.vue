@@ -122,13 +122,13 @@ export default {
     }
 
     &-title {
-      font-size: 1.8rem;
-      left: 3rem;
+      font-size: 1.6rem;
+      left: 2rem;
     }
 
     &-link {
       font-size: 1.5rem;
-      left: 3rem;
+      left: 2rem;
       max-width: 10rem;
       text-align: left;
     }
@@ -142,6 +142,11 @@ export default {
         width: 22rem;
         height: 33rem;
       }
+    }
+
+    &-image {
+      height: 24rem;
+      width: 24rem;
     }
   }
 }

@@ -313,7 +313,7 @@ export default {
     }
 
     &__right {
-      width: 50%;
+      width: 42%;
     }
 
     &__inner {

@@ -416,6 +416,38 @@ export default {
       transform: scale(1.08);
     }
   }
+
+  @include for-small-phone-down {
+    &__article {
+      margin-bottom: 0.5rem;
+    }
+
+    &__flags {
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    &__series {
+      margin-bottom: 0;
+
+      &:first-child {
+        margin-bottom: 0.5rem;
+      }
+    }
+
+    &__preview {
+      height: 16rem;
+      width: 100%;
+    }
+
+    &__image {
+      max-width: 14rem;
+    }
+
+    &__name {
+      margin-bottom: 0;
+    }
+  }
 }
 
 .carousel__slide {

@@ -243,6 +243,7 @@ export default {
   @include for-tablet-portrait-down {
     & {
       width: calc(100% / 3);
+      width: 6.5rem;
     }
   }
 
@@ -258,12 +259,6 @@ export default {
 
     &-modal {
       right: auto;
-    }
-  }
-
-  @include for-small-phone-down {
-    & {
-      width: 6.5rem;
     }
   }
 }

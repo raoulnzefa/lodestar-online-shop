@@ -237,7 +237,13 @@ export default {
     }
 
     &__buttons {
-      width: 40%;
+      width: 70%;
+      justify-content: space-evenly;
+    }
+
+    &__wishlist,
+    &__burger {
+      width: 6.5rem;
     }
   }
 
@@ -248,16 +254,6 @@ export default {
       &-select {
         padding: 0 0.5rem;
       }
-    }
-
-    &__buttons {
-      width: 100%;
-      justify-content: space-evenly;
-    }
-
-    &__wishlist,
-    &__burger {
-      width: 6.5rem;
     }
   }
 }
