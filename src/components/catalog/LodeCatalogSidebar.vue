@@ -1,50 +1,79 @@
 <template>
-  <aside class="lode-catalog__sidebar">
+  <aside
+    @click.self="toggleFilters()"
+    class="lode-catalog__sidebar"
+    :class="{
+      'lode-catalog__sidebar--toggle': windowWidth < 768,
+      'lode-catalog__sidebar--opened': areFiltersOpened
+    }"
+  >
+    <div
+      v-if="windowWidth < toggledSidebarWidth"
+      @click="toggleFilters()"
+      class="lode-catalog__sidebar-open"
+    >
+      <p class="lode-catalog__sidebar-open-text">Фильтрация</p>
+      <svg
+        class="lode-catalog__sidebar-arrow"
+        :class="{'lode-catalog__sidebar-arrow--closed': areFiltersOpened}"
+      >
+        <use xlink:href="#svg-sidebar-arrow"></use>
+      </svg>
+    </div>
+
     <div
       v-if="areSidebarFiltersLoading"
       class="lode-catalog__sidebar-loading"
     >
       <p class="lode-catalog__sidebar-loading-text">Обновление...</p>
     </div>
-    <div
-      v-for="(filter, index) in SIDEBAR_FILTERS"
-      :key="filter._id"
-      v-show="filter.variants.length"
-      class="lode-catalog__sidebar-item"
-    >
-      <h1
-        @click="TOGGLE_SIDEBAR_FILTER(index)"
-        class="lode-catalog__sidebar-header"
-      >
-        <p class="lode-catalog__sidebar-title">{{filter.name}}</p>
-        <svg
-          :class="{'lode-catalog__sidebar-arrow--closed': isFilterClosed(index)}"
-          class="lode-catalog__sidebar-arrow"
-        >
-          <use xlink:href="#svg-sidebar-arrow"></use>
-        </svg>
-      </h1>
+    <transition name="sidebar-list">
       <div
-        v-show="!isFilterClosed(index)"
-        class="lode-catalog__sidebar-settings"
+        class="lode-catalog__sidebar__list"
+        v-show="windowWidth < toggledSidebarWidth ? areFiltersOpened : true"
       >
-        <ul class="lode-catalog__sidebar-list">
-          <li
-            v-for="variant in filter.variants"
-            :key="variant"
-            class="lode-catalog__sidebar-list-item"
+        <div
+          v-for="(filter, index) in SIDEBAR_FILTERS"
+          :key="filter._id"
+          v-show="filter.variants.length"
+          class="lode-catalog__sidebar-item"
+        >
+          <h1
+            @click="TOGGLE_SIDEBAR_FILTER(index)"
+            class="lode-catalog__sidebar-header"
           >
-            <lode-checkbox
-              :disabled="checkFilterAccess(filter, variant)"
-              :filterObject="filter"
-              :value="String(variant)"
-              :checkArray="stateTags"
-              v-model:tag="lastActiveTag"
-            >{{`${variant} ${filter.sign}`}}</lode-checkbox>
-          </li>
-        </ul>
-      </div>
-    </div>
+            <p class="lode-catalog__sidebar-title">{{filter.name}}</p>
+            <svg
+              :class="{'lode-catalog__sidebar-arrow--closed': isFilterClosed(index)}"
+              class="lode-catalog__sidebar-arrow"
+            >
+              <use xlink:href="#svg-sidebar-arrow"></use>
+            </svg>
+          </h1>
+          <div
+            v-show="!isFilterClosed(index)"
+            class="lode-catalog__sidebar-settings"
+          >
+            <ul class="lode-catalog__sidebar-list">
+              <li
+                v-for="variant in filter.variants"
+                :key="variant"
+                class="lode-catalog__sidebar-list-item"
+              >
+                <lode-checkbox
+                  :disabled="checkFilterAccess(filter, variant)"
+                  :filterObject="filter"
+                  :value="String(variant)"
+                  :checkArray="stateTags"
+                  v-model:tag="lastActiveTag"
+                >{{`${variant} ${filter.sign}`}}</lode-checkbox>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div> <!-- /sidebar__list -->
+    </transition>
+
   </aside>
 </template>
 
@@ -68,10 +97,16 @@ export default {
   },
   data() {
     return {
+      // width
+      toggledSidebarWidth: 768,
+      windowWidth: window.innerWidth,
+
+      // data
       selectedFilters: [],
       lastActiveTag: {},
       prerenderedSidebarFilters: [],
       areSidebarFiltersLoading: false,
+      areFiltersOpened: false,
     };
   },
   computed: {
@@ -113,6 +148,16 @@ export default {
       "SET_PREFILTERED_PRODUCTS",
       "SET_FILTERED_PRODUCTS",
     ]),
+    updateWindowWidth() {
+      this.windowWidth = window.innerWidth;
+    },
+    toggleFilters() {
+      this.areFiltersOpened = !this.areFiltersOpened;
+
+      return this.areFiltersOpened
+        ? this.$emit("filtersOpened", true)
+        : this.$emit("filtersOpened", false);
+    },
     isFilterClosed(index) {
       return this.SIDEBAR_FILTERS[index].closed;
     },
@@ -267,90 +312,161 @@ export default {
       }
     },
   },
+  emits: {
+    filtersOpened: (value) => typeof value === "boolean",
+  },
   mounted() {
+    addEventListener("resize", this.updateWindowWidth);
+
     if (this.PREFILTERED_PRODUCTS.length) {
       this.prerenderSidebarFilters(this.PREFILTERED_PRODUCTS);
     }
+  },
+
+  beforeUnmount() {
+    removeEventListener("resize", this.updateWindowWidth);
   },
 };
 </script>
 
 <style lang="scss">
-.lode-catalog {
-  &__sidebar {
-    position: relative;
-    width: 30%;
-    margin-top: 1rem;
-    margin-right: 3rem;
-    height: auto;
+.lode-catalog__sidebar {
+  position: relative;
+  width: 30%;
+  margin-right: 3rem;
+  height: auto;
 
-    box-shadow: $block-shadow;
-    border: 1px solid $grey;
+  box-shadow: $block-shadow;
+  border: 1px solid $grey;
 
-    &-loading {
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 20;
+  &-open {
+    display: flex;
+    align-items: center;
 
+    position: absolute;
+    transform: rotate(90deg);
+    top: 15rem;
+    right: -4.7rem;
+
+    &-text {
+      font-size: 1.6rem;
+      margin-right: 1rem;
+    }
+  }
+
+  &-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 20;
+
+    height: 100%;
+    width: 100%;
+    background-color: $grey-shadow;
+
+    &-text {
+      margin-top: 3rem;
       height: 100%;
-      width: 100%;
-      background-color: $grey-shadow;
-
-      &-text {
-        margin-top: 3rem;
-        height: 100%;
-        font-size: 1.8rem;
-        text-transform: uppercase;
-      }
+      font-size: 1.8rem;
+      text-transform: uppercase;
     }
+  }
 
+  &-item {
+    border-bottom: 1px solid $grey;
+    padding: 0 1rem 1rem 1rem;
+  }
+
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+
+    cursor: pointer;
+  }
+
+  &-settings {
+    &--closed {
+      display: none;
+    }
+  }
+
+  &-title {
+    font-weight: 500;
+    font-size: 1.8rem;
+    text-align: left;
+    width: 70%;
+  }
+
+  &-list {
     &-item {
-      border-bottom: 1px solid $grey;
-      padding: 0 1rem 1rem 1rem;
-    }
-
-    &-header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 1rem 0;
-
-      cursor: pointer;
     }
+  }
 
-    &-settings {
-      &--closed {
-        display: none;
+  &-checkbox {
+    line-height: 1;
+  }
+
+  &-arrow {
+    height: 2rem;
+    width: 2rem;
+
+    transition: transform 0.2s linear;
+
+    &--closed {
+      transform: rotate(180deg);
+    }
+  }
+
+  @include for-phone-down {
+    & {
+      padding-right: 3rem;
+      transition: width 0.3s linear;
+
+      &--toggle {
+        width: 4%;
+      }
+
+      &--opened {
+        width: 40%;
       }
     }
 
     &-title {
-      font-weight: 500;
-      font-size: 1.8rem;
+      font-size: 1.6rem;
     }
 
-    &-list {
-      &-item {
-        display: flex;
-        align-items: center;
-      }
+    &-item {
+      border-right: 1px solid $grey;
+    }
+  }
+
+  @include for-small-phone-down {
+    & {
+      margin-right: 1.5rem;
     }
 
-    &-checkbox {
-      line-height: 1;
+    &-title {
+      font-size: 1.3rem;
     }
+  }
+}
 
-    &-arrow {
-      height: 2rem;
-      width: 2rem;
+.sidebar-list {
+  &-enter-active {
+    transition: opacity 0.5s ease 0.2s;
+  }
 
-      transition: transform 0.2s linear;
+  &-leave-active {
+    transition: opacity 0.2s ease;
+  }
 
-      &--closed {
-        transform: rotate(180deg);
-      }
-    }
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
   }
 }
 </style>

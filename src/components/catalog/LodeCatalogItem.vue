@@ -1,5 +1,8 @@
 <template>
-  <div class="lode-catalog-item">
+  <div
+    class="lode-catalog-item"
+    :class="{'lode-catalog-item--filters-opened': areFiltersOpened}"
+  >
     <p class="lode-catalog-item__article">Артикул: {{product.article}}</p>
     <div class="lode-catalog-item__flags">
       <div
@@ -32,7 +35,7 @@
       @click="$router.push(`/catalog/${product.article}`)"
       class="lode-catalog-item__name"
     >{{product.name}}</h1>
-    <h2 class="lode-catalog-item__price">Цена: {{fixedPrice}} грн</h2>
+    <h2 class="lode-catalog-item__price">{{fixedPrice}} грн</h2>
 
     <div class="lode-catalog-item__buttons">
       <lode-button
@@ -73,6 +76,10 @@ export default {
         return {};
       },
       required: true,
+    },
+    areFiltersOpened: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -229,7 +236,7 @@ export default {
   display: flex;
   position: relative;
   flex-direction: column;
-  padding: 20px 10px;
+  padding: 2rem 1rem;
   margin: 1rem 1rem;
 
   width: 22.5rem;
@@ -417,18 +424,56 @@ export default {
     }
   }
 
+  /* Breakpoints */
+  @include for-tablet-portrait-down {
+    .carousel__slide > & {
+      width: 100%;
+    }
+
+    & {
+      width: calc(50% - 2rem);
+    }
+  }
+
+  @include for-phone-down {
+    &__preview {
+      height: auto;
+      min-height: 15rem;
+      width: 100%;
+    }
+
+    &__image {
+      max-width: 100%;
+    }
+
+    &__flags {
+      flex-wrap: wrap;
+    }
+
+    &__buttons {
+      flex-wrap: wrap;
+      padding-top: 1rem;
+    }
+  }
+
   @include for-small-phone-down {
+    &--filters-opened {
+      width: 100%;
+    }
+
     &__article {
       margin-bottom: 0.5rem;
     }
 
     &__flags {
-      flex-wrap: wrap;
       margin-bottom: 1rem;
     }
 
     &__series {
       margin-bottom: 0;
+      margin-right: 0;
+      width: 100%;
+      font-size: 1.2rem;
 
       &:first-child {
         margin-bottom: 0.5rem;
@@ -436,16 +481,25 @@ export default {
     }
 
     &__preview {
-      height: 16rem;
       width: 100%;
     }
 
     &__image {
       max-width: 14rem;
+      width: 100%;
     }
 
     &__name {
-      margin-bottom: 0;
+      font-size: 1.4rem;
+    }
+
+    &__price {
+      font-size: 1.4rem;
+    }
+
+    .carousel__slide > & > &__name,
+    .carousel__slide > & > &__price {
+      font-size: 1.6rem;
     }
   }
 }

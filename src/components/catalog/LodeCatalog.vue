@@ -5,6 +5,7 @@
         :updateSidebarFilters="updateSidebarFilters"
         :createSidebarFilters="createSidebarFilters"
         :clearFilters="clearFilters"
+        @filtersOpened="toggleFilters"
       />
       <div class="lode-catalog__content">
         <lode-catalog-tags
@@ -29,6 +30,7 @@
               v-for="product in pagedProducts"
               :key="product._id"
               :product="product"
+              :areFiltersOpened="areFiltersOpened"
             />
           </transition-group>
         </div>
@@ -63,6 +65,7 @@ export default {
     return {
       createSidebarFilters: false,
       maxProductsOnPage: 9,
+      areFiltersOpened: false,
     };
   },
   props: {
@@ -136,6 +139,9 @@ export default {
     acceptPrefilteredProducts() {
       this.SET_FILTERED_PRODUCTS(this.PREFILTERED_PRODUCTS);
     },
+    toggleFilters(boolean) {
+      this.areFiltersOpened = boolean;
+    },
   },
 
   mounted() {
@@ -174,6 +180,18 @@ export default {
     justify-content: center;
     align-self: start;
     flex-wrap: wrap;
+  }
+
+  @include for-tablet-portrait-down {
+    & {
+      margin-top: 2rem;
+    }
+  }
+
+  @include for-phone-down {
+    &__content {
+      width: 95%;
+    }
   }
 }
 

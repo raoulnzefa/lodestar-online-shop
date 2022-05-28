@@ -120,132 +120,159 @@ export default {
 </script>
 
 <style lang="scss">
-.lode-catalog {
-  &__tags {
-    position: relative;
+.lode-catalog__tags {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  min-height: 3.6rem;
+  margin-bottom: 1rem;
+
+  grid-area: tags;
+  padding: 0 1rem;
+
+  border: 1px solid $grey-light;
+  border-radius: 2.3rem;
+
+  transition: box-shadow 0.1s linear, border-color 0.1s linear;
+
+  &--active {
+    border-color: $grey;
+    box-shadow: 0 0 10px $grey-shadow;
+  }
+
+  &-wrapper {
     display: flex;
-    justify-content: space-between;
-    min-height: 3.6rem;
-    margin-bottom: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
 
-    grid-area: tags;
-    padding: 0 1rem;
+  &-item {
+    position: relative;
+    display: inline-flex;
+    padding: 0 0.5rem;
+    margin: 0.5rem 1rem 0.5rem 0;
+    width: auto;
 
-    border: 1px solid $grey-light;
-    border-radius: 2.3rem;
+    border: 1px solid $accent;
+    border-radius: 1.5rem;
+    line-height: 1.6;
 
-    transition: box-shadow 0.1s linear, border-color 0.1s linear;
+    transition: box-shadow 0.1s linear, width 0.5s linear,
+      text-decoration 0.2s linear, color 0.2s linear;
 
-    &--active {
-      border-color: $grey;
-      box-shadow: 0 0 10px $grey-shadow;
+    &::after {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      z-index: 2;
+
+      width: 0%;
+      height: 1px;
+      background-color: $accent;
+
+      transform: translateY(-50%);
+      transition: width 0.2s linear;
+    }
+
+    &:hover {
+      box-shadow: 0 0 5px $accent-shadow;
+      color: $black-shadow;
+      cursor: pointer;
+
+      &::after {
+        width: 100%;
+      }
+    }
+  }
+
+  &-name,
+  &-value {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    margin-right: 0.3rem;
+  }
+
+  &-value {
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  &-buttons {
+    display: flex;
+  }
+
+  &-result {
+    align-self: center;
+    font-weight: 500;
+    padding-right: 0.5rem;
+    color: $accent;
+
+    transition: text-shadow 0.1s linear;
+
+    &:hover {
+      cursor: pointer;
+      text-shadow: 0 0 10px $accent-shadow;
+    }
+  }
+
+  &-clear {
+    align-self: center;
+
+    color: $grey-light;
+    transition: all 0.1s linear;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    .lode-catalog__tags--active > .lode-catalog__tags-buttons > & {
+      cursor: pointer;
+      color: $black-half;
+
+      &:hover {
+        color: $black;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  @include for-phone-down {
+    & {
+      flex-wrap: wrap;
     }
 
     &-wrapper {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      justify-content: flex-start;
-    }
-
-    &-item {
-      position: relative;
-      display: inline-flex;
-      padding: 0 0.5rem;
-      margin: 0.5rem 1rem 0.5rem 0;
-      width: auto;
-
-      border: 1px solid $accent;
-      border-radius: 1.5rem;
-      line-height: 1.6;
-
-      transition: box-shadow 0.1s linear, width 0.5s linear,
-        text-decoration 0.2s linear, color 0.2s linear;
-
-      &::after {
-        content: "";
-        display: block;
-        position: absolute;
-        top: 50%;
-        left: 0;
-        z-index: 2;
-
-        width: 0%;
-        height: 1px;
-        background-color: $accent;
-
-        transform: translateY(-50%);
-        transition: width 0.2s linear;
-      }
-
-      &:hover {
-        box-shadow: 0 0 5px $accent-shadow;
-        color: $black-shadow;
-        cursor: pointer;
-
-        &::after {
-          width: 100%;
-        }
-      }
-    }
-
-    &-name,
-    &-value {
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      -khtml-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      margin-right: 0.3rem;
-    }
-
-    &-value {
-      &:last-child {
-        margin-right: 0;
-      }
+      width: 100%;
+      justify-content: center;
     }
 
     &-buttons {
-      display: flex;
+      width: 100%;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+  }
+
+  @include for-small-phone-down {
+    &-item {
+      flex-wrap: wrap;
+      justify-content: center;
+      font-size: 1.2rem;
     }
 
-    &-result {
-      align-self: center;
-      font-weight: 500;
-      padding-right: 0.5rem;
-      color: $accent;
-
-      transition: text-shadow 0.1s linear;
-
-      &:hover {
-        cursor: pointer;
-        text-shadow: 0 0 10px $accent-shadow;
-      }
-    }
-
-    &-clear {
-      align-self: center;
-
-      color: $grey-light;
-      transition: all 0.1s linear;
-
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      -khtml-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-
-      .lode-catalog__tags--active > .lode-catalog__tags-buttons > & {
-        cursor: pointer;
-        color: $black-half;
-
-        &:hover {
-          color: $black;
-          text-decoration: underline;
-        }
-      }
+    &-name {
+      width: 100%;
     }
   }
 }
