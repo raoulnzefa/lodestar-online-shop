@@ -182,6 +182,10 @@ export default {
   /* Breakpoints */
 
   @include for-tablet-portrait-down {
+    & {
+      margin-bottom: 1.5rem;
+    }
+
     &__logo {
       width: 95%;
     }
