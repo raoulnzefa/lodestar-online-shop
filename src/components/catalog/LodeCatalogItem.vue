@@ -45,19 +45,11 @@
         В корзину
       </lode-button>
 
-      <lode-button
-        :class="{'lode-catalog-item__wishlist-button--add-item': isWishlistToggled}"
-        class="lode-catalog-item__wishlist-button"
-      >
-        <img
-          :src="wishlistSVG"
-          alt=""
-          @mouseover="isHoverButton = true"
-          @mouseout="isHoverButton = false"
-          @click="toggleProductInWishlist()"
-          class="lode-catalog-item__favourite-img"
-        >
-      </lode-button>
+      <lode-button-wishlist
+        :isWishlistToggled="isWishlistToggled"
+        :productId="product._id"
+        @click="toggleProductInWishlist()"
+      ></lode-button-wishlist>
     </div>
 
   </div>
@@ -66,7 +58,6 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import { fixPrice } from "@/helpers/price";
-import { HeartFillSvgSrc, HeartSvgSrc } from "@/assets/icons";
 
 export default {
   props: {
@@ -84,12 +75,7 @@ export default {
   },
   data() {
     return {
-      isHoverButton: false,
       isWishlistToggled: false,
-
-      // SVG
-      HeartFillSvgSrc,
-      HeartSvgSrc,
     };
   },
   computed: {
@@ -121,11 +107,6 @@ export default {
     },
     isProductInWishlist() {
       return this.WISHLIST.find((product) => product._id === this.product._id);
-    },
-    wishlistSVG() {
-      return this.WISHLIST.find((product) => product._id === this.product._id)
-        ? this.HeartFillSvgSrc
-        : this.HeartSvgSrc;
     },
   },
   methods: {
@@ -397,19 +378,6 @@ export default {
       background-color: #fff;
       border: 2px solid $accent;
       color: $accent;
-    }
-  }
-
-  &__wishlist-button {
-    border-radius: 50%;
-    padding: 0.7rem;
-    border: none;
-    margin: 0;
-
-    &--add-item {
-      background-color: $accent-shadow;
-      box-shadow: 0 0 10px $accent-shadow;
-      transform: scale(1.1);
     }
   }
 
