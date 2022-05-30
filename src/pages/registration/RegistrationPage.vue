@@ -172,5 +172,20 @@ export default {
     border-color: $white;
     color: $white;
   }
+
+  @include for-phone-down {
+    &__title {
+      text-align: center;
+    }
+
+    &__form,
+    &__advantages {
+      width: 100%;
+    }
+
+    &__form {
+      margin-bottom: 3rem;
+    }
+  }
 }
 </style>

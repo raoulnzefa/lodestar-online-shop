@@ -70,9 +70,21 @@
             @click="addToCart()"
             class="lode-product__button"
           >Добавить в корзину</lode-button>
+          <lode-button-wishlist
+            :isWishlistToggled="isWishlistToggled"
+            :productId="PRODUCT._id"
+            @click="addToWishlist"
+          ></lode-button-wishlist>
         </div>
       </div>
     </div> <!-- /lode-product -->
+
+    <lode-catalog-item
+      v-show='false'
+      :product="PRODUCT"
+      :addToWishlist="isWishlistToggled"
+      @addedToWishlist="addedToWishlist"
+    ></lode-catalog-item>
 
     <div class="lode-product__else">
       <h2 class="lode-product__else-title">
@@ -91,11 +103,15 @@
 // Carousel
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
-// Other
+
+// Components
 import LodeCatalogSlider from "@/components/catalog/LodeCatalogSlider";
+import LodeRegister from "@/components/registration/LodeRegister";
+import LodeCatalogItem from "@/components/catalog/LodeCatalogItem";
+
+// Other
 import { mapActions, mapGetters } from "vuex";
 import { fixPrice } from "@/helpers/price";
-import LodeRegister from "@/components/registration/LodeRegister";
 
 export default {
   components: {
@@ -105,6 +121,7 @@ export default {
     Pagination,
     Navigation,
     LodeRegister,
+    LodeCatalogItem,
   },
   props: {
     article: {
@@ -112,6 +129,11 @@ export default {
       default: "",
       require: true,
     },
+  },
+  data() {
+    return {
+      isWishlistToggled: false,
+    };
   },
   computed: {
     ...mapGetters([
@@ -182,6 +204,12 @@ export default {
     buyProduct() {
       this.addToCart();
       this.$router.push("/cart");
+    },
+    addToWishlist() {
+      this.isWishlistToggled = true;
+    },
+    addedToWishlist() {
+      this.isWishlistToggled = false;
     },
   },
   beforeMount() {
@@ -310,6 +338,43 @@ export default {
     }
   }
 
+  /* Breakpoints */
+  @include for-tablet-portrait-down {
+    & {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    &__visual {
+      width: 50%;
+      margin-right: 0;
+    }
+
+    &__info {
+      width: 100%;
+    }
+  }
+
+  @include for-phone-down {
+    &__visual {
+      width: 100%;
+    }
+  }
+
+  @include for-small-phone-down {
+    &__navigation {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    &__button {
+      width: 39%;
+      padding: 0.4em 1.1em;
+      margin-bottom: 1rem;
+      margin-top: 1rem;
+    }
+  }
+
   .carousel {
     // Arrows
     &__prev {
@@ -318,6 +383,16 @@ export default {
 
     &__next {
       right: 3rem;
+    }
+
+    @include for-small-phone-down {
+      &__prev {
+        left: 1rem;
+      }
+
+      &__next {
+        right: 1rem;
+      }
     }
   }
 }

@@ -72,6 +72,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    addToWishlist: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -208,6 +212,28 @@ export default {
 
       this.isWishlistToggled = false;
     },
+  },
+  watch: {
+    addToWishlist(newValue) {
+      if (!newValue) {
+        return;
+      }
+
+      if (!this.IS_USER_AUTH) {
+        this.toggleProductInWishlist();
+
+        return setTimeout(() => {
+          this.$emit("addedToWishlist");
+        }, 200);
+      }
+
+      this.toggleProductInWishlist().then((res) => {
+        this.$emit("addedToWishlist");
+      });
+    },
+  },
+  emits: {
+    addedToWishlist: (value) => value === undefined,
   },
 };
 </script>
