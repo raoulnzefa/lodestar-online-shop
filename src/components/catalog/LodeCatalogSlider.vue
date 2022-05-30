@@ -7,6 +7,7 @@
     <Carousel
       v-else
       :settings="carouselSettings"
+      :breakpoints="carouselBreakpoints"
     >
       <Slide
         v-for="product in products"
@@ -48,16 +49,26 @@ export default {
   },
   data() {
     return {
-      phoneWidth: 768,
-      smallPhoneWidth: 576,
       carouselSettings: {
-        itemsToShow: 4,
-        itemsToScroll: 4,
         mouseDrag: false,
         snapAlign: "start",
         transition: 500,
         // autoplay: 5000,
         // pauseAutoplayOnHover: true,
+      },
+      carouselBreakpoints: {
+        992: {
+          itemsToShow: 4,
+          itemsToScroll: 4,
+        },
+        576: {
+          itemsToShow: 3,
+          itemsToScroll: 3,
+        },
+        0: {
+          itemsToShow: 2,
+          itemsToScroll: 2,
+        },
       },
     };
   },
