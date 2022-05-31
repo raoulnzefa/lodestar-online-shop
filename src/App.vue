@@ -22,12 +22,6 @@ export default {
   },
   computed: {
     ...mapGetters(["IS_USER_AUTH"]),
-    localStorageCart() {
-      return JSON.parse(localStorage.getItem("cart"));
-    },
-    localStorageWishlist() {
-      return JSON.parse(localStorage.getItem("wishlist"));
-    },
   },
   methods: {
     ...mapActions(["CHECK_AUTH", "SET_CART", "SET_WISHLIST"]),
@@ -40,19 +34,21 @@ export default {
       localStorage.setItem("wishlist", wishlist);
     },
     setLocalStorageCart() {
+      const cart = JSON.parse(localStorage.getItem("cart"));
       if (!this.localStorageCart) {
         this.addCartToLocalStorage();
-        this.SET_CART(this.localStorageCart);
+        this.SET_CART(cart);
       } else {
-        this.SET_CART(this.localStorageCart);
+        this.SET_CART(cart);
       }
     },
     setLocalStorageWishlist() {
+      const wishlist = JSON.parse(localStorage.getItem("wishlist"));
       if (!this.localStorageWishlist) {
         this.addWishlistToLocalStorage();
-        this.SET_WISHLIST(this.localStorageWishlist);
+        this.SET_WISHLIST(wishlist);
       } else {
-        this.SET_WISHLIST(this.localStorageWishlist);
+        this.SET_WISHLIST(wishlist);
       }
     },
   },
