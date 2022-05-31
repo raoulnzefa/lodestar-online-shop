@@ -36,11 +36,7 @@ export default {
     setLocalStorageCart() {
       let cart = JSON.parse(localStorage.getItem("cart"));
       if (cart) {
-<<<<<<< HEAD
         return this.SET_CART(cart);
-=======
-        this.SET_CART(cart);
->>>>>>> 4e13473489acfcbfcb359bb2cbf75b7a63b0ad70
       }
 
       this.addCartToLocalStorage();
@@ -50,11 +46,7 @@ export default {
     setLocalStorageWishlist() {
       let wishlist = JSON.parse(localStorage.getItem("wishlist"));
       if (wishlist) {
-<<<<<<< HEAD
         return this.SET_CART(wishlist);
-=======
-        this.SET_CART(wishlist);
->>>>>>> 4e13473489acfcbfcb359bb2cbf75b7a63b0ad70
       }
 
       this.addWishlistToLocalStorage();
