@@ -296,5 +296,39 @@ export default {
       font-size: 1.6rem;
     }
   }
+
+  @include for-phone-down {
+    &__contacts,
+    &__info {
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+
+    &__contacts {
+      padding-right: 0;
+    }
+
+    &__info {
+      padding-left: 0;
+    }
+  }
+
+  @include for-small-phone-down {
+    &__contacts,
+    &__info {
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+
+    &__product {
+      &-picture {
+        display: flex;
+      }
+
+      &-image {
+        margin: auto 0;
+      }
+    }
+  }
 }
 </style>

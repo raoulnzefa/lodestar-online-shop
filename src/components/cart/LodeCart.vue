@@ -34,13 +34,21 @@
           <router-link :to="{name: 'catalog'}">
             <lode-button>Продолжить покупки</lode-button>
           </router-link>
-          <lode-button @click="openOrderModal()">Оформить заказ</lode-button>
+          <lode-button
+            class="btn--accent-color  btn--hover-lighten"
+            @click="openOrderModal()"
+          >Оформить заказ</lode-button>
         </div>
         <div class="lode-cart__resume-total">
-          <p class="lode-cart__resume-total-title">Общее количество товаров:</p>
-          <h2 class="lode-cart__resume-total-quantity">{{cartTotalQuantity}}</h2>
-          <p class="lode-cart__resume-total-title">Итого:</p>
-          <h2 class="lode-cart__resume-total-price">{{cartTotalCost}} грн.</h2>
+          <div class="lode-cart__resume-total-part">
+            <p class="lode-cart__resume-total-title">Общее количество товаров:</p>
+            <h2 class="lode-cart__resume-total-quantity">{{cartTotalQuantity}}</h2>
+          </div>
+          <div class="lode-cart__resume-total-part">
+            <p class="lode-cart__resume-total-title">Итого:</p>
+            <h2 class="lode-cart__resume-total-price">{{cartTotalCost}} грн.</h2>
+          </div>
+
         </div>
       </div>
     </div>
@@ -132,7 +140,11 @@ export default {
     &-total {
       display: flex;
       justify-content: center;
-      align-items: center;
+
+      &-part {
+        display: flex;
+        align-items: center;
+      }
 
       &-title {
         margin-right: 0.5rem;
@@ -185,6 +197,47 @@ export default {
 
     &-delete {
       width: 5%;
+    }
+  }
+
+  @include for-tablet-portrait-down {
+    &__resume {
+      flex-direction: column;
+
+      &-buttons {
+        order: 1;
+      }
+
+      &-total {
+        margin-bottom: 3rem;
+
+        &-part {
+          flex-wrap: wrap;
+        }
+      }
+    }
+
+    &__names {
+      display: none;
+    }
+  }
+
+  @include for-small-phone-down {
+    &__resume {
+      &-total {
+        margin-bottom: 3rem;
+        flex-direction: column;
+
+        &-part {
+          margin-bottom: 1rem;
+        }
+      }
+
+      &-buttons {
+        * {
+          margin-bottom: 1rem;
+        }
+      }
     }
   }
 }

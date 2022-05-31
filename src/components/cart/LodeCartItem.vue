@@ -7,21 +7,24 @@
         alt=""
       >
     </div>
-    <h1
-      @click="$router.push(`/catalog/${cartItem.article}`)"
-      class="lode-cart__item-name"
-    >{{cartItem.name}}</h1>
-    <p class="lode-cart__item-article">{{cartItem.article}}</p>
-    <p class="lode-cart__item-quantity">
-      <span @click="incrementCartItem()">+</span>
-      {{quantity}}
-      <span @click="decrementCartItem()">-</span>
-    </p>
-    <p class="lode-cart__item-price">{{fixedPrice}}</p>
+    <div class="lode-cart__item-column">
+      <h1
+        @click="$router.push(`/catalog/${cartItem.article}`)"
+        class="lode-cart__item-name"
+      >{{cartItem.name}}</h1>
+      <p class="lode-cart__item-article">{{cartItem.article}}</p>
+      <p class="lode-cart__item-quantity">
+        <span @click="incrementCartItem()">+</span>
+        {{quantity}}
+        <span @click="decrementCartItem()">-</span>
+      </p>
+      <p class="lode-cart__item-price">{{fixedPrice}}</p>
+    </div>
     <lode-button
       @click="deleteFromCart()"
       class="lode-cart__item-button btn--hover-lighten"
     >Х</lode-button>
+
   </li>
 </template>
 
@@ -149,8 +152,16 @@ export default {
     max-width: 100px;
   }
 
+  &-column {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 75%;
+  }
+
   &-name {
-    width: 40%;
+    width: 56%;
 
     font-weight: 500;
     font-size: 1.8rem;
@@ -165,7 +176,7 @@ export default {
   &-article {
     font-size: 1.4rem;
 
-    width: 15%;
+    width: 20.3%;
   }
 
   &-quantity {
@@ -173,7 +184,7 @@ export default {
     align-items: center;
     justify-content: center;
 
-    width: 10%;
+    width: 14%;
     font-size: 1.8rem;
 
     span {
@@ -191,7 +202,7 @@ export default {
   }
 
   &-price {
-    width: 10%;
+    width: 14%;
   }
 
   &-button {
@@ -201,6 +212,66 @@ export default {
     background-color: $accent;
     color: $white;
     border: 1px solid $accent;
+  }
+
+  @include for-phone-down {
+    & {
+      padding: 0.5rem 1rem;
+      justify-content: space-between;
+    }
+
+    &-column {
+      justify-content: space-between;
+    }
+
+    &-name {
+      font-size: 1.6rem;
+      width: 30%;
+    }
+
+    &-article {
+      width: 20%;
+    }
+  }
+
+  @include for-small-phone-down {
+    & {
+      justify-content: space-between;
+    }
+
+    &-column {
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      width: 65%;
+    }
+
+    &-name {
+      width: 100%;
+      text-align: left;
+      margin-bottom: 2rem;
+    }
+
+    &-article {
+      display: none;
+    }
+
+    &-quantity {
+      width: 20%;
+      margin-right: 1rem;
+      justify-content: flex-start;
+
+      span {
+        font-size: 2rem;
+      }
+    }
+
+    &-price {
+      width: 20%;
+    }
+
+    &-button {
+      width: 15%;
+    }
   }
 }
 </style>

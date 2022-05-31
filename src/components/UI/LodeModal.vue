@@ -60,5 +60,11 @@ export default {
     background-color: $white;
     box-shadow: $modal-shadow;
   }
+
+  @include for-small-phone-down {
+    &__inner {
+      padding: 1.5rem;
+    }
+  }
 }
 </style>
