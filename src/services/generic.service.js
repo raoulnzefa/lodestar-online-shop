@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API_URL = 'http://localhost:3000/api/v1';
+export const API_URL = process.env.VUE_APP_API_URL;
 export const CLIENT_URL = "http://localhost:8080"
 
 export const request = async ({ url, method, data = {} }) => {
@@ -28,7 +28,7 @@ authRequest.interceptors.response.use((config) => {
     try {
       const response = await axios.get(`${API_URL}/authentication/refresh`, { withCredentials: true });
       localStorage.setItem('token', response.data.accessToken);
-      return authResponse.request(originalRequest);
+      return authRequest.request(originalRequest);
 
     } catch (err) {
       console.log('Не авторизирован');
