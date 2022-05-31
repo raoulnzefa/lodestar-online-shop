@@ -46,7 +46,7 @@ export default {
     setLocalStorageWishlist() {
       let wishlist = JSON.parse(localStorage.getItem("wishlist"));
       if (wishlist) {
-        this.SET_CART(cart);
+        this.SET_CART(wishlist);
       }
 
       this.addWishlistToLocalStorage();
