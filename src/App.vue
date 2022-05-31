@@ -22,12 +22,6 @@ export default {
   },
   computed: {
     ...mapGetters(["IS_USER_AUTH"]),
-    localStorageCart() {
-      return JSON.parse(localStorage.getItem("cart"));
-    },
-    localStorageWishlist() {
-      return JSON.parse(localStorage.getItem("wishlist"));
-    },
   },
   methods: {
     ...mapActions(["CHECK_AUTH", "SET_CART", "SET_WISHLIST"]),
@@ -40,20 +34,24 @@ export default {
       localStorage.setItem("wishlist", wishlist);
     },
     setLocalStorageCart() {
-      if (!this.localStorageCart) {
-        this.addCartToLocalStorage();
-        this.SET_CART(this.localStorageCart);
-      } else {
-        this.SET_CART(this.localStorageCart);
+      let cart = JSON.parse(localStorage.getItem("cart"));
+      if (cart) {
+        this.SET_CART(cart);
       }
+
+      this.addCartToLocalStorage();
+      cart = JSON.parse(localStorage.getItem("cart"));
+      this.SET_CART(cart);
     },
     setLocalStorageWishlist() {
-      if (!this.localStorageWishlist) {
-        this.addWishlistToLocalStorage();
-        this.SET_WISHLIST(this.localStorageWishlist);
-      } else {
-        this.SET_WISHLIST(this.localStorageWishlist);
+      let wishlist = JSON.parse(localStorage.getItem("wishlist"));
+      if (wishlist) {
+        this.SET_CART(cart);
       }
+
+      this.addWishlistToLocalStorage();
+      wishlist = JSON.parse(localStorage.getItem("wishlist"));
+      this.SET_WISHLIST(wishlist);
     },
   },
   mounted() {
