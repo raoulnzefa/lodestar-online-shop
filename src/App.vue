@@ -34,22 +34,24 @@ export default {
       localStorage.setItem("wishlist", wishlist);
     },
     setLocalStorageCart() {
-      const cart = JSON.parse(localStorage.getItem("cart"));
-      if (!this.localStorageCart) {
-        this.addCartToLocalStorage();
-        this.SET_CART(cart);
-      } else {
+      let cart = JSON.parse(localStorage.getItem("cart"));
+      if (cart) {
         this.SET_CART(cart);
       }
+
+      this.addCartToLocalStorage();
+      cart = JSON.parse(localStorage.getItem("cart"));
+      this.SET_CART(cart);
     },
     setLocalStorageWishlist() {
-      const wishlist = JSON.parse(localStorage.getItem("wishlist"));
-      if (!this.localStorageWishlist) {
-        this.addWishlistToLocalStorage();
-        this.SET_WISHLIST(wishlist);
-      } else {
-        this.SET_WISHLIST(wishlist);
+      let wishlist = JSON.parse(localStorage.getItem("wishlist"));
+      if (wishlist) {
+        this.SET_CART(cart);
       }
+
+      this.addWishlistToLocalStorage();
+      wishlist = JSON.parse(localStorage.getItem("wishlist"));
+      this.SET_WISHLIST(wishlist);
     },
   },
   mounted() {
