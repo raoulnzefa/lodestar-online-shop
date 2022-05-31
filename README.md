@@ -1,19 +1,15 @@
-# lodestar-online-shop
+![Lodestar](src/assets/Lodestar%20Logo.jpg)
+# Lodestar-online-shop
+***
 
-## Project setup
-```
-npm install
-```
+### Description
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+__Vue 3 CLI SPA__ - Frontend side of "Lodestar" online-shop project.
 
-### Compiles and minifies for production
-```
-npm run build
-```
+### Check this project on deployed server 
+Hiroku - [See this project](https://lodestar-online-shop.herokuapp.com).
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+***
+####_Also check the backend side of this project_ 
+GitHub - [lodestar-online-shop-back](https://github.com/Zakratus/lodestar-online-shop-back)
+
