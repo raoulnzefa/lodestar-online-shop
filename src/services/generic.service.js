@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API_URL = process.env.VUE_APP_API_URL;
+export const API_URL = process.env.VUE_APP_API_URL + "/api/v1";
 export const CLIENT_URL = "http://localhost:8080"
 
 export const request = async ({ url, method, data = {} }) => {
