@@ -14,7 +14,10 @@
             class="lode-profile__labels-item"
           >{{label}}:</p>
         </div>
+
         <div class="lode-profile__inputs">
+
+          <!-- v-for start -->
           <div
             v-for="[name,data] in userData"
             :key="name"
@@ -33,7 +36,7 @@
             >
               <lode-input
                 v-model="inputs[name]"
-                class="input--default"
+                class="input--default lode-profile__input"
               ></lode-input>
               <div class="lode-profile__inputs-buttons">
                 <lode-button
@@ -43,6 +46,8 @@
               </div>
             </div>
           </div>
+          <!-- v-for end -->
+
         </div>
       </div> <!-- /lode-profile__inner -->
       <lode-button
@@ -84,7 +89,7 @@ export default {
         "Фамилия",
         "Электронная почта",
         "Номер телефона",
-        "Отделение Новой Почты",
+        "Отделение почты",
       ],
       inputs: {
         name: "",
@@ -194,6 +199,7 @@ export default {
       height: 2.5rem;
 
       &-text {
+        position: relative;
         height: 2.5rem;
       }
     }
@@ -206,16 +212,11 @@ export default {
   &__inputs {
     &-change {
       position: relative;
-
-      input {
-        width: auto;
-        margin-right: 1rem;
-      }
     }
 
     &-buttons {
       position: absolute;
-      right: -1rem;
+      right: -11rem;
       top: 50%;
       z-index: 2;
       transform: translateY(-54%);
@@ -241,6 +242,67 @@ export default {
 
     &-error {
       color: $error;
+    }
+  }
+
+  /* Breakpoints */
+  @include for-tablet-portrait-down {
+    &__labels,
+    &__inputs {
+      width: 50%;
+
+      &-item {
+        margin-bottom: 4rem;
+      }
+
+      &-buttons {
+        right: auto;
+        top: auto;
+        left: 0;
+        bottom: -4.5rem;
+      }
+    }
+
+    &__inputs {
+      &-item {
+        &-text {
+          button {
+            position: absolute;
+            left: 0;
+            bottom: -2rem;
+          }
+        }
+      }
+    }
+
+    &__input {
+      width: 50%;
+      padding: 0 0.5rem;
+    }
+
+    &__labels {
+      padding-left: 25%;
+    }
+  }
+
+  @include for-phone-down {
+    &__labels {
+      padding-left: 15%;
+    }
+
+    &__input {
+      width: 100%;
+      padding: 0 0.5rem;
+    }
+  }
+
+  @include for-small-phone-down {
+    & {
+      padding: 1.5rem;
+    }
+
+    &__labels {
+      padding-left: 0;
     }
   }
 }
