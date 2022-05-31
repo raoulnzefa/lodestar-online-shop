@@ -10,6 +10,6 @@ __Vue 3 CLI SPA__ - Frontend side of "Lodestar" online-shop project.
 Hiroku - [See this project](https://lodestar-online-shop.herokuapp.com).
 
 ***
-####_Also check the backend side of this project_ 
+#### _Also check the backend side of this project_ 
 GitHub - [lodestar-online-shop-back](https://github.com/Zakratus/lodestar-online-shop-back)
 
