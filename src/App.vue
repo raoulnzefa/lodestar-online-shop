@@ -36,7 +36,8 @@ export default {
     setLocalStorageCart() {
       let cart = JSON.parse(localStorage.getItem("cart"));
       if (cart) {
-        return this.SET_CART(cart);
+        this.SET_CART(cart);
+        return;
       }
 
       this.addCartToLocalStorage();
@@ -46,7 +47,8 @@ export default {
     setLocalStorageWishlist() {
       let wishlist = JSON.parse(localStorage.getItem("wishlist"));
       if (wishlist) {
-        return this.SET_CART(wishlist);
+        this.SET_WISHLIST(wishlist);
+        return;
       }
 
       this.addWishlistToLocalStorage();
@@ -57,7 +59,6 @@ export default {
   mounted() {
     if (localStorage.getItem("token")) {
       this.CHECK_AUTH();
-      return;
     }
 
     if (!this.IS_USER_AUTH) {
