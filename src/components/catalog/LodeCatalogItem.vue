@@ -105,9 +105,11 @@ export default {
       return category ? category.value : null;
     },
     productImage() {
-      return this.product.image.includes("http")
-        ? this.product.image
-        : require(`../../${this.product.image}`);
+      if (this.product.image) {
+        return this.product.image.includes("http")
+          ? this.product.image
+          : require(`../../${this.product.image}`);
+      }
     },
     isProductInWishlist() {
       return this.WISHLIST.find((product) => product._id === this.product._id);

@@ -57,7 +57,7 @@ export const productsModule = {
 
         products.forEach(product => product.article = fixProductArticle(product.article))
         commit('SET_PRODUCTS', products);
-        return this.products;
+        return products;
       } catch (err) {
         console.log(err)
       } finally {
@@ -77,7 +77,7 @@ export const productsModule = {
 
         products.forEach(product => product.article = fixProductArticle(product.article))
         commit('SET_SLIDER_PRODUCTS', products);
-        return this.products;
+        return products;
       } catch (err) {
         console.log(err)
       } finally {

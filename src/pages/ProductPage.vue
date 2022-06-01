@@ -213,13 +213,10 @@ export default {
     },
   },
   beforeMount() {
-    this.GET_PRODUCT_FROM_API(this.article)
-      .then((res) => {
-        return this.GET_PRODUCT_IMAGES_FROM_API();
-      })
-      .then((res) => {
-        return this.GET_PRODUCTS_FROM_API(this.PRODUCT.category);
-      });
+    this.GET_PRODUCT_FROM_API(this.article).then((res) => {
+      this.GET_PRODUCT_IMAGES_FROM_API();
+      this.GET_PRODUCTS_FROM_API(this.PRODUCT.category);
+    });
   },
   beforeRouteUpdate(to, from, next) {
     let article = to.params.article;

@@ -1,10 +1,11 @@
 import ProductService from "@/services/products.service";
 import ImageService from "@/services/images.service";
+import { fixProductArticle } from "@/helpers/article";
 
 export const productModule = {
   state: () => ({
     product: {},
-    isProductLoading: true,
+    isProductLoading: false,
     productImages: [],
     areProductImagesLoading: true,
     relatedProducts: [],
@@ -28,7 +29,9 @@ export const productModule = {
       try {
         commit("SET_PRODUCT_LOADING", true);
 
-        const product = await ProductService.getProduct(article);
+        let product = await ProductService.getProduct(article);
+        product.article = fixProductArticle(product.article);
+
         commit("SET_PRODUCT", product);
       } catch (err) {
         console.log(err);
