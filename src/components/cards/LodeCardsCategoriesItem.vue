@@ -109,6 +109,27 @@ export default {
     width: 37rem;
   }
 
+  @include for-tablet-portrait-down {
+    &-title {
+      font-size: 2.1rem;
+      left: 3rem;
+    }
+
+    &-link {
+      width: 40%;
+      left: 3rem;
+      text-align: left;
+      top: calc(9rem + 1.5rem);
+    }
+
+    &-inner {
+      &::after {
+        top: -21rem;
+        left: -22rem;
+      }
+    }
+  }
+
   @include for-phone-down {
     & {
       width: 50%;
@@ -123,24 +144,29 @@ export default {
 
     &-title {
       font-size: 1.6rem;
+      top: calc(1rem + 1.5rem);
       left: 2rem;
+      max-width: 100%;
     }
 
     &-link {
-      font-size: 1.5rem;
+      top: calc(5.5rem + 1.5rem);
+      font-size: 1.4rem;
       left: 2rem;
-      max-width: 10rem;
+      max-width: 50%;
       text-align: left;
+      width: 100%;
     }
 
     &-inner {
       max-height: 20rem;
 
       &::after {
-        top: -13rem;
-        left: -7rem;
+        top: -17rem;
+        left: -9rem;
         width: 22rem;
-        height: 33rem;
+        height: 36rem;
+        transform: rotate(50deg);
       }
     }
 

@@ -113,6 +113,7 @@ export default {
     height: 40px;
 
     border-radius: 4rem 0px 0px 4rem;
+    -webkit-appearance: button;
   }
 }
 </style>

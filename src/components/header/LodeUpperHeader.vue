@@ -329,6 +329,11 @@ export default {
       flex-wrap: wrap;
     }
 
+    &__right {
+      align-self: center;
+      width: 50%;
+    }
+
     &__inner {
       height: 42px;
     }
