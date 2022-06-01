@@ -5,7 +5,7 @@
       v-if="IS_PRODUCTS_LOADING"
     >Товары грузятся...</h1>
     <Carousel
-      v-else
+      v-if="products.length"
       :settings="carouselSettings"
       :breakpoints="carouselBreakpoints"
     >
@@ -98,7 +98,7 @@ export default {
     &__prev,
     &__next {
       top: auto;
-      bottom: 2rem;
+      bottom: -1rem;
       z-index: 1;
 
       border-radius: 0;
@@ -113,6 +113,18 @@ export default {
 
     &__next {
       right: 3rem;
+    }
+
+    @include for-small-phone-down {
+      &__viewport {
+        height: 55rem;
+      }
+    }
+  }
+
+  @include for-small-phone-down {
+    & {
+      height: 54rem;
     }
   }
 }
