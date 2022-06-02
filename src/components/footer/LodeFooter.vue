@@ -6,33 +6,7 @@
         <div class="lode-footer__upper-column">
           <h1 class="lode-footer__upper-column-title">Про нас</h1>
           <div class="lode-footer__about">
-            <p class="lode-footer__about-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut.</p>
-            <ul class="lode-footer__about-list">
-              <li class="lode-footer__about-item">
-                <img
-                  class="lode-footer__about-img"
-                  :src="MapSvgSrc"
-                  alt=""
-                >
-                г.Киев, Харковское Шоссе, 201/203
-              </li>
-              <li class="lode-footer__about-item">
-                <img
-                  class="lode-footer__about-img"
-                  :src="PhoneSvgSrc"
-                  alt=""
-                >
-                096-000-00-00
-              </li>
-              <li class="lode-footer__about-item">
-                <img
-                  class="lode-footer__about-img"
-                  :src="MailSvgSrc"
-                  alt=""
-                >
-                mail@gmail.com
-              </li>
-            </ul>
+            <p class="lode-footer__about-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem voluptates voluptas doloremque nostrum praesentium assumenda illo ea laudantium libero itaque, dolorem nesciunt! Temporibus exercitationem at repudiandae quidem.</p>
           </div>
         </div>
 
@@ -100,7 +74,37 @@
         </div>
       </div>
 
-      <div class="lode-footer__bottom"></div>
+    </div> <!-- .container -->
+
+    <div class="lode-footer__bottom">
+      <div class="container">
+        <ul class="lode-footer__bottom-list">
+          <li class="lode-footer__bottom-item">
+            <img
+              class="lode-footer__bottom-img"
+              :src="MapSvgSrc"
+              alt=""
+            >
+            г.Киев, Харковское Шоссе, 201/203
+          </li>
+          <li class="lode-footer__bottom-item">
+            <img
+              class="lode-footer__bottom-img"
+              :src="PhoneSvgSrc"
+              alt=""
+            >
+            096-000-00-00
+          </li>
+          <li class="lode-footer__bottom-item">
+            <img
+              class="lode-footer__bottom-img"
+              :src="MailSvgSrc"
+              alt=""
+            >
+            mail@gmail.com
+          </li>
+        </ul>
+      </div>
     </div>
   </footer>
 </template>
@@ -140,9 +144,10 @@ export default {
   background-color: $secondary;
   border-top: 3px solid $accent;
   box-shadow: -10px 0 10px $grey-shadow;
-  padding: 5rem 0;
+  padding: 5rem 0 0 0;
   font-size: 1.5rem;
   color: $grey-light;
+  margin-top: 3rem;
 
   &__upper {
     display: flex;
@@ -165,18 +170,6 @@ export default {
     }
   }
 
-  &__about {
-    &-text {
-      margin-bottom: 1rem;
-    }
-
-    &-img {
-      height: 15px;
-      width: 15px;
-      margin-right: 0.5rem;
-    }
-  }
-
   &__links {
     a {
       color: $grey-light;
@@ -189,22 +182,55 @@ export default {
     }
   }
 
+  &__bottom {
+    padding: 1.5rem 0;
+
+    background-color: $secondary-light;
+
+    &-list {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &-text {
+      margin-bottom: 1rem;
+    }
+
+    &-img {
+      height: 15px;
+      width: 15px;
+      margin-right: 0.5rem;
+    }
+  }
+
   @include for-small-phone-down {
     & {
-      padding: 3rem 0;
+      padding: 3rem 0 0 0;
     }
 
     &__upper {
       flex-wrap: wrap;
+      padding: 0 5rem;
 
       &-column {
         text-align: center;
-        width: 50%;
+        width: 100%;
         margin-bottom: 3rem;
 
         &:first-child {
-          width: 50%;
+          width: 100%;
         }
+      }
+    }
+
+    &__bottom {
+      &-list {
+        flex-wrap: wrap;
+      }
+
+      &-item {
+        width: 100%;
+        margin-bottom: 0.5rem;
       }
     }
   }

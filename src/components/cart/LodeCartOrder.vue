@@ -209,6 +209,7 @@ export default {
   &__info {
     width: 50%;
     padding-left: 2rem;
+    margin-bottom: 2rem;
 
     &-quantity,
     &-cost {
@@ -248,6 +249,10 @@ export default {
 
   &__products {
     margin-bottom: 2rem;
+    max-height: 30rem;
+    overflow: scroll;
+    border-bottom: 2px solid $accent;
+    border-top: 2px solid $accent;
   }
 
   &__product {
@@ -297,11 +302,11 @@ export default {
     }
   }
 
+  /* Breakpoints */
   @include for-phone-down {
     &__contacts,
     &__info {
       width: 100%;
-      margin-bottom: 2rem;
     }
 
     &__contacts {
@@ -328,6 +333,10 @@ export default {
       &-image {
         margin: auto 0;
       }
+    }
+
+    &__label {
+      font-size: 1.3rem;
     }
   }
 }

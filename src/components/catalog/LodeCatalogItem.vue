@@ -433,9 +433,12 @@ export default {
 
   @include for-phone-down {
     &__preview {
-      height: auto;
+      height: 20rem;
       min-height: 15rem;
       width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     &__image {

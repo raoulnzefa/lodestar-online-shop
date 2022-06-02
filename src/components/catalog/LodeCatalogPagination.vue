@@ -59,7 +59,7 @@ export default {
 .lode-catalog-pagination {
   display: flex;
   justify-content: center;
-  margin-top: 2rem;
+  margin-top: 10rem;
 
   &__item {
     display: flex;

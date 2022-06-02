@@ -23,6 +23,17 @@ export default {
       isModalOpened: false,
     };
   },
+  watch: {
+    isModalOpened(value) {
+      const body = document.querySelector("body");
+      if (value) {
+        window.scroll(0, 0);
+        body.style.overflow = "hidden";
+      } else {
+        body.style.overflow = "";
+      }
+    },
+  },
 };
 </script>
 

@@ -242,6 +242,7 @@ export default {
     &-column {
       flex-wrap: wrap;
       justify-content: flex-start;
+      align-items: center;
       width: 65%;
     }
 
@@ -256,7 +257,7 @@ export default {
     }
 
     &-quantity {
-      width: 20%;
+      width: 25%;
       margin-right: 1rem;
       justify-content: flex-start;
 

@@ -51,9 +51,9 @@ export default {
     left: 50%;
     z-index: 1000;
     transform: translate(-50%, -50%);
+    overflow: scroll;
 
     padding: 3rem;
-    margin: 0 auto;
     width: 80vw;
     height: 80vh;
 
@@ -63,7 +63,7 @@ export default {
 
   @include for-small-phone-down {
     &__inner {
-      padding: 1.5rem;
+      padding: 1rem;
     }
   }
 }
