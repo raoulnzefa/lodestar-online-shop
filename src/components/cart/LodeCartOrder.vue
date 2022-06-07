@@ -28,7 +28,10 @@
         <div class="lode-cart-order__info">
           <h2 class="lode-cart-order__info-title">Итого</h2>
 
-          <ul class="lode-cart-order__products">
+          <ul
+            class="lode-cart-order__products"
+            :class="{'lode-cart-order__products--scroll': CART.length > 3}"
+          >
             <li
               v-for="item in CART"
               :key="item._id"
@@ -250,9 +253,12 @@ export default {
   &__products {
     margin-bottom: 2rem;
     max-height: 30rem;
-    overflow: scroll;
     border-bottom: 2px solid $accent;
     border-top: 2px solid $accent;
+
+    &--scroll {
+      overflow: scroll;
+    }
   }
 
   &__product {

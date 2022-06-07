@@ -152,6 +152,7 @@ export default {
   &__upper {
     display: flex;
     justify-content: space-between;
+    padding-bottom: 5rem;
 
     &-column {
       width: 20%;
@@ -184,12 +185,15 @@ export default {
 
   &__bottom {
     padding: 1.5rem 0;
-
     background-color: $secondary-light;
+
+    &-item {
+      margin-right: 2rem;
+    }
 
     &-list {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
     }
 
     &-text {
