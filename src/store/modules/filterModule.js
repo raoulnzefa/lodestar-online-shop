@@ -85,27 +85,28 @@ export const filterModule = {
       }
 
       productsArray.forEach((product) => {
-        if (product.specifications.length) {
+        if (!product.specifications.length) {
+          return;
+        }
 
-          product.specifications.map((spec) => {
-            let specObjId = spec.specObj._id;
+        product.specifications.map((spec) => {
+          let specObjId = spec.specObj._id;
 
-            if (!set.has(specObjId)) {
-              set.add(specObjId);
-              spec.specObj.variants = [];
-              result.push(spec.specObj);
+          if (!set.has(specObjId)) {
+            set.add(specObjId);
+            spec.specObj.variants = [];
+            result.push(spec.specObj);
+          }
+
+          result.map((item) => {
+            if (item._id === specObjId && !set.has(`${specObjId}${spec.specValue}`)) {
+              set.add(`${specObjId}${spec.specValue}`);
+              item.variants.push(spec.specValue);
             }
 
-            result.map((item) => {
-              if (item._id === specObjId) {
-                if (!set.has(`${specObjId}${spec.specValue}`)) {
-                  set.add(`${specObjId}${spec.specValue}`);
-                  item.variants.push(spec.specValue);
-                }
-              }
-            });
+            item.variants.sort((a, b) => a - b);
           });
-        }
+        });
       });
 
       commit("SET_SIDEBAR_FILTERS", result);
