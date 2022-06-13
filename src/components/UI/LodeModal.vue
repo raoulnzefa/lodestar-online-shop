@@ -26,9 +26,7 @@ export default {
     },
   },
   emits: {
-    closeModal: {
-      type: null,
-    },
+    closeModal: (value) => value === undefined,
   },
 };
 </script>

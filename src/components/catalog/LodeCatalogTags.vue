@@ -108,7 +108,7 @@ export default {
     },
   },
   emits: {
-    acceptFilters: null,
+    acceptFilters: (value) => value === undefined,
   },
   beforeUnmount() {
     this.setTagsInLocalStorage();

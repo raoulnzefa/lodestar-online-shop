@@ -60,9 +60,6 @@ export default {
         ? this.cartItem.image
         : require(`../../${this.cartItem.image}`);
     },
-    localStorageCart() {
-      return JSON.parse(localStorage.getItem("cart"));
-    },
   },
   methods: {
     ...mapActions(["DELETE_FROM_CART", "SET_CART"]),
@@ -70,7 +67,7 @@ export default {
       return substringProductName(name);
     },
     deleteItemFromLocalStorageCart() {
-      let newCart = [...this.localStorageCart];
+      let newCart = JSON.parse(localStorage.getItem("cart"));
       newCart.splice(this.itemIndex, 1);
 
       localStorage.setItem("cart", JSON.stringify(newCart));

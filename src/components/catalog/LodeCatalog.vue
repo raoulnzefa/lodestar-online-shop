@@ -97,11 +97,15 @@ export default {
         return this.FILTERED_PRODUCTS;
       }
 
-      if (this.SEARCHED_PRODUCTS.length || this.WAS_SEARCHED === true) {
+      if (
+        this.SEARCHED_PRODUCTS.length ||
+        this.WAS_SEARCHED ||
+        !this.IS_FOUND
+      ) {
         return this.SEARCHED_PRODUCTS;
       }
 
-      return this.IS_FOUND ? this.PRODUCTS : this.SEARCHED_PRODUCTS;
+      return this.PRODUCTS;
     },
     productsQuantity() {
       return this.searchedAndFilteredProducts.length;

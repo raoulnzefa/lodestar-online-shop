@@ -23,6 +23,9 @@ export default {
       this.$emit("update:modelValue", value);
     },
   },
+  emits: {
+    "update:modelValue": (value) => typeof value === "string",
+  },
 };
 </script>
 

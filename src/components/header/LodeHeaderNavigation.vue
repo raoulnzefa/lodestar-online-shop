@@ -73,9 +73,7 @@ export default {
     },
   },
   emits: {
-    closeNavBar: {
-      type: null,
-    },
+    closeNavBar: (value) => value === undefined,
   },
 };
 </script>

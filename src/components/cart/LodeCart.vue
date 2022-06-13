@@ -68,28 +68,19 @@ export default {
   computed: {
     ...mapGetters(["CART", "USER", "IS_USER_AUTH", "CART_ID"]),
     cartTotalCost() {
-      let result = [];
-
-      if (this.CART.length) {
-        for (let item of this.CART) {
-          result.push(item.quantity * item.product.price);
-        }
-        return fixPrice(result.reduce((acc, curr) => acc + curr));
-      }
-
-      return 0;
+      return !this.CART.length
+        ? 0
+        : fixPrice(
+            this.CART.reduce(
+              (acc, item) => acc + item.quantity * item.product.price,
+              0
+            )
+          );
     },
     cartTotalQuantity() {
-      let result = [];
-
-      if (this.CART.length) {
-        for (let item of this.CART) {
-          result.push(item.quantity);
-        }
-
-        return result.reduce((acc, curr) => acc + curr);
-      }
-      return 0;
+      return !this.CART.length
+        ? 0
+        : this.CART.reduce((acc, item) => acc + item.quantity, 0);
     },
     stateIsUserAuth() {
       return this.IS_USER_AUTH;
@@ -112,9 +103,7 @@ export default {
     },
   },
   emits: {
-    openModal: {
-      type: null,
-    },
+    openModal: (value) => value === undefined,
   },
 };
 </script>

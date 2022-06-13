@@ -16,7 +16,7 @@
             <label
               :for="'order' + key"
               class="lode-cart-order__label"
-            >{{contactsInfoLabels[key]}}</label>
+            >{{contactsInfoLabels[key]}}*</label>
             <lode-input
               type="text"
               :id="'order' + key"
@@ -94,10 +94,10 @@ export default {
         post: "",
       },
       contactsInfoLabels: {
-        name: "Имя*",
-        phone: "Телефон*",
-        email: "Електронная почта*",
-        post: "Номер отделения почты*",
+        name: "Имя",
+        phone: "Телефон",
+        email: "Електронная почта",
+        post: "Номер отделения почты",
       },
       orderCreated: false,
     };

@@ -68,6 +68,11 @@ export default {
       deep: true,
     },
   },
+  emits: {
+    change: (value) => value === undefined,
+    "update:tag": (value) =>
+      typeof value === "object" || typeof value === "string",
+  },
   mounted() {
     this.isChecked();
   },
